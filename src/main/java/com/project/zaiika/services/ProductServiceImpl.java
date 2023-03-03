@@ -45,13 +45,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void changeProduct(Product newProduct) {
-        productRepository.save(newProduct);
+    public void updateProduct(Product updateProduct) {
+        validateProductId(updateProduct.getId());
+
+        for (Ingredient ingredient : updateProduct.getComposition()) {
+            ingredient.setProductId(updateProduct.getId());
+        }
+        ingredientRepository.deleteIngredientsByProductId(updateProduct.getId());
+
+        productRepository.updateProduct(updateProduct);
+        ingredientRepository.saveAll(updateProduct.getComposition());
     }
 
     @Override
     public void deleteProductById(long id) {
+        validateProductId(id);
+
         productRepository.deleteById(id);
         ingredientRepository.deleteIngredientsByProductId(id);
+    }
+
+    private void validateProductId(long id){
+        if (id <= 0){
+            throw new IllegalArgumentException("Invalid product id '" + id + "'");
+        }
     }
 }

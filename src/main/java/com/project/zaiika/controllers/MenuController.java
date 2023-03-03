@@ -24,7 +24,7 @@ public class MenuController {
             return ResponseEntity.ok(service.getAllProductFromMenu());
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public class MenuController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -46,7 +46,19 @@ public class MenuController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        try {
+            product.setId(id);
+            service.updateProduct(product);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

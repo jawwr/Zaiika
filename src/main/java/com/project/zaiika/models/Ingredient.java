@@ -22,10 +22,10 @@ public class Ingredient {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "netWeight")
+    @Column(name = "net_weight")
     private int netWeight;
 
-    @Column(name = "grossWeight")
+    @Column(name = "gross_weight")
     private int grossWeight;
 
     @Column(name = "product_id", nullable = false)
