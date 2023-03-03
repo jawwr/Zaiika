@@ -1,5 +1,6 @@
 package com.project.zaiika.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,14 +17,15 @@ import java.util.List;
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id", nullable = false)
+    @JsonInclude
     private long id;
 
     @Column(name = "title")
     private String title;
 
-    @Column(name = "composition")
-    @OneToMany(mappedBy = "product")
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Ingredient> composition;
 }

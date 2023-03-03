@@ -2,12 +2,14 @@ package com.project.zaiika.controllers;
 
 import com.project.zaiika.models.Product;
 import com.project.zaiika.services.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/menu")
+@Slf4j
 public class MenuController {
     private final ProductService service;
 
@@ -21,6 +23,7 @@ public class MenuController {
         try {
             return ResponseEntity.ok(service.getAllProductFromMenu());
         } catch (Exception e) {
+            log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -31,6 +34,7 @@ public class MenuController {
             service.addProductToMenu(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

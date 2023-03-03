@@ -1,5 +1,6 @@
 package com.project.zaiika.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +17,9 @@ import java.util.List;
 @Entity
 public class Place {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "place_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "place_id", nullable = false)
+    @JsonInclude
     private long id;
 
     @Column(name = "name")

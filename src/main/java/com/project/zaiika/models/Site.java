@@ -1,5 +1,6 @@
 package com.project.zaiika.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +15,9 @@ import lombok.Setter;
 @Entity
 public class Site {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "site_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "site_id", nullable = false)
+    @JsonInclude
     private long id;
 
     @OneToOne(cascade = CascadeType.ALL)
