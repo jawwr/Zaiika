@@ -38,4 +38,15 @@ public class MenuController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
+        try {
+            service.deleteProductById(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
