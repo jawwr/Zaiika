@@ -1,10 +1,13 @@
 package com.project.zaiika.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,13 +21,9 @@ public class Site {
     @Column(name = "site_id", nullable = false)
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "site_menu",
-            joinColumns =
-                    {@JoinColumn(name = "site_id", referencedColumnName = "site_id")},
-            inverseJoinColumns =
-                    {@JoinColumn(name = "menu_id", referencedColumnName = "menu_id")})
-    private Menu menu;
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Menu> menu;
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)

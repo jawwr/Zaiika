@@ -23,10 +23,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProductFromMenu() {
-        var products = productRepository.findAll();
+    public List<Product> getAllProductFromMenu(long menuId) {
+        var products = productRepository.findAllByMenuId(menuId);
+
         List<Long> productsId = products.stream().map(Product::getId).toList();
         List<Ingredient> ingredients = ingredientRepository.findAllByProductId(productsId);
+
         for (var product : products) {
             List<Ingredient> productIngredient = ingredients.stream().filter(x -> x.getProductId() == product.getId()).toList();
             product.setComposition(productIngredient);

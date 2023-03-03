@@ -17,8 +17,12 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_id", nullable = false)
+    @JsonInclude
     private long id;
 
-    @OneToOne(mappedBy = "menu")
-    private Site site;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "site_id")
+    private long siteId;
 }

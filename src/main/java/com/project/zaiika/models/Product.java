@@ -28,4 +28,7 @@ public class Product {
     @Transient
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Ingredient> composition;
+
+    @Column(name = "menu_id")
+    private long menuId;
 }

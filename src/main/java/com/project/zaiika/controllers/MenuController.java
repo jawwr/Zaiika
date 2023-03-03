@@ -1,64 +1,53 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.Product;
-import com.project.zaiika.services.ProductService;
+import com.project.zaiika.models.Menu;
+import com.project.zaiika.services.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/menu")
+@RequestMapping("/api/{siteId}/menu")
 @Slf4j
 public class MenuController {
-    private final ProductService service;
+    private final MenuService service;
 
     @Autowired
-    public MenuController(ProductService service) {
+    public MenuController(MenuService service) {
         this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<?> getMenu() {
+    public ResponseEntity<?> getAllMenus(@PathVariable("siteId") Long placeId) {
         try {
-            return ResponseEntity.ok(service.getAllProductFromMenu());
+            return ResponseEntity.ok(service.getAllMenus(placeId));
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createProduct(@RequestBody Product product) {
+    public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId, @RequestBody Menu menu) {
         try {
-            service.addProductToMenu(product);
+            menu.setSiteId(siteId);
+            service.createMenu(menu);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
+    @DeleteMapping("/{menuId}")
+    public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId) {
         try {
-            service.deleteProductById(id);
+            service.deleteMenu(siteId, menuId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        try {
-            product.setId(id);
-            service.updateProduct(product);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }
