@@ -1,36 +1,34 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.userModels.UserCredential;
-import com.project.zaiika.services.jwtServices.TokenService;
+import com.project.zaiika.models.auth.LoginCredential;
+import com.project.zaiika.models.auth.RegisterCredential;
+import com.project.zaiika.services.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/auth")
 @Slf4j
 public class AuthController {
-    private final TokenService service;
-    private final AuthenticationManager manager;
+    private final AuthService service;
 
     @Autowired
-    public AuthController(TokenService service, AuthenticationManager manager) {
+    public AuthController(AuthService service) {
         this.service = service;
-        this.manager = manager;
     }
 
-    @PostMapping("/token")
-    public String token(@RequestBody UserCredential credential) {
-        var auth = manager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        credential.getLogin(),
-                        credential.getPassword()
-                )
-        );
-        return service.generateToken(auth);
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterCredential credential) {
+        return ResponseEntity.ok(service.register(credential));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> register(@RequestBody LoginCredential credential) {
+        return ResponseEntity.ok(service.login(credential));
     }
 }

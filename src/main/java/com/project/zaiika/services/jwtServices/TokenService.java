@@ -12,14 +12,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class TokenService {
-    private final JwtEncoder jwtEncoder;
+    private  JwtEncoder jwtEncoder;
 
-    @Autowired
-    public TokenService(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
-    }
+//    @Autowired
+//    public TokenService(JwtEncoder jwtEncoder) {
+//        this.jwtEncoder = jwtEncoder;
+//    }
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();

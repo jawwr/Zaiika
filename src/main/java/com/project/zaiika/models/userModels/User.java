@@ -2,18 +2,13 @@ package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -34,8 +29,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @JoinColumn(name = "user_role")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Column(name = "role_id")
+    private long roleId;
+
     @JsonInclude
-    private Set<Role> roles = new HashSet<>();
+    @Transient
+    private Role role;
 }
