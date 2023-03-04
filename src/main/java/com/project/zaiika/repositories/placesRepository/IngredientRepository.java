@@ -12,8 +12,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     @Query(value = "SELECT * FROM ingredients WHERE product_id IN :#{#ids}", nativeQuery = true)
     List<Ingredient> findAllByProductId(List<Long> ids);
 
-    List<Ingredient> findAllByProductId(long id);
-
     @Modifying
     @Transactional
     void deleteIngredientsByProductId(Long productId);

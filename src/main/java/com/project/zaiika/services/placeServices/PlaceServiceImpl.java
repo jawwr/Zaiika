@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PlaceServiceImpl implements PlaceService{
+public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository repository;
 
     @Autowired

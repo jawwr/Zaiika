@@ -42,8 +42,8 @@ public class SiteServiceImpl implements SiteService {
         siteRepository.deleteSiteById(siteId);
     }
 
-    private void validatePlaceId(long placeId){
-        if (!placeRepository.existsPlaceById(placeId)){
+    private void validatePlaceId(long placeId) {
+        if (!placeRepository.existsPlaceById(placeId)) {
             throw new IllegalArgumentException("place id '" + placeId + "' not exist");
         }
     }

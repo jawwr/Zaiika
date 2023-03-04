@@ -17,6 +17,4 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
     void updateSite(Site site);
 
     void deleteSiteById(long siteId);
-
-    boolean existsSiteByPlaceId(long placeId);
 }

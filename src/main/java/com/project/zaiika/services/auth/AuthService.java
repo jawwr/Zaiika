@@ -22,6 +22,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public String register(RegisterCredential credential) {
+        if (userRepository.existsUserByLogin(credential.getLogin())){
+            throw new IllegalArgumentException("User already exist");
+        }
         var user = credential.convertToUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var role = roleRepository.findRoleByName(UserRole.USER);

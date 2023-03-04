@@ -67,8 +67,8 @@ public class ProductServiceImpl implements ProductService {
         ingredientRepository.deleteIngredientsByProductId(id);
     }
 
-    private void validateProductId(long id){
-        if (id <= 0){
+    private void validateProductId(long id) {
+        if (id <= 0) {
             throw new IllegalArgumentException("Invalid product id '" + id + "'");
         }
     }
