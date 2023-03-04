@@ -38,4 +38,27 @@ public class PlaceController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @DeleteMapping("/{placeId}")
+    public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
+        try {
+            service.deletePlace(placeId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{placeId}")
+    public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId, @RequestBody Place place) {
+        try {
+            place.setId(placeId);
+            service.updatePlace(place);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
