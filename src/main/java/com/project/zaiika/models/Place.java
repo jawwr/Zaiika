@@ -24,7 +24,7 @@ public class Place {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "sites")
-    @OneToMany(mappedBy = "place")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
     private List<Site> sites;
 }

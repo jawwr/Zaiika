@@ -50,4 +50,17 @@ public class MenuController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PutMapping("/{menuId}")
+    public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId, @RequestBody Menu menu) {
+        try {
+            menu.setId(menuId);
+            menu.setSiteId(siteId);
+            service.updateMenu(menu);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

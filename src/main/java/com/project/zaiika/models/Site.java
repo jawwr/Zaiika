@@ -25,7 +25,6 @@ public class Site {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Menu> menu;
 
-    @ManyToOne
-    @JoinColumn(name = "place_id", nullable = false)
-    private Place place;
+    @Column(name = "place_id")
+    private long placeId;
 }
