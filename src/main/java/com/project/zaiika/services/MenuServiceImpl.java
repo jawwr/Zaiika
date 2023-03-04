@@ -2,6 +2,7 @@ package com.project.zaiika.services;
 
 import com.project.zaiika.models.Menu;
 import com.project.zaiika.repositories.MenuRepository;
+import com.project.zaiika.repositories.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,30 +10,41 @@ import java.util.List;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-    private final MenuRepository repository;
+    private final MenuRepository menuRepository;
+    private final SiteRepository siteRepository;
 
     @Autowired
-    public MenuServiceImpl(MenuRepository repository) {
-        this.repository = repository;
+    public MenuServiceImpl(MenuRepository menuRepository, SiteRepository siteRepository) {
+        this.menuRepository = menuRepository;
+        this.siteRepository = siteRepository;
     }
 
     @Override
     public List<Menu> getAllMenus(long siteId) {
-        return repository.findAllBySiteId(siteId);
+        validateSiteId(siteId);
+        return menuRepository.findAllBySiteId(siteId);
     }
 
     @Override
     public void createMenu(Menu menu) {
-        repository.save(menu);
+        validateSiteId(menu.getSiteId());
+        menuRepository.save(menu);
     }
 
     @Override
     public void updateMenu(Menu menu) {
-        repository.updateMenu(menu);
+        validateSiteId(menu.getSiteId());
+        menuRepository.updateMenu(menu);
     }
 
     @Override
     public void deleteMenu(Long siteId, Long menuId) {
-        repository.deleteMenuBySiteIdAndId(siteId, menuId);
+        menuRepository.deleteMenuBySiteIdAndId(siteId, menuId);
+    }
+
+    private void validateSiteId(long siteId) {
+        if (!siteRepository.existsById(siteId)) {
+            throw new IllegalArgumentException("site id '" + siteId + "' not exist");
+        }
     }
 }

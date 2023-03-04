@@ -18,21 +18,21 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public void createPlace(Place place) {
-
+        repository.createPlace(place);
     }
 
     @Override
     public List<Place> getAllPlaces() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public void deletePlace(long placeId) {
-
+        repository.deleteById(placeId);
     }
 
     @Override
     public void updatePlace(Place place) {
-
+        repository.updatePlace(place);
     }
 }

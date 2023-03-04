@@ -19,6 +19,7 @@ public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_id", nullable = false)
+    @JsonInclude
     private long id;
 
     @Column(name = "name")
