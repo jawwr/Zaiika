@@ -1,9 +1,9 @@
-package com.project.zaiika.services;
+package com.project.zaiika.services.placeServices;
 
-import com.project.zaiika.models.Ingredient;
-import com.project.zaiika.models.Product;
-import com.project.zaiika.repositories.IngredientRepository;
-import com.project.zaiika.repositories.ProductRepository;
+import com.project.zaiika.models.placeModels.Ingredient;
+import com.project.zaiika.models.placeModels.Product;
+import com.project.zaiika.repositories.placesRepository.IngredientRepository;
+import com.project.zaiika.repositories.placesRepository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

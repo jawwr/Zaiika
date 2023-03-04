@@ -1,4 +1,4 @@
-package com.project.zaiika.models;
+package com.project.zaiika.models.userModels;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

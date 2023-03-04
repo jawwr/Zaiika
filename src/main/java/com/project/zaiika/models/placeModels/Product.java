@@ -1,4 +1,4 @@
-package com.project.zaiika.models;
+package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -13,19 +13,22 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "places")
 @Entity
-public class Place {
+@Table(name = "products")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "place_id", nullable = false)
+    @Column(name = "product_id", nullable = false)
     @JsonInclude
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
-    private List<Site> sites;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Ingredient> composition;
+
+    @Column(name = "menu_id")
+    private long menuId;
 }

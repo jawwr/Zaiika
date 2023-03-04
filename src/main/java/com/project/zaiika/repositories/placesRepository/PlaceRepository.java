@@ -1,6 +1,6 @@
-package com.project.zaiika.repositories;
+package com.project.zaiika.repositories.placesRepository;
 
-import com.project.zaiika.models.Place;
+import com.project.zaiika.models.placeModels.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
-package com.project.zaiika.services;
+package com.project.zaiika.services.placeServices;
 
-import com.project.zaiika.models.Product;
+import com.project.zaiika.models.placeModels.Product;
 
 import java.util.List;
 

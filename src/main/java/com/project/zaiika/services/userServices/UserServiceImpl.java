@@ -1,10 +1,8 @@
-package com.project.zaiika.services;
+package com.project.zaiika.services.userServices;
 
-import com.project.zaiika.models.User;
-import com.project.zaiika.models.UserDetailImpl;
-import com.project.zaiika.repositories.UserRepository;
+import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.repositories.userRepositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserInfo() {
-        var authUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return repository.findByLogin(((UserDetailImpl) authUser).getLogin());
+//        var authUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        return repository.findByLogin(((UserDetailImpl) authUser).getLogin());
+        return null;
     }
 
     @Override

@@ -1,8 +1,8 @@
-package com.project.zaiika.services;
+package com.project.zaiika.services.placeServices;
 
-import com.project.zaiika.models.Site;
-import com.project.zaiika.repositories.PlaceRepository;
-import com.project.zaiika.repositories.SiteRepository;
+import com.project.zaiika.models.placeModels.Site;
+import com.project.zaiika.repositories.placesRepository.PlaceRepository;
+import com.project.zaiika.repositories.placesRepository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.project.zaiika.repositories;
+package com.project.zaiika.repositories.placesRepository;
 
-import com.project.zaiika.models.Site;
+import com.project.zaiika.models.placeModels.Site;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

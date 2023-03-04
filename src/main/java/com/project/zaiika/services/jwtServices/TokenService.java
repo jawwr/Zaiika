@@ -1,4 +1,4 @@
-package com.project.zaiika.services;
+package com.project.zaiika.services.jwtServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,7 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.Product;
-import com.project.zaiika.services.ProductService;
+import com.project.zaiika.models.placeModels.Product;
+import com.project.zaiika.services.placeServices.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.project.zaiika.models;
+package com.project.zaiika.models.userModels;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

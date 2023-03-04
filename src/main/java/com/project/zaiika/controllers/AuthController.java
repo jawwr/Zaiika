@@ -1,6 +1,6 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.services.TokenService;
+import com.project.zaiika.services.jwtServices.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

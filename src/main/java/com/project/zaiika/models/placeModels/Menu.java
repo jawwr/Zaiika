@@ -1,5 +1,6 @@
-package com.project.zaiika.models;
+package com.project.zaiika.models.placeModels;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,23 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "ingredients")
+@Table(name = "menus")
 @Entity
-public class Ingredient {
+public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ingredient_id")
+    @Column(name = "menu_id", nullable = false)
+    @JsonInclude
     private long id;
 
     @Column(name = "title")
     private String title;
 
-    @Column(name = "net_weight")
-    private int netWeight;
-
-    @Column(name = "gross_weight")
-    private int grossWeight;
-
-    @Column(name = "product_id", nullable = false)
-    private long productId;
+    @Column(name = "site_id")
+    private long siteId;
 }

@@ -1,7 +1,7 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.Menu;
-import com.project.zaiika.services.MenuService;
+import com.project.zaiika.models.placeModels.Menu;
+import com.project.zaiika.services.placeServices.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
