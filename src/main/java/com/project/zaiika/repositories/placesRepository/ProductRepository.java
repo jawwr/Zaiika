@@ -12,12 +12,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByMenuId(long menuId);
-
-    @Query(value = """
-            INSERT INTO products(title)
-            VALUES(:#{#product.title})
-            RETURNING product_id""", nativeQuery = true)
-    Long saveProductAndReturnId(Product product);
+    @Modifying
+    @Transactional
+    void deleteProductByMenuIdAndId(long menuId, long productId);
 
     @Modifying
     @Transactional

@@ -31,6 +31,7 @@ public class ProductController {
     @PostMapping("/new")
     public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId, @RequestBody Product product) {
         try {
+            product.setMenuId(menuId);
             service.addProductToMenu(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -39,10 +40,10 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id) {
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") Long menuId, @PathVariable("productId") Long productId) {
         try {
-            service.deleteProductById(id);
+            service.deleteProductById(menuId, productId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -54,6 +55,7 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id, @RequestBody Product product) {
         try {
             product.setId(id);
+            product.setMenuId(menuId);
             service.updateProduct(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

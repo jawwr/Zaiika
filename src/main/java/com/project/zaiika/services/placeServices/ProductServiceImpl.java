@@ -38,9 +38,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProductToMenu(Product product) {
-        long productId = productRepository.saveProductAndReturnId(product);
+        var saveProduct = productRepository.save(product);
         for (Ingredient ingredient : product.getComposition()) {
-            ingredient.setProductId(productId);
+            ingredient.setProductId(saveProduct.getId());
         }
 
         ingredientRepository.saveAll(product.getComposition());
@@ -60,11 +60,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProductById(long id) {
-        validateProductId(id);
+    public void deleteProductById(long menuId, long productId) {
+        validateProductId(productId);
 
-        productRepository.deleteById(id);
-        ingredientRepository.deleteIngredientsByProductId(id);
+        productRepository.deleteProductByMenuIdAndId(menuId, productId);
+        ingredientRepository.deleteIngredientsByProductId(productId);
     }
 
     private void validateProductId(long id) {

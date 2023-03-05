@@ -5,6 +5,7 @@ import com.project.zaiika.models.auth.RegisterCredential;
 import com.project.zaiika.services.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterCredential credential) {
         try {
-            return ResponseEntity.ok(service.register(credential));
+            return new ResponseEntity<>(service.register(credential), HttpStatus.CREATED);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
