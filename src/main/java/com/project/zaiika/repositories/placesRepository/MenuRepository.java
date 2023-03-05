@@ -17,7 +17,9 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE menus SET title = :#{#menu.title} " +
-            "WHERE menu_id = :#{#menu.id}", nativeQuery = true)
+    @Query(value = """
+            UPDATE menus
+            SET title = :#{#menu.title}
+            WHERE menu_id = :#{#menu.id}""", nativeQuery = true)
     void updateMenu(Menu menu);
 }

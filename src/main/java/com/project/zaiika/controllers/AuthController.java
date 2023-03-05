@@ -34,6 +34,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> register(@RequestBody LoginCredential credential) {
-        return ResponseEntity.ok(service.login(credential));
+        try {
+            return ResponseEntity.ok(service.login(credential));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

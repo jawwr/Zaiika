@@ -13,11 +13,17 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByMenuId(long menuId);
 
-    @Query(value = "INSERT INTO products(title) VALUES(:#{#product.title}) RETURNING product_id", nativeQuery = true)
+    @Query(value = """
+            INSERT INTO products(title)
+            VALUES(:#{#product.title})
+            RETURNING product_id""", nativeQuery = true)
     Long saveProductAndReturnId(Product product);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE products SET title = :#{#product.title} WHERE product_id = :#{#product.id}", nativeQuery = true)
+    @Query(value = """
+            UPDATE products
+            SET title = :#{#product.title}
+            WHERE product_id = :#{#product.id}""", nativeQuery = true)
     void updateProduct(Product product);
 }

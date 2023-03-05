@@ -16,7 +16,9 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE places SET name = :#{#place.name} " +
-            "WHERE place_id = :#{#place.id}", nativeQuery = true)
+    @Query(value = """
+            UPDATE places
+            SET name = :#{#place.name}
+            WHERE place_id = :#{#place.id}""", nativeQuery = true)
     void updatePlace(Place place);
 }

@@ -13,7 +13,10 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sites SET place_id = :#{#site.placeId} WHERE site_id = :#{#site.id}", nativeQuery = true)
+    @Query(value = """
+            UPDATE sites
+            SET place_id = :#{#site.placeId}
+            WHERE site_id = :#{#site.id}""", nativeQuery = true)
     void updateSite(Site site);
 
     void deleteSiteById(long siteId);
