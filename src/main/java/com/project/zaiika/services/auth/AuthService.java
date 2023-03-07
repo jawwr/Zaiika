@@ -33,7 +33,7 @@ public class AuthService {
         }
         var user = credential.convertToUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        var role = roleRepository.findRoleByName(UserRole.USER);
+        var role = roleRepository.findRoleByName(UserRole.USER.name());
         user.setRole(role);
         user.setRoleId(role.getId());
         var savedUser = userRepository.save(user);
