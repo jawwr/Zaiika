@@ -19,6 +19,5 @@ public class Role {
     private long id;
 
     @Column(name = "name")
-    @Enumerated
-    private UserRole name;
+    private String name;
 }

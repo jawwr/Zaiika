@@ -1,6 +1,7 @@
 package com.project.zaiika.config;
 
 import com.project.zaiika.auth.JwtAuthFilter;
+import com.project.zaiika.models.userModels.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +28,12 @@ public class AuthConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/api/auth/**")
+                    .permitAll()
+                .requestMatchers("/api/placemanager**")
+                    .hasAuthority(UserRole.DUNGEON_MASTER.name())
+                .anyRequest()
+                    .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

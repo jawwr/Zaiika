@@ -29,7 +29,7 @@ public class AuthController {
             return new ResponseEntity<>(service.register(credential), HttpStatus.CREATED);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
