@@ -32,6 +32,18 @@ public class AuthConfig {
                     .permitAll()
                 .requestMatchers("/api/placemanager**")
                     .hasAuthority(UserRole.DUNGEON_MASTER.name())
+                .requestMatchers("/api/place/**")
+                    .hasAnyAuthority(
+                            UserRole.PLACE_OWNER.name(),
+                            UserRole.DUNGEON_MASTER.name()
+                    )
+                .requestMatchers("/api/site/**", "/api/menu/**")
+                    .hasAnyAuthority(
+                            UserRole.DUNGEON_MASTER.name(),
+                            UserRole.ADMIN.name(),
+                            UserRole.PLACE_OWNER.name(),
+                            UserRole.WORKER.name()
+                    )
                 .anyRequest()
                     .authenticated()
                 .and()
