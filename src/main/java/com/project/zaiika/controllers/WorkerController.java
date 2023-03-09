@@ -1,6 +1,6 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.worker.Worker;
+import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.services.workers.WorkerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,8 @@ public class WorkerController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createWorker(@PathVariable("placeId") Long placeId, @RequestBody Worker worker) {
+    public ResponseEntity<?> createWorker(@PathVariable("placeId") Long placeId,
+                                          @RequestBody WorkerDto worker) {
         try {
             worker.setPlaceId(placeId);
             service.createWorker(worker);
@@ -41,7 +42,9 @@ public class WorkerController {
     }
 
     @PutMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId, @PathVariable("workerId") Long workerId, @RequestBody Worker worker) {
+    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId,
+                                          @PathVariable("workerId") Long workerId,
+                                          @RequestBody WorkerDto worker) {
         try {
             worker.setId(workerId);
             worker.setPlaceId(placeId);
@@ -54,7 +57,8 @@ public class WorkerController {
     }
 
     @DeleteMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId, @PathVariable("workerId") Long workerId) {
+    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId,
+                                          @PathVariable("workerId") Long workerId) {
         try {
             service.deleteWorker(placeId, workerId);
             return ResponseEntity.ok().build();
@@ -65,7 +69,8 @@ public class WorkerController {
     }
 
     @GetMapping("/{workerId}")
-    public ResponseEntity<?> getWorkerById(@PathVariable("placeId") Long placeId, @PathVariable("workerId") Long workerId) {
+    public ResponseEntity<?> getWorkerById(@PathVariable("placeId") Long placeId,
+                                           @PathVariable("workerId") Long workerId) {
         try {
             return ResponseEntity.ok(service.getWorker(placeId, workerId));
         } catch (Exception e) {

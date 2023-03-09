@@ -1,17 +1,13 @@
 package com.project.zaiika.models.worker;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "workers")
 public class Worker {
@@ -20,28 +16,15 @@ public class Worker {
     @Column(name = "worker_id")
     private long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "login")
-    private String login;
-
-    @Column(name = "password", nullable = true)
-    private String password;
+    @Column(name = "user_id")
+    private long userId;
 
     @Column(name = "place_id")
     private long placeId;
 
     @Column(name = "place_role_id")
-    private long placeRole;
-
-    @Transient
-    @JsonInclude
-    private String role;
+    private long placeRoleId;
 
     @Column(name = "pin_code")
-    private String pin;
+    private String pinCode;
 }

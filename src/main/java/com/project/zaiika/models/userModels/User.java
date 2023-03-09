@@ -1,7 +1,7 @@
 package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.worker.Worker;
+import com.project.zaiika.models.worker.WorkerDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +24,9 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "patronymic")
+    private String patronymic;
+
     @Column(name = "login")
     private String login;
 
@@ -37,13 +40,11 @@ public class User {
     @Transient
     private Role role;
 
-    public User(Worker worker) {
-        this.id = worker.getId();
-        this.name = worker.getName();
-        this.surname = worker.getSurname();
-        this.login = worker.getLogin();
-        this.password = worker.getPassword();
-        this.roleId = worker.getPlaceRole();
+    public User(WorkerDto workerDto) {
+        this.name = workerDto.getName();
+        this.surname = workerDto.getSurname();
+        this.patronymic = workerDto.getPatronymic();
         this.role = new Role(4L, UserRole.WORKER.name());
+        this.roleId = this.role.getId();
     }
 }

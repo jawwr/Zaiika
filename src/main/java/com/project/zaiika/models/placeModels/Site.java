@@ -27,4 +27,7 @@ public class Site {
 
     @Column(name = "place_id")
     private long placeId;
+
+    @Column(name = "name")
+    private String name;
 }

@@ -1,5 +1,7 @@
 package com.project.zaiika.models.worker;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,18 +12,16 @@ import lombok.Setter;
 @Setter
 @Builder
 public class WorkerDto {
+    @JsonInclude
     private long id;
     private String name;
     private String surname;
-    private String login;
+    private String patronymic;
+    private String pinCode;
+    private long placeRoleId;
+    @JsonInclude
+    @JsonIgnore
     private long placeId;
+    @JsonInclude
     private String role;
-
-    public WorkerDto(Worker worker) {
-        this.id = worker.getId();
-        this.login = worker.getLogin();
-        this.name = worker.getName();
-        this.surname = worker.getSurname();
-        this.role = worker.getRole();
-    }
 }
