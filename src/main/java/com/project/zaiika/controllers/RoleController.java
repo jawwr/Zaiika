@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/site/{placeId}/role")
+@RequestMapping("/api/place/{placeId}/role")
 @Slf4j
 public class RoleController {
     private final RoleService service;

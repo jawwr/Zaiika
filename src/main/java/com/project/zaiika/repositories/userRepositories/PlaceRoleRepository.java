@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PlaceRoleRepository extends JpaRepository<PlaceRole, Long> {
     @Modifying
+    @Transactional
     void deleteRoleById(long roleId);
 
     @Modifying
