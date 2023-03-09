@@ -1,6 +1,7 @@
 package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +36,14 @@ public class User {
     @JsonInclude
     @Transient
     private Role role;
+
+    public User(Worker worker) {
+        this.id = worker.getId();
+        this.name = worker.getName();
+        this.surname = worker.getSurname();
+        this.login = worker.getLogin();
+        this.password = worker.getPassword();
+        this.roleId = worker.getPlaceRole();
+        this.role = new Role(4L, UserRole.WORKER.name());
+    }
 }
