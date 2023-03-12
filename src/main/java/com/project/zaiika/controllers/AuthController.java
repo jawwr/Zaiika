@@ -2,15 +2,13 @@ package com.project.zaiika.controllers;
 
 import com.project.zaiika.models.auth.LoginCredential;
 import com.project.zaiika.models.auth.RegisterCredential;
+import com.project.zaiika.models.auth.WorkerCredential;
 import com.project.zaiika.services.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,9 +32,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> register(@RequestBody LoginCredential credential) {
+    public ResponseEntity<?> login(@RequestBody LoginCredential credential) {
         try {
             return ResponseEntity.ok(service.login(credential));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/{placeId}/login")
+    public ResponseEntity<?> login(@PathVariable("placeId") Long placeId, @RequestBody WorkerCredential credential) {
+        try {
+            return ResponseEntity.ok(service.login(placeId, credential));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

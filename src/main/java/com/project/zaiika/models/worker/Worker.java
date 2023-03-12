@@ -24,7 +24,4 @@ public class Worker {
 
     @Column(name = "place_role_id")
     private long placeRoleId;
-
-    @Column(name = "pin_code")
-    private String pinCode;
 }

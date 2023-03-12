@@ -46,5 +46,7 @@ public class User {
         this.patronymic = workerDto.getPatronymic();
         this.role = new Role(4L, UserRole.WORKER.name());
         this.roleId = this.role.getId();
+        this.password = workerDto.getPinCode();
+        this.login = this.name;
     }
 }

@@ -13,8 +13,7 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     @Transactional
     @Query(value = """
             UPDATE workers
-            SET place_role_id = :#{#worker.placeRoleId},
-            pin_code = :#{#worker.pinCode}
+            SET place_role_id = :#{#worker.placeRoleId}
             WHERE worker_id = :#{#worker.id}
             """, nativeQuery = true)
     void updateWorker(Worker worker);
@@ -28,6 +27,4 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     void deleteWorkerByPlaceIdAndId(long placeId, long workerId);
 
     Worker findById(long id);
-
-    boolean existsWorkerByPinCode(String pin);
 }

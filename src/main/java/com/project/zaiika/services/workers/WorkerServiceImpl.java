@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +24,13 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public void createWorker(WorkerDto workerDto) {
+        validatePinCode(workerDto.getPinCode(), workerDto.getPlaceId());
+        workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
         var user = new User(workerDto);
         var userId = userRepository.save(user).getId();
-        validatePinCode(workerDto.getPinCode(), workerDto.getPlaceId());
+
 
         var worker = Worker.builder()
-                .pinCode(encoder.encode(workerDto.getPinCode()))
                 .userId(userId)
                 .placeRoleId(workerDto.getPlaceRoleId())
                 .placeId(workerDto.getPlaceId())
@@ -42,7 +44,6 @@ public class WorkerServiceImpl implements WorkerService {
         var worker = Worker.builder()
                 .placeId(newWorker.getPlaceId())
                 .placeRoleId(newWorker.getPlaceRoleId())
-                .pinCode(encoder.encode(newWorker.getPinCode()))
                 .build();
 
         workerRepository.updateWorker(worker);
@@ -106,8 +107,13 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         var placeWorkers = workerRepository.findAllByPlaceId(placeId);
-        for (Worker worker : placeWorkers) {
-            if (encoder.matches(pin, worker.getPinCode())) {
+        var users = userRepository.findUserByIds(placeWorkers
+                .stream()
+                .map(Worker::getUserId)
+                .collect(Collectors.toList())
+        );
+        for (User user : users) {
+            if (encoder.matches(pin, user.getPassword())) {
                 throw new IllegalArgumentException("This pin code already exist");
             }
         }
