@@ -1,11 +1,13 @@
 package com.project.zaiika.controllers;
 
-import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.services.placeServices.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/site/{siteId}")
@@ -22,42 +24,6 @@ public class MenuController {
     public ResponseEntity<?> getAllMenus(@PathVariable("siteId") Long placeId) {
         try {
             return ResponseEntity.ok(service.getAllMenus(placeId));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PostMapping("/new")
-    public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId, @RequestBody Menu menu) {
-        try {
-            menu.setSiteId(siteId);
-            service.createMenu(menu);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("/{menuId}")
-    public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId) {
-        try {
-            service.deleteMenu(siteId, menuId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PutMapping("/{menuId}")
-    public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId, @RequestBody Menu menu) {
-        try {
-            menu.setId(menuId);
-            menu.setSiteId(siteId);
-            service.updateMenu(menu);
-            return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
