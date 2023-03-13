@@ -52,7 +52,9 @@ public class RoleController {
     }
 
     @PutMapping("/{roleId}")
-    public ResponseEntity<?> updateRole(@PathVariable("placeId") Long placeId, @PathVariable("roleId") Long roleId, @RequestBody PlaceRole role) {
+    public ResponseEntity<?> updateRole(@PathVariable("placeId") Long placeId,
+                                        @PathVariable("roleId") Long roleId,
+                                        @RequestBody PlaceRole role) {
         try {
             role.setId(roleId);
             role.setPlaceId(placeId);

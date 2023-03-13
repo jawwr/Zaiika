@@ -27,4 +27,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     void deleteWorkerByPlaceIdAndId(long placeId, long workerId);
 
     Worker findById(long id);
+
+    List<Worker> findAllByPlaceRoleId(long roleId);
 }

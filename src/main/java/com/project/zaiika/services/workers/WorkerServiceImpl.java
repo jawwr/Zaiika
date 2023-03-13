@@ -71,7 +71,9 @@ public class WorkerServiceImpl implements WorkerService {
                     .name(user.getName())
                     .surname(user.getSurname())
                     .patronymic(user.getPatronymic())
-                    .role(roleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName())
+                    .role(worker.getPlaceRoleId() != 0
+                            ? roleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
+                            : "")
                     .placeRoleId(worker.getPlaceRoleId())
                     .build();
 
@@ -105,7 +107,7 @@ public class WorkerServiceImpl implements WorkerService {
     public void addWorkerRole(long placeId, long workerId, String roleName) {
         var role = roleRepository.findPlaceRoleByName(roleName);
         var worker = workerRepository.findWorkerByPlaceIdAndId(placeId, workerId);
-        worker.setPlaceRoleId(role.getPlaceId());
+        worker.setPlaceRoleId(role.getId());
         workerRepository.updateWorker(worker);
     }
 
