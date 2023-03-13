@@ -14,4 +14,5 @@ public interface WorkerService {
     WorkerDto getWorker(long placeId, long workerId);
 
     void deleteWorker(long placeId, long workerId);
+    void addWorkerRole(long placeId, long workerId, String roleName);
 }

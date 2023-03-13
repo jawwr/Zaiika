@@ -78,4 +78,17 @@ public class WorkerController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PostMapping("/{workerId}")
+    public ResponseEntity<?> addWorkerRole(@PathVariable("placeId") Long placeId,
+                                           @PathVariable("workerId") Long workerId,
+                                           @RequestParam("roleName") String roleName) {
+        try {
+            service.addWorkerRole(placeId, workerId, roleName);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

@@ -101,6 +101,14 @@ public class WorkerServiceImpl implements WorkerService {
         workerRepository.deleteWorkerByPlaceIdAndId(placeId, workerId);
     }
 
+    @Override
+    public void addWorkerRole(long placeId, long workerId, String roleName) {
+        var role = roleRepository.findPlaceRoleByName(roleName);
+        var worker = workerRepository.findWorkerByPlaceIdAndId(placeId, workerId);
+        worker.setPlaceRoleId(role.getPlaceId());
+        workerRepository.updateWorker(worker);
+    }
+
     private void validatePinCode(String pin, long placeId) {
         if (pin.length() != 4) {
             throw new IllegalArgumentException("Pin code should have 4 digits");
