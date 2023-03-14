@@ -30,7 +30,7 @@ public class AuthConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
                     .permitAll()
-                .requestMatchers("/api/manage-place**", "/api/manage-users**")
+                .requestMatchers("/api/manage-place**", "/api/manage-users**", "/api/manage-role")
                     .hasAuthority(UserRole.DUNGEON_MASTER.name())
                 .requestMatchers("/api/place/**", "/api/manage/**")
                     .hasAnyAuthority(
