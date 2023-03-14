@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/placemanager")
+@RequestMapping("/api/manage-place")
 @Slf4j
 public class PlaceController {
     private final PlaceService service;
