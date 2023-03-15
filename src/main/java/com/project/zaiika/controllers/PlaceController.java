@@ -51,7 +51,8 @@ public class PlaceController {
     }
 
     @PutMapping("/{placeId}")
-    public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId, @RequestBody Place place) {
+    public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
+                                         @RequestBody Place place) {
         try {
             place.setId(placeId);
             service.updatePlace(place);

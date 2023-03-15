@@ -50,7 +50,8 @@ public class ManageRoleController {
     }
 
     @PutMapping("/{roleId}")
-    public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId, @RequestBody Role role) {
+    public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId,
+                                        @RequestBody Role role) {
         try {
             role.setId(roleId);
             service.updateRole(role);

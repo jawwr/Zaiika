@@ -29,7 +29,8 @@ public class RoleController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewRoles(@PathVariable("placeId") Long placeId, @RequestBody PlaceRole role) {
+    public ResponseEntity<?> createNewRoles(@PathVariable("placeId") Long placeId,
+                                            @RequestBody PlaceRole role) {
         try {
             role.setPlaceId(placeId);
             service.createRole(role);
@@ -41,7 +42,8 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<?> deleteRole(@PathVariable("placeId") Long placeId, @PathVariable("roleId") Long roleId) {
+    public ResponseEntity<?> deleteRole(@PathVariable("placeId") Long placeId,
+                                        @PathVariable("roleId") Long roleId) {
         try {
             service.deleteRole(placeId, roleId);
             return ResponseEntity.ok().build();

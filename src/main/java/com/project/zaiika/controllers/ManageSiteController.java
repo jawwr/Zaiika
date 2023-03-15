@@ -19,7 +19,8 @@ public class ManageSiteController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createSite(@PathVariable("placeId") Long placeId, @RequestBody Site site) {
+    public ResponseEntity<?> createSite(@PathVariable("placeId") Long placeId,
+                                        @RequestBody Site site) {
         try {
             site.setPlaceId(placeId);
             service.createSite(site);
