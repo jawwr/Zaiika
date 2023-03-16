@@ -45,6 +45,12 @@ public class AuthConfig {
                             UserRole.PLACE_OWNER.name(),
                             UserRole.WORKER.name()
                     )
+                .requestMatchers("/api/order")
+                    .hasAnyAuthority(
+                            UserRole.PLACE_OWNER.name(),
+                            UserRole.ADMIN.name(),
+                            UserRole.WORKER.name()
+                    )
                 .anyRequest()
                     .authenticated()
                 .and()
