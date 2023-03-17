@@ -26,7 +26,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public List<DeliveryDto> getAll() {
-        var deliveries = deliveryRepository.findAll();
+        var place = ctx.getPlace();
+        var deliveries = deliveryRepository.findAllByPlaceId(place.getId());
         return deliveries.stream().map(d -> new DeliveryDto(d.getDeliveryType())).collect(Collectors.toList());
     }
 

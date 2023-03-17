@@ -41,14 +41,14 @@ public class AuthController {
         }
     }
 
-//    @PostMapping("/{placeId}/login")
-//    public ResponseEntity<?> login(@PathVariable("placeId") Long placeId,
-//                                   @RequestBody WorkerCredential credential) {
-//        try {
-//            return ResponseEntity.ok(service.login(placeId, credential));
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
+    @PostMapping("/{placeId}/login")
+    public ResponseEntity<?> login(@PathVariable("placeId") Long placeId,
+                                   @RequestBody WorkerCredential credential) {
+        try {
+            return ResponseEntity.ok(service.login(placeId, credential));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

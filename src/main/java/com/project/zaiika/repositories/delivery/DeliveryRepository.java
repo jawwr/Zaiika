@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     @Modifying
     @Transactional
@@ -15,4 +17,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
             WHERE id = :#{#delivery.id}
             """, nativeQuery = true)
     void updateDelivery(Delivery delivery);
+
+    List<Delivery> findAllByPlaceId(long placeId);
 }
