@@ -19,7 +19,8 @@ public class ManageMenuController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId, @RequestBody Menu menu) {
+    public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
+                                           @RequestBody Menu menu) {
         try {
             menu.setSiteId(siteId);
             service.createMenu(menu);
@@ -31,7 +32,8 @@ public class ManageMenuController {
     }
 
     @DeleteMapping("/{menuId}")
-    public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId) {
+    public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId,
+                                        @PathVariable("menuId") Long menuId) {
         try {
             service.deleteMenu(siteId, menuId);
             return ResponseEntity.ok().build();
@@ -42,7 +44,9 @@ public class ManageMenuController {
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId, @PathVariable("menuId") Long menuId, @RequestBody Menu menu) {
+    public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId,
+                                        @PathVariable("menuId") Long menuId,
+                                        @RequestBody Menu menu) {
         try {
             menu.setId(menuId);
             menu.setSiteId(siteId);

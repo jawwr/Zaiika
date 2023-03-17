@@ -1,7 +1,7 @@
 package com.project.zaiika.controllers;
 
 import com.project.zaiika.models.userModels.PlaceRole;
-import com.project.zaiika.services.userServices.RoleService;
+import com.project.zaiika.services.userServices.PlaceRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/place/{placeId}/role")
 @Slf4j
 public class RoleController {
-    private final RoleService service;
+    private final PlaceRoleService service;
 
     @Autowired
-    public RoleController(RoleService service) {
+    public RoleController(PlaceRoleService service) {
         this.service = service;
     }
 
@@ -29,7 +29,8 @@ public class RoleController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewRoles(@PathVariable("placeId") Long placeId, @RequestBody PlaceRole role) {
+    public ResponseEntity<?> createNewRoles(@PathVariable("placeId") Long placeId,
+                                            @RequestBody PlaceRole role) {
         try {
             role.setPlaceId(placeId);
             service.createRole(role);
@@ -41,7 +42,8 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<?> deleteRole(@PathVariable("placeId") Long placeId, @PathVariable("roleId") Long roleId) {
+    public ResponseEntity<?> deleteRole(@PathVariable("placeId") Long placeId,
+                                        @PathVariable("roleId") Long roleId) {
         try {
             service.deleteRole(placeId, roleId);
             return ResponseEntity.ok().build();

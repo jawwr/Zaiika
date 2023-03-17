@@ -19,7 +19,8 @@ public class ManageProductController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId, @RequestBody Product product) {
+    public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId,
+                                           @RequestBody Product product) {
         try {
             product.setMenuId(menuId);
             service.addProductToMenu(product);
@@ -31,7 +32,8 @@ public class ManageProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") Long menuId, @PathVariable("productId") Long productId) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") Long menuId,
+                                           @PathVariable("productId") Long productId) {
         try {
             service.deleteProductById(menuId, productId);
             return ResponseEntity.ok().build();
@@ -42,7 +44,9 @@ public class ManageProductController {
     }
 
     @PutMapping("/manage/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id, @RequestBody Product product) {
+    public ResponseEntity<?> updateProduct(@PathVariable("menuId") Long menuId,
+                                           @PathVariable("id") Long id,
+                                           @RequestBody Product product) {
         try {
             product.setId(id);
             product.setMenuId(menuId);

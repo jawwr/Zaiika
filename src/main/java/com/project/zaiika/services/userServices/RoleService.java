@@ -1,15 +1,17 @@
 package com.project.zaiika.services.userServices;
 
-import com.project.zaiika.models.userModels.PlaceRole;
+import com.project.zaiika.models.userModels.Role;
 
 import java.util.List;
 
 public interface RoleService {
-    void createRole(PlaceRole role);
+    List<Role> getAllRoles();
 
-    void deleteRole(long placeId, long roleId);
+    void deleteRole(long id);
 
-    void updateRole(PlaceRole role);
+    void updateRole(Role role);
 
-    List<PlaceRole> getAllRoles(long placeId);
+    void createRole(Role role);
+
+    Role getRole(long id);
 }

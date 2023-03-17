@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/placemanager")
+@RequestMapping("/api/manage-place")
 @Slf4j
 public class PlaceController {
     private final PlaceService service;
@@ -51,7 +51,8 @@ public class PlaceController {
     }
 
     @PutMapping("/{placeId}")
-    public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId, @RequestBody Place place) {
+    public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
+                                         @RequestBody Place place) {
         try {
             place.setId(placeId);
             service.updatePlace(place);
