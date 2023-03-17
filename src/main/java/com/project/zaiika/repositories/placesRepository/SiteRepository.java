@@ -20,4 +20,6 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
     void updateSite(Site site);
 
     void deleteSiteById(long siteId);
+
+    Site findSiteById(long id);
 }
