@@ -20,6 +20,15 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query(value = """
             UPDATE menus
             SET title = :#{#menu.title}
-            WHERE menu_id = :#{#menu.id}""", nativeQuery = true)
+            WHERE id = :#{#menu.id}""", nativeQuery = true)
     void updateMenu(Menu menu);
+
+    Menu findBySiteId(long siteId);
+
+    @Query(value = """
+            SELECT *
+            FROM menus
+            WHERE site_id IN :#{#ids}
+            """, nativeQuery = true)
+    List<Menu> getAllBySiteIds(List<Long> ids);
 }

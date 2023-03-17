@@ -16,10 +16,12 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
     @Query(value = """
             UPDATE sites
             SET place_id = :#{#site.placeId}
-            WHERE site_id = :#{#site.id}""", nativeQuery = true)
+            WHERE id = :#{#site.id}""", nativeQuery = true)
     void updateSite(Site site);
 
     void deleteSiteById(long siteId);
 
     Site findSiteById(long id);
+
+    Site findSiteByPlaceId(long placeId);
 }

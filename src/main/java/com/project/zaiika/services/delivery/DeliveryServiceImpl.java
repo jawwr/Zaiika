@@ -3,7 +3,7 @@ package com.project.zaiika.services.delivery;
 import com.project.zaiika.models.order.Delivery;
 import com.project.zaiika.models.order.DeliveryDto;
 import com.project.zaiika.repositories.delivery.DeliveryRepository;
-import com.project.zaiika.services.util.ContextUserService;
+import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
-    private final ContextUserService ctx;
+    private final ContextService ctx;
 
     @Override
     public void create(DeliveryDto deliveryDto) {

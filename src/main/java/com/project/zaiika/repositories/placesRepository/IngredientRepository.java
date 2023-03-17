@@ -22,6 +22,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
             UPDATE ingredients
             SET title = :#{#ingredient.title},
             net_weight = :#{#ingredient.netWeight}, gross_weight = :#{#ingredient.grossWeight} 
-            WHERE ingredient_id = :#{#ingredient.id}""", nativeQuery = true)
+            WHERE id = :#{#ingredient.id}""", nativeQuery = true)
     void updateProduct(Ingredient ingredient);
 }

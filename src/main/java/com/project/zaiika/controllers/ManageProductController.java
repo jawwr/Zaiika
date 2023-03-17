@@ -43,7 +43,7 @@ public class ManageProductController {
         }
     }
 
-    @PutMapping("/manage/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("menuId") Long menuId,
                                            @PathVariable("id") Long id,
                                            @RequestBody Product product) {

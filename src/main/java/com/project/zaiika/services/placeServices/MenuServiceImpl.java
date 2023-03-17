@@ -3,7 +3,7 @@ package com.project.zaiika.services.placeServices;
 import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.repositories.placesRepository.MenuRepository;
 import com.project.zaiika.repositories.placesRepository.SiteRepository;
-import com.project.zaiika.services.util.ContextUserService;
+import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final SiteRepository siteRepository;
-    private final ContextUserService ctx;
+    private final ContextService ctx;
 
     @Override
     public List<Menu> getAllMenus(long siteId) {
