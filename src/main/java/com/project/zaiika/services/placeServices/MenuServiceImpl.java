@@ -3,21 +3,17 @@ package com.project.zaiika.services.placeServices;
 import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.repositories.placesRepository.MenuRepository;
 import com.project.zaiika.repositories.placesRepository.SiteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final SiteRepository siteRepository;
-
-    @Autowired
-    public MenuServiceImpl(MenuRepository menuRepository, SiteRepository siteRepository) {
-        this.menuRepository = menuRepository;
-        this.siteRepository = siteRepository;
-    }
 
     @Override
     public List<Menu> getAllMenus(long siteId) {

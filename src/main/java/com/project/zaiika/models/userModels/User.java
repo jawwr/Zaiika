@@ -5,6 +5,8 @@ import com.project.zaiika.models.worker.WorkerDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Random;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -47,6 +49,22 @@ public class User {
         this.role = new Role(4L, UserRole.WORKER.name());
         this.roleId = this.role.getId();
         this.password = workerDto.getPinCode();
-        this.login = this.name;
+        this.login = generateLogin(workerDto);
+    }
+
+    private String generateLogin(WorkerDto dto) {
+        Random random = new Random();
+        return "w" +
+                random.nextInt(1000) +
+                dto.getName().toCharArray()[0] +
+                dto.getName().toCharArray()[dto.getName().length() - 1] +
+                dto.getName().length() +
+                dto.getSurname().toCharArray()[0] +
+                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
+                dto.getSurname().length() +
+                dto.getPatronymic().toCharArray()[0] +
+                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
+                dto.getPatronymic().length() +
+                dto.getPlaceId();
     }
 }

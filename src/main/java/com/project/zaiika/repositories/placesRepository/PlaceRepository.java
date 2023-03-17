@@ -21,4 +21,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             SET name = :#{#place.name}
             WHERE place_id = :#{#place.id}""", nativeQuery = true)
     void updatePlace(Place place);
+
+    Place findPlaceByOwnerId(long ownerId);
 }

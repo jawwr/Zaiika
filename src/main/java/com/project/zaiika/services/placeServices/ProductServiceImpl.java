@@ -4,6 +4,7 @@ import com.project.zaiika.models.placeModels.Ingredient;
 import com.project.zaiika.models.placeModels.Product;
 import com.project.zaiika.repositories.placesRepository.IngredientRepository;
 import com.project.zaiika.repositories.placesRepository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final IngredientRepository ingredientRepository;
 
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, IngredientRepository ingredientRepository) {
-        this.productRepository = productRepository;
-        this.ingredientRepository = ingredientRepository;
-    }
 
     @Override
     public List<Product> getAllProductFromMenu(long menuId) {

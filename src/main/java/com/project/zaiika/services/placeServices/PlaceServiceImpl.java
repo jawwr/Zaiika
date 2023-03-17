@@ -2,19 +2,16 @@ package com.project.zaiika.services.placeServices;
 
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.repositories.placesRepository.PlaceRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository repository;
-
-    @Autowired
-    public PlaceServiceImpl(PlaceRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public void createPlace(Place place) {

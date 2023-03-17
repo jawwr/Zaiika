@@ -1,10 +1,64 @@
 package com.project.zaiika.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.project.zaiika.models.order.DeliveryDto;
+import com.project.zaiika.services.delivery.DeliveryService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/manage/delivery")
+@Slf4j
 public class ManageDeliveryController {
+    private final DeliveryService service;
 
+    @Autowired
+    public ManageDeliveryController(DeliveryService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getExistDelivery() {
+        try {
+            return ResponseEntity.ok(service.getAll());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/new")
+    public ResponseEntity<?> createDelivery(@RequestBody DeliveryDto delivery) {
+        try {
+            service.create(delivery);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{deliveryId}")
+    public ResponseEntity<?> updateDelivery(@PathVariable("deliveryId") Long id,
+                                            @RequestBody DeliveryDto deliveryDto) {
+        try {
+            service.updateDelivery(id, deliveryDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{deliveryId}")
+    public ResponseEntity<?> deleteDelivery(@PathVariable("deliveryId") Long id) {
+        try {
+            service.deleteDelivery(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

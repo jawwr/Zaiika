@@ -3,21 +3,17 @@ package com.project.zaiika.services.placeServices;
 import com.project.zaiika.models.placeModels.Site;
 import com.project.zaiika.repositories.placesRepository.PlaceRepository;
 import com.project.zaiika.repositories.placesRepository.SiteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SiteServiceImpl implements SiteService {
     private final SiteRepository siteRepository;
     private final PlaceRepository placeRepository;
-
-    @Autowired
-    public SiteServiceImpl(SiteRepository siteRepository, PlaceRepository placeRepository) {
-        this.siteRepository = siteRepository;
-        this.placeRepository = placeRepository;
-    }
 
     @Override
     public void createSite(Site site) {

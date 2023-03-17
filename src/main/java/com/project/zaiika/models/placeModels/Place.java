@@ -25,6 +25,9 @@ public class Place {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "owner_id")
+    private long ownerId;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     private List<Site> sites;

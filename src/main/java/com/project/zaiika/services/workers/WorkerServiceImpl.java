@@ -29,7 +29,6 @@ public class WorkerServiceImpl implements WorkerService {
         var user = new User(workerDto);
         var userId = userRepository.save(user).getId();
 
-
         var worker = Worker.builder()
                 .userId(userId)
                 .placeRoleId(workerDto.getPlaceRoleId())
