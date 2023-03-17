@@ -11,15 +11,10 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO places(name) VALUES(:#{#place.name})", nativeQuery = true)
-    void createPlace(Place place);
-
-    @Modifying
-    @Transactional
     @Query(value = """
             UPDATE places
             SET name = :#{#place.name}
-            WHERE place_id = :#{#place.id}""", nativeQuery = true)
+            WHERE id = :#{#place.id}""", nativeQuery = true)
     void updatePlace(Place place);
 
     Place findPlaceByOwnerId(long ownerId);

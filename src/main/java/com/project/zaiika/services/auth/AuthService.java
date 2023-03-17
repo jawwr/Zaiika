@@ -75,7 +75,7 @@ public class AuthService {
         var users = userRepository.findUserByIds(workers.stream().map(Worker::getUserId).collect(Collectors.toList()));
         User workerUser = null;
         for (User user : users) {
-            if (passwordEncoder.matches(credential.getPin(), user.getPassword())) {
+            if (passwordEncoder.matches(credential.pin(), user.getPassword())) {
                 workerUser = user;
             }
         }
@@ -85,7 +85,7 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         workerUser.getLogin(),
-                        credential.getPin()
+                        credential.pin()
                 )
         );
         var userDetail = UserDetailImpl.build(workerUser);

@@ -15,7 +15,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void createPlace(Place place) {
-        repository.createPlace(place);
+        repository.save(place);
     }
 
     @Override

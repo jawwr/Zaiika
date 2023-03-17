@@ -18,7 +18,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "id", nullable = false)
     @JsonInclude
     private long id;
 
@@ -26,7 +26,7 @@ public class Product {
     private String title;
 
     @Transient
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude
     private List<Ingredient> composition;
 
     @Column(name = "menu_id")

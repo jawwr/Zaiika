@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,17 +16,13 @@ import java.util.List;
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "place_id", nullable = false)
+    @Column(name = "id", nullable = false)
     @JsonInclude
     private long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "owner_id")
+    @Column(name = "owner_id", nullable = false)
     private long ownerId;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
-    private List<Site> sites;
 }

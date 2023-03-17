@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "menu_id", nullable = false)
+    @Column(name = "id", nullable = false)
     @JsonInclude
     private long id;
 
