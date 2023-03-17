@@ -19,7 +19,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void create(DeliveryDto deliveryDto) {
         var delivery = new Delivery();
-        var place = ctx.getPlaceByContext();
+        var place = ctx.getPlace();
         delivery.setPlaceId(place.getId());
         delivery.setDeliveryType(deliveryDto.name());
     }

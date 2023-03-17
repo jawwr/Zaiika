@@ -23,4 +23,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     void updatePlace(Place place);
 
     Place findPlaceByOwnerId(long ownerId);
+
+    Place findPlaceById(long id);
 }
