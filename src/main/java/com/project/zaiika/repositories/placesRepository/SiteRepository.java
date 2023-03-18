@@ -9,6 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SiteRepository extends JpaRepository<Site, Long> {
+    @Query(value = """
+            SELECT *
+            FROM sites
+            WHERE place_id = :#{#placeId}
+            """, nativeQuery = true)
     List<Site> findAllByPlaceId(long placeId);
 
     @Modifying
@@ -22,6 +27,4 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
     void deleteSiteById(long siteId);
 
     Site findSiteById(long id);
-
-    Site findSiteByPlaceId(long placeId);
 }

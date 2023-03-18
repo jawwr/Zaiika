@@ -1,5 +1,6 @@
 package com.project.zaiika.models.placeModels;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -30,11 +31,16 @@ public class Product {
     @JsonManagedReference
     private List<Ingredient> composition;
 
-    @Column(name = "menu_id")
+    @Transient
     @JsonInclude
     private long menuId;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ProductModificationCategory> modifications;
+
+    @ManyToOne
+    @JoinColumn(name = "menu_id", nullable = false)
+    @JsonBackReference
+    private Menu menu;
 }

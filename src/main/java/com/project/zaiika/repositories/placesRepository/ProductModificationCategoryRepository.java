@@ -1,6 +1,5 @@
 package com.project.zaiika.repositories.placesRepository;
 
-import com.project.zaiika.models.placeModels.ProductModification;
 import com.project.zaiika.models.placeModels.ProductModificationCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
