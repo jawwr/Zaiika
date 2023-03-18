@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceServiceImpl implements PlaceService {
+public class PlaceServiceImpl implements PlaceService {//TODO сделать
     private final PlaceRepository repository;
 
     @Override
