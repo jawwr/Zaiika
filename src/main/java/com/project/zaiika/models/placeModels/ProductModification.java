@@ -1,5 +1,6 @@
 package com.project.zaiika.models.placeModels;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,14 @@ public class ProductModification {
     @JsonInclude
     private long id;
 
-    @Column(name = "place_id")
-    private long placeId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
+    private ProductModificationCategory category;
 
-    @Column(name = "product_id")
-    private long productId;
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "price", nullable = false)
+    private int price;
 }

@@ -3,7 +3,11 @@ package com.project.zaiika.services.placeServices;
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Ingredient;
 import com.project.zaiika.models.placeModels.Product;
+import com.project.zaiika.models.placeModels.ProductModification;
+import com.project.zaiika.models.placeModels.ProductModificationCategory;
 import com.project.zaiika.repositories.placesRepository.IngredientRepository;
+import com.project.zaiika.repositories.placesRepository.ProductModificationCategoryRepository;
+import com.project.zaiika.repositories.placesRepository.ProductModificationRepository;
 import com.project.zaiika.repositories.placesRepository.ProductRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
@@ -16,49 +20,63 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final IngredientRepository ingredientRepository;
+    private final ProductModificationRepository modificationRepository;
+    private final ProductModificationCategoryRepository categoryRepository;
     private final ContextService ctx;
 
     @Override
     public List<Product> getAllProductFromMenu(long menuId) {
         checkPermission(menuId);
 
-        var products = productRepository.findAllByMenuId(menuId);
-
-        List<Long> productsId = products.stream().map(Product::getId).toList();
-        List<Ingredient> ingredients = ingredientRepository.findAllByProductId(productsId);
-
-        for (var product : products) {
-            List<Ingredient> productIngredient = ingredients.stream().filter(x -> x.getProductId() == product.getId()).toList();
-            product.setComposition(productIngredient);
-        }
-        return products;
+        return productRepository.findAllByMenuId(menuId);
     }
 
     @Override
-    public void addProductToMenu(Product product) {
+    public Product addProductToMenu(Product product) {
         checkPermission(product.getMenuId());
 
-        var saveProduct = productRepository.save(product);
-        for (Ingredient ingredient : product.getComposition()) {
-            ingredient.setProductId(saveProduct.getId());
-        }
-
-        ingredientRepository.saveAll(product.getComposition());
+        return productRepository.save(product);
     }
 
     @Override
     public void updateProduct(Product updateProduct) {
         checkPermission(updateProduct.getMenuId());
-
         validateProductId(updateProduct.getId());
 
-        for (Ingredient ingredient : updateProduct.getComposition()) {
-            ingredient.setProductId(updateProduct.getId());
-        }
-        ingredientRepository.deleteIngredientsByProductId(updateProduct.getId());
-
+        updateIngredients(updateProduct.getComposition());
+        updateModificationCategory(updateProduct.getModifications());
         productRepository.updateProduct(updateProduct);
-        ingredientRepository.saveAll(updateProduct.getComposition());
+    }
+
+    private void updateModification(List<ProductModification> modifications) {
+        for (ProductModification modification : modifications) {
+            if (!modificationRepository.existsById(modification.getId())) {
+                modificationRepository.save(modification);
+            } else {
+                modificationRepository.updateModification(modification);
+            }
+        }
+    }
+
+    private void updateModificationCategory(List<ProductModificationCategory> categories) {
+        for (ProductModificationCategory category : categories) {
+            if (!categoryRepository.existsById(category.getId())) {
+                categoryRepository.save(category);
+            } else {
+                categoryRepository.updateCategory(category);
+            }
+            updateModification(category.getModification());
+        }
+    }
+
+    private void updateIngredients(List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            if (!ingredientRepository.existsById(ingredient.getId())) {
+                ingredientRepository.save(ingredient);
+            } else {
+                ingredientRepository.updateProduct(ingredient);
+            }
+        }
     }
 
     @Override
@@ -66,8 +84,24 @@ public class ProductServiceImpl implements ProductService {
         checkPermission(menuId);
         validateProductId(productId);
 
-        productRepository.deleteProductByMenuIdAndId(menuId, productId);
+        var product = productRepository.findProductById(productId);
+
+        deleteCategories(product.getModifications());
         ingredientRepository.deleteIngredientsByProductId(productId);
+        productRepository.deleteProductByMenuIdAndId(menuId, productId);
+    }
+
+    private void deleteCategories(List<ProductModificationCategory> categories) {
+        for (ProductModificationCategory category : categories) {
+            deleteModifications(category.getModification());
+            categoryRepository.deleteById(category.getId());
+        }
+    }
+
+    private void deleteModifications(List<ProductModification> modifications) {
+        for (ProductModification modification : modifications) {
+            modificationRepository.deleteById(modification.getId());
+        }
     }
 
     private void validateProductId(long id) {

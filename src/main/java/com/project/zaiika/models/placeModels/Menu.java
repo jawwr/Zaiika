@@ -24,5 +24,6 @@ public class Menu {
     private String title;
 
     @Column(name = "site_id")
+    @JsonInclude
     private long siteId;
 }

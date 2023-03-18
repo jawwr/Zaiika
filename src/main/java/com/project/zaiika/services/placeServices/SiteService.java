@@ -5,7 +5,7 @@ import com.project.zaiika.models.placeModels.Site;
 import java.util.List;
 
 public interface SiteService {
-    void createSite(Site site);
+    Site createSite(Site site);
 
     List<Site> getAllSites();
 

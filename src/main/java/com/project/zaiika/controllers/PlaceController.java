@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/manage-place")
 @Slf4j
-public class PlaceController {//TODO сделать
+public class PlaceController {//TODO сделать управление для владельцев
     private final PlaceService service;
 
     @Autowired

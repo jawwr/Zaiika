@@ -23,8 +23,7 @@ public class ManageSiteController {
     @PostMapping("/create")
     public ResponseEntity<?> createSite(@RequestBody Site site) {
         try {
-            service.createSite(site);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(service.createSite(site));
         } catch (PermissionDeniedException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

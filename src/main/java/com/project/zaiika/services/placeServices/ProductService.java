@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProductService {
     List<Product> getAllProductFromMenu(long menuId);
 
-    void addProductToMenu(Product product);
+    Product addProductToMenu(Product product);
 
     void updateProduct(Product newProduct);
 

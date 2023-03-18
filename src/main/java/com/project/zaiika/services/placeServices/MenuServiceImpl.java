@@ -25,10 +25,10 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void createMenu(Menu menu) {
+    public Menu createMenu(Menu menu) {
         checkPermission(menu.getSiteId());
         validateSiteId(menu.getSiteId());
-        menuRepository.save(menu);
+        return menuRepository.save(menu);
     }
 
     @Override

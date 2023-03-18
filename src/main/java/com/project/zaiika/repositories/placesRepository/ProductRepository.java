@@ -13,6 +13,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByMenuId(long menuId);
 
+    Product findProductById(long id);
+
     @Modifying
     @Transactional
     void deleteProductByMenuIdAndId(long menuId, long productId);

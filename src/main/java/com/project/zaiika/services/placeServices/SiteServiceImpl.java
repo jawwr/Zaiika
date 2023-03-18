@@ -16,10 +16,10 @@ public class SiteServiceImpl implements SiteService {
     private final ContextService ctx;
 
     @Override
-    public void createSite(Site site) {
+    public Site createSite(Site site) {
         var place = ctx.getPlace();
         site.setPlaceId(place.getId());
-        siteRepository.save(site);
+        return siteRepository.save(site);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.project.zaiika.models.placeModels;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +17,11 @@ public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonInclude
     private long id;
 
     @Column(name = "place_id")
+    @JsonInclude
     private long placeId;
 
     @Column(name = "name")

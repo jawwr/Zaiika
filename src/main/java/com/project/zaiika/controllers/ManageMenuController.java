@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/manage/{siteId}/menu")
+@RequestMapping("/api/manage/site/{siteId}/menu")
 @Slf4j
 public class ManageMenuController {
     private final MenuService service;
@@ -25,8 +25,7 @@ public class ManageMenuController {
                                            @RequestBody Menu menu) {
         try {
             menu.setSiteId(siteId);
-            service.createMenu(menu);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(service.createMenu(menu));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

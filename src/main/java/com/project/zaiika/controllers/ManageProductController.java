@@ -25,8 +25,7 @@ public class ManageProductController {
                                            @RequestBody Product product) {
         try {
             product.setMenuId(menuId);
-            service.addProductToMenu(product);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(service.addProductToMenu(product));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

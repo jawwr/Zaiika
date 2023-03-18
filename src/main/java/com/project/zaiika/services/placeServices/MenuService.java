@@ -7,7 +7,7 @@ import java.util.List;
 public interface MenuService {
     List<Menu> getAllMenus(long placeId);
 
-    void createMenu(Menu menu);
+    Menu createMenu(Menu menu);
 
     void updateMenu(Menu menu);
 

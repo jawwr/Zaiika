@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/site/")
+@RequestMapping("/api/site")
 @Slf4j
 public class SiteController {
     private final SiteService service;
