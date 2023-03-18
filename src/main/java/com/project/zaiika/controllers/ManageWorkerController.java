@@ -8,20 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/place/{placeId}/workers")
+@RequestMapping("/api/manage/workers")
 @Slf4j
-public class WorkerController {
+public class ManageWorkerController {
     private final WorkerService service;
 
     @Autowired
-    public WorkerController(WorkerService service) {
+    public ManageWorkerController(WorkerService service) {
         this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllWorkers(@PathVariable("placeId") Long placeId) {
+    public ResponseEntity<?> getAllWorkers() {
         try {
-            return ResponseEntity.ok(service.getAllWorkers(placeId));
+            return ResponseEntity.ok(service.getAllWorkers());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -29,10 +29,8 @@ public class WorkerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createWorker(@PathVariable("placeId") Long placeId,
-                                          @RequestBody WorkerDto worker) {
+    public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
         try {
-            worker.setPlaceId(placeId);
             service.createWorker(worker);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -42,12 +40,10 @@ public class WorkerController {
     }
 
     @PutMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId,
-                                          @PathVariable("workerId") Long workerId,
+    public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
                                           @RequestBody WorkerDto worker) {
         try {
             worker.setId(workerId);
-            worker.setPlaceId(placeId);
             service.updateWorker(worker);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -57,10 +53,9 @@ public class WorkerController {
     }
 
     @DeleteMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("placeId") Long placeId,
-                                          @PathVariable("workerId") Long workerId) {
+    public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId) {
         try {
-            service.deleteWorker(placeId, workerId);
+            service.deleteWorker(workerId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -69,10 +64,9 @@ public class WorkerController {
     }
 
     @GetMapping("/{workerId}")
-    public ResponseEntity<?> getWorkerById(@PathVariable("placeId") Long placeId,
-                                           @PathVariable("workerId") Long workerId) {
+    public ResponseEntity<?> getWorkerById(@PathVariable("workerId") Long workerId) {
         try {
-            return ResponseEntity.ok(service.getWorker(placeId, workerId));
+            return ResponseEntity.ok(service.getWorker(workerId));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -80,11 +74,10 @@ public class WorkerController {
     }
 
     @PostMapping("/{workerId}")
-    public ResponseEntity<?> addWorkerRole(@PathVariable("placeId") Long placeId,
-                                           @PathVariable("workerId") Long workerId,
+    public ResponseEntity<?> addWorkerRole(@PathVariable("workerId") Long workerId,
                                            @RequestParam("roleName") String roleName) {
         try {
-            service.addWorkerRole(placeId, workerId, roleName);
+            service.addWorkerRole(workerId, roleName);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
