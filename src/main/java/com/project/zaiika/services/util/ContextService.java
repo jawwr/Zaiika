@@ -6,6 +6,7 @@ import com.project.zaiika.models.placeModels.Site;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
 import com.project.zaiika.models.userModels.UserRole;
+import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.repositories.placesRepository.MenuRepository;
 import com.project.zaiika.repositories.placesRepository.PlaceRepository;
 import com.project.zaiika.repositories.placesRepository.SiteRepository;
@@ -30,6 +31,11 @@ public class ContextService {
     public User getContextUser() {
         var login = ((UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getLogin();
         return userRepository.findUserByLogin(login);
+    }
+
+    public Worker getContextWorker() {
+        var user = getContextUser();
+        return workerRepository.findWorkerByUserId(user.getId());
     }
 
     public Place getPlace() {

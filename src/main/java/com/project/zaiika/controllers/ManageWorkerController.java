@@ -86,7 +86,7 @@ public class ManageWorkerController {
 
     @PostMapping("/{workerId}")
     public ResponseEntity<?> addWorkerRole(@PathVariable("workerId") Long workerId,
-                                           @RequestParam("roleName") String roleName) {
+                                           @RequestParam(value = "roleName") String roleName) {
         try {
             service.addWorkerRole(workerId, roleName);
             return ResponseEntity.ok().build();

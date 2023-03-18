@@ -17,18 +17,7 @@ public class OrderController {
     public OrderController(OrderService service) {
         this.service = service;
     }
-
-    @GetMapping
-    public ResponseEntity<?> getAllOrders() {
-        try {
-            return ResponseEntity.ok(service.getAllOrders());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         try {
             service.createOrder(order);

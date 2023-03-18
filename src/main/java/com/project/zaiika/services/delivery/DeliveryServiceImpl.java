@@ -23,6 +23,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         var place = ctx.getPlace();
         delivery.setPlaceId(place.getId());
         delivery.setDeliveryType(deliveryDto.name());
+
+        deliveryRepository.save(delivery);
     }
 
     @Override
