@@ -1,5 +1,6 @@
 package com.project.zaiika.services.placeServices;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.repositories.placesRepository.MenuRepository;
 import com.project.zaiika.repositories.placesRepository.SiteRepository;
@@ -39,6 +40,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void deleteMenu(Long siteId, Long menuId) {
+        checkPermission(siteId);
         menuRepository.deleteMenuBySiteIdAndId(siteId, menuId);
     }
 
@@ -46,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
         var site = siteRepository.findSiteById(siteId);
         var place = ctx.getPlace();
         if (place.getId() != site.getPlaceId()){
-            throw new IllegalArgumentException("permission denied");
+            throw new PermissionDeniedException();
         }
     }
 

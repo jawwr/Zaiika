@@ -7,7 +7,7 @@ import java.util.List;
 public interface SiteService {
     void createSite(Site site);
 
-    List<Site> getAllSites(long placeId);
+    List<Site> getAllSites();
 
     void updateSite(Site site);
 

@@ -1,5 +1,6 @@
 package com.project.zaiika.services.placeServices;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Ingredient;
 import com.project.zaiika.models.placeModels.Product;
 import com.project.zaiika.repositories.placesRepository.IngredientRepository;
@@ -16,7 +17,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final IngredientRepository ingredientRepository;
     private final ContextService ctx;
-
 
     @Override
     public List<Product> getAllProductFromMenu(long menuId) {
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     private void checkPermission(long menuId) {
         var menu = ctx.getMenu(menuId);
         if (menu == null) {
-            throw new IllegalArgumentException("permission denied");
+            throw new PermissionDeniedException();
         }
     }
 }
