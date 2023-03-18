@@ -1,9 +1,11 @@
 package com.project.zaiika.controllers;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.services.placeServices.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,9 @@ public class ManageMenuController {
         try {
             service.deleteMenu(siteId, menuId);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -52,6 +57,9 @@ public class ManageMenuController {
             menu.setSiteId(siteId);
             service.updateMenu(menu);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

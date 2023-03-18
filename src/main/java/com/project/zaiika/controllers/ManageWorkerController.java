@@ -1,9 +1,11 @@
 package com.project.zaiika.controllers;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.services.workers.WorkerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,7 @@ public class ManageWorkerController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -46,6 +48,9 @@ public class ManageWorkerController {
             worker.setId(workerId);
             service.updateWorker(worker);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -53,10 +58,13 @@ public class ManageWorkerController {
     }
 
     @DeleteMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId) {
+    public ResponseEntity<?> deleteWorker(@PathVariable("workerId") Long workerId) {
         try {
             service.deleteWorker(workerId);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -67,9 +75,12 @@ public class ManageWorkerController {
     public ResponseEntity<?> getWorkerById(@PathVariable("workerId") Long workerId) {
         try {
             return ResponseEntity.ok(service.getWorker(workerId));
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -79,6 +90,9 @@ public class ManageWorkerController {
         try {
             service.addWorkerRole(workerId, roleName);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

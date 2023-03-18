@@ -45,9 +45,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void checkPermission(long siteId) {
-        var site = siteRepository.findSiteById(siteId);
+        var site = ctx.getSite(siteId);
         var place = ctx.getPlace();
-        if (place.getId() != site.getPlaceId()){
+        if (site == null || place.getId() != site.getPlaceId()){
             throw new PermissionDeniedException();
         }
     }

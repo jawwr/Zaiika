@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/menu/{menuId}")
+@RequestMapping("/api/menu/{menuId}/products")
 @Slf4j
 public class ProductController {
     private final ProductService service;

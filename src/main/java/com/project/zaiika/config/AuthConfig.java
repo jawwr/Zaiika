@@ -51,7 +51,7 @@ public class AuthConfig {
                             UserRole.ADMIN.name(),
                             UserRole.WORKER.name()
                     )
-                .anyRequest()
+                .anyRequest()//TODO удалить на релизе
                     .authenticated()
                 .and()
                 .sessionManagement()
