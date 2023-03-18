@@ -19,7 +19,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrder(Order order) {
-        order.setDependency();
         var place = ctx.getPlace();
         var user = ctx.getContextUser();
         order.setWorkerId(user.getId());

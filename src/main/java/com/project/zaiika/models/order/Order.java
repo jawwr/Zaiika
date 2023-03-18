@@ -49,28 +49,4 @@ public class Order {
     @Column(name = "date")
     @JsonInclude
     private LocalDateTime date;
-
-    public void setDependency() {
-        setProductsDependency();
-        setExcludeIngredientDependency();
-        setModificationDependency();
-    }
-
-    private void setProductsDependency() {
-        for (OrderProductDto product : this.products) {
-            product.setOrder(this);
-        }
-    }
-
-    private void setExcludeIngredientDependency() {
-        for (OrderIngredientDto ingredient : this.excludeIngredient) {
-            ingredient.setOrder(this);
-        }
-    }
-
-    private void setModificationDependency() {
-        for (OrderModificationDto modification : this.modifications) {
-            modification.setOrder(this);
-        }
-    }
 }

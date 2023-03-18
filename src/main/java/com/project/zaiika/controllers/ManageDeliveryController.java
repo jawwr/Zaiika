@@ -1,7 +1,7 @@
 package com.project.zaiika.controllers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.order.DeliveryDto;
+import com.project.zaiika.models.order.Delivery;
 import com.project.zaiika.services.delivery.DeliveryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ManageDeliveryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createDelivery(@RequestBody DeliveryDto delivery) {
+    public ResponseEntity<?> createDelivery(@RequestBody Delivery delivery) {
         try {
             service.create(delivery);
             return ResponseEntity.ok().build();
@@ -43,9 +43,9 @@ public class ManageDeliveryController {
 
     @PutMapping("/{deliveryId}")
     public ResponseEntity<?> updateDelivery(@PathVariable("deliveryId") Long id,
-                                            @RequestBody DeliveryDto deliveryDto) {
+                                            @RequestBody Delivery delivery) {
         try {
-            service.updateDelivery(id, deliveryDto);
+            service.updateDelivery(id, delivery);
             return ResponseEntity.ok().build();
         } catch (PermissionDeniedException e) {
             log.error(e.getMessage());
