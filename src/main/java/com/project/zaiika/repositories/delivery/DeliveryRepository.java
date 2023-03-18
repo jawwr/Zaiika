@@ -19,4 +19,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     void updateDelivery(Delivery delivery);
 
     List<Delivery> findAllByPlaceId(long placeId);
+
+    Delivery findDeliveryById(long id);
 }

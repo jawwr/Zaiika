@@ -1,5 +1,6 @@
 package com.project.zaiika.services.delivery;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.order.Delivery;
 import com.project.zaiika.models.order.DeliveryDto;
 import com.project.zaiika.repositories.delivery.DeliveryRepository;
@@ -33,13 +34,25 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public void deleteDelivery(long id) {
+        checkPermission(id);
         deliveryRepository.deleteById(id);
     }
 
     @Override
     public void updateDelivery(long id, DeliveryDto deliveryDto) {
+        checkPermission(id);
         var delivery = new Delivery();
+        delivery.setDeliveryType(deliveryDto.name());
         delivery.setId(id);
         deliveryRepository.updateDelivery(delivery);
+    }
+
+    private void checkPermission(long id){
+        var place = ctx.getPlace();
+        var delivery = deliveryRepository.findDeliveryById(id);
+
+        if (place.getId() != delivery.getPlaceId()){
+            throw new PermissionDeniedException();
+        }
     }
 }

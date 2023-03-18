@@ -1,9 +1,11 @@
 package com.project.zaiika.controllers;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.order.DeliveryDto;
 import com.project.zaiika.services.delivery.DeliveryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +47,9 @@ public class ManageDeliveryController {
         try {
             service.updateDelivery(id, deliveryDto);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -56,6 +61,9 @@ public class ManageDeliveryController {
         try {
             service.deleteDelivery(id);
             return ResponseEntity.ok().build();
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
