@@ -1,5 +1,6 @@
 package com.project.zaiika.services.order;
 
+import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.repositories.delivery.DeliveryRepository;
 import com.project.zaiika.repositories.order.OrderRepository;
@@ -40,5 +41,15 @@ public class OrderServiceImpl implements OrderService {
         var place = ctx.getPlace();
         var delivery = deliveryService.findDeliveryByDeliveryType(type);
         return orderRepository.findOrdersByPlaceIdAndDeliveryTypeId(place.getId(), delivery.getId());
+    }
+
+    @Override
+    public void cancelOrder(long id) {
+        var place = ctx.getPlace();
+        var order = orderRepository.findOrderById(id);
+        if (place.getId() != order.getPlaceId()){
+            throw new PermissionDeniedException();
+        }
+        orderRepository.updateCancel(id);
     }
 }

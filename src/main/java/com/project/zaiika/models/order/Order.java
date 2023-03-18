@@ -49,4 +49,8 @@ public class Order {
     @Column(name = "date")
     @JsonInclude
     private LocalDateTime date;
+
+    @Column(name = "is_cancelled", nullable = false)
+    @JsonInclude
+    private boolean isCancelled;
 }

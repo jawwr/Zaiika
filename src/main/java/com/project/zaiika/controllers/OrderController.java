@@ -17,10 +17,22 @@ public class OrderController {
     public OrderController(OrderService service) {
         this.service = service;
     }
+
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         try {
             service.createOrder(order);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/{orderId}/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
+        try {
+            service.cancelOrder(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
