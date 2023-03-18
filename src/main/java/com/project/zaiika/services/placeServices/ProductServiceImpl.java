@@ -32,15 +32,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProductToMenu(Product product) {
-        checkPermission(product.getMenuId());
+    public Product addProductToMenu(long menuId, Product product) {
+        checkPermission(menuId);
 
         return productRepository.save(product);
     }
 
     @Override
-    public void updateProduct(Product updateProduct) {
-        checkPermission(updateProduct.getMenuId());
+    public void updateProduct(long menuId, Product updateProduct) {
+        checkPermission(menuId);
         validateProductId(updateProduct.getId());
 
         updateIngredients(updateProduct.getComposition());

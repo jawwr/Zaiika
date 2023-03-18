@@ -24,10 +24,6 @@ public class Site {
     @JsonInclude
     private long id;
 
-    @Transient
-    @JsonInclude
-    private long placeId;
-
     @Column(name = "name")
     private String name;
 

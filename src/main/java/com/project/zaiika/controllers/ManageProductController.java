@@ -24,8 +24,7 @@ public class ManageProductController {
     public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId,
                                            @RequestBody Product product) {
         try {
-            product.setMenuId(menuId);
-            return ResponseEntity.ok(service.addProductToMenu(product));
+            return ResponseEntity.ok(service.addProductToMenu(menuId, product));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -53,8 +52,7 @@ public class ManageProductController {
                                            @RequestBody Product product) {
         try {
             product.setId(id);
-            product.setMenuId(menuId);
-            service.updateProduct(product);
+            service.updateProduct(menuId, product);
             return ResponseEntity.ok().build();
         } catch (PermissionDeniedException e) {
             log.error(e.getMessage());

@@ -27,10 +27,6 @@ public class Menu {
     @Column(name = "title")
     private String title;
 
-    @Transient
-    @JsonInclude
-    private long siteId;
-
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Product> products;

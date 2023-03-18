@@ -18,7 +18,7 @@ public class SiteServiceImpl implements SiteService {
     @Override
     public Site createSite(Site site) {
         var place = ctx.getPlace();
-        site.setPlaceId(place.getId());
+        site.setPlace(place);
         return siteRepository.save(site);
     }
 
@@ -33,7 +33,7 @@ public class SiteServiceImpl implements SiteService {
         checkPermission(site.getId());
 
         var place = ctx.getPlace();
-        site.setPlaceId(place.getId());
+        site.setPlace(place);
 
         siteRepository.updateSite(site);
     }

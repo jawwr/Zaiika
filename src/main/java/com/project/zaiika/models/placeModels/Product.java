@@ -31,10 +31,6 @@ public class Product {
     @JsonManagedReference
     private List<Ingredient> composition;
 
-    @Transient
-    @JsonInclude
-    private long menuId;
-
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ProductModificationCategory> modifications;

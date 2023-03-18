@@ -24,8 +24,7 @@ public class ManageMenuController {
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
         try {
-            menu.setSiteId(siteId);
-            return ResponseEntity.ok(service.createMenu(menu));
+            return ResponseEntity.ok(service.createMenu(siteId, menu));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -53,8 +52,7 @@ public class ManageMenuController {
                                         @RequestBody Menu menu) {
         try {
             menu.setId(menuId);
-            menu.setSiteId(siteId);
-            service.updateMenu(menu);
+            service.updateMenu(siteId, menu);
             return ResponseEntity.ok().build();
         } catch (PermissionDeniedException e) {
             log.error(e.getMessage());

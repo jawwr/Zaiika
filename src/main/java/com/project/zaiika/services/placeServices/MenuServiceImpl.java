@@ -20,21 +20,18 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Menu> getAllMenus(long siteId) {
         checkPermission(siteId);
-        validateSiteId(siteId);
         return menuRepository.findAllBySiteId(siteId);
     }
 
     @Override
-    public Menu createMenu(Menu menu) {
-        checkPermission(menu.getSiteId());
-        validateSiteId(menu.getSiteId());
+    public Menu createMenu(long siteId, Menu menu) {
+        checkPermission(siteId);
         return menuRepository.save(menu);
     }
 
     @Override
-    public void updateMenu(Menu menu) {
-        checkPermission(menu.getSiteId());
-        validateSiteId(menu.getSiteId());
+    public void updateMenu(long siteId, Menu menu) {
+        checkPermission(siteId);
         menuRepository.updateMenu(menu);
     }
 
@@ -48,12 +45,6 @@ public class MenuServiceImpl implements MenuService {
         var site = ctx.getSite(siteId);
         if (site == null){
             throw new PermissionDeniedException();
-        }
-    }
-
-    private void validateSiteId(long siteId) {
-        if (!siteRepository.existsById(siteId)) {
-            throw new IllegalArgumentException("site id '" + siteId + "' not exist");
         }
     }
 }
