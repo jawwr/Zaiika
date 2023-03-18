@@ -28,7 +28,7 @@ public class WorkerController {
         }
     }
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     public ResponseEntity<?> createWorker(@PathVariable("placeId") Long placeId,
                                           @RequestBody WorkerDto worker) {
         try {

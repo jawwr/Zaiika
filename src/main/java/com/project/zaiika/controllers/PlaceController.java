@@ -28,7 +28,7 @@ public class PlaceController {
         }
     }
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
         try {
             service.createPlace(place);

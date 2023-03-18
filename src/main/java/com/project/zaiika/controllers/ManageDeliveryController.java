@@ -30,7 +30,7 @@ public class ManageDeliveryController {
         }
     }
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     public ResponseEntity<?> createDelivery(@RequestBody DeliveryDto delivery) {
         try {
             service.create(delivery);

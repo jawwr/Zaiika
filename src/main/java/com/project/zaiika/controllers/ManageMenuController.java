@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/manage/site/{siteId}")
+@RequestMapping("/api/manage/{siteId}/menu")
 @Slf4j
 public class ManageMenuController {
     private final MenuService service;
@@ -18,7 +18,7 @@ public class ManageMenuController {
         this.service = service;
     }
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
         try {

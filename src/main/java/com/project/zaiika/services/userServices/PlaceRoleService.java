@@ -7,9 +7,9 @@ import java.util.List;
 public interface PlaceRoleService {
     void createRole(PlaceRole role);
 
-    void deleteRole(long placeId, long roleId);
+    void deleteRole(long roleId);
 
     void updateRole(PlaceRole role);
 
-    List<PlaceRole> getAllRoles(long placeId);
+    List<PlaceRole> getAllRoles();
 }
