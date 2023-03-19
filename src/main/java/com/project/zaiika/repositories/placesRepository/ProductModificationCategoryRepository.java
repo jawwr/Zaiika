@@ -19,4 +19,12 @@ public interface ProductModificationCategoryRepository extends JpaRepository<Pro
     @Modifying
     @Transactional
     ProductModificationCategory deleteAllByProduct_Id(long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+            DELETE FROM modification_category
+            WHERE id = :#{#id}
+            """, nativeQuery = true)
+    void deleteProductModificationCategoryById(long id);
 }

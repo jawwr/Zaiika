@@ -25,6 +25,9 @@ public class ManageProductController {
                                            @RequestBody Product product) {
         try {
             return ResponseEntity.ok(service.addProductToMenu(menuId, product));
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

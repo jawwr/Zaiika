@@ -14,7 +14,15 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     @Modifying
     @Transactional
-    void deleteIngredientsByProductId(Long productId);
+    void deleteIngredientsByProductId(long productId);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+            DELETE FROM ingredients
+            WHERE id = :#{#id}
+            """, nativeQuery = true)
+    void deleteIngredientById(long id);
 
     @Modifying
     @Transactional
@@ -24,5 +32,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
             net_weight = :#{#ingredient.netWeight},
             gross_weight = :#{#ingredient.grossWeight}
             WHERE id = :#{#ingredient.id}""", nativeQuery = true)
-    void updateProduct(Ingredient ingredient);
+    void updateIngredient(Ingredient ingredient);
 }

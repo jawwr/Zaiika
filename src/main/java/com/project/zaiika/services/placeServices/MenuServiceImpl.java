@@ -26,6 +26,8 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu createMenu(long siteId, Menu menu) {
         checkPermission(siteId);
+        var site = ctx.getSite(siteId);
+        menu.setSite(site);
         return menuRepository.save(menu);
     }
 

@@ -23,5 +23,9 @@ public interface ProductModificationRepository extends JpaRepository<ProductModi
 
     @Modifying
     @Transactional
-    void deleteById(long id);
+    @Query(value = """
+            DELETE FROM product_modification
+            WHERE id = :#{#id}
+            """, nativeQuery = true)
+    void deleteProductModificationById(long id);
 }

@@ -25,6 +25,9 @@ public class ManageMenuController {
                                            @RequestBody Menu menu) {
         try {
             return ResponseEntity.ok(service.createMenu(siteId, menu));
+        } catch (PermissionDeniedException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
