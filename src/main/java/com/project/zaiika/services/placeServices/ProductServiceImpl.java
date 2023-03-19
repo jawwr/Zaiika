@@ -10,7 +10,6 @@ import com.project.zaiika.repositories.placesRepository.ProductModificationCateg
 import com.project.zaiika.repositories.placesRepository.ProductModificationRepository;
 import com.project.zaiika.repositories.placesRepository.ProductRepository;
 import com.project.zaiika.services.util.ContextService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
