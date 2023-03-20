@@ -30,7 +30,7 @@ public class ManagePlaceRoleController {
         }
     }
 
-    @PostMapping("/new")
+    @PostMapping("/")
     public ResponseEntity<?> createNewRoles(@RequestBody PlaceRole role) {
         try {
             service.createRole(role);

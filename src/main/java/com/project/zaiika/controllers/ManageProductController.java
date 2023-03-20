@@ -20,7 +20,7 @@ public class ManageProductController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId,
                                            @RequestBody Product product) {
         try {

@@ -20,7 +20,7 @@ public class ManageMenuController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
         try {

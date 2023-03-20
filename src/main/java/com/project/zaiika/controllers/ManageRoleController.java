@@ -38,7 +38,7 @@ public class ManageRoleController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createRole(@RequestBody Role role) {
         try {
             service.createRole(role);

@@ -20,7 +20,7 @@ public class ManageSiteController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createSite(@RequestBody Site site) {
         try {
             return ResponseEntity.ok(service.createSite(site));

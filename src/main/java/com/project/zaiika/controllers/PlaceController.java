@@ -28,7 +28,7 @@ public class PlaceController {//TODO сделать управление для 
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
         try {
             service.createPlace(place);

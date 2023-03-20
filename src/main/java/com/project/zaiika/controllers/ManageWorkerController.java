@@ -30,7 +30,7 @@ public class ManageWorkerController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
         try {
             service.createWorker(worker);

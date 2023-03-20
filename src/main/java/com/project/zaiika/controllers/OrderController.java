@@ -18,7 +18,7 @@ public class OrderController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         try {
             service.createOrder(order);
