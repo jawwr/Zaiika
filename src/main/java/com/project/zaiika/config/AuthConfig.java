@@ -28,7 +28,7 @@ public class AuthConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/**")
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()
                 .requestMatchers("/api/manage-place**", "/api/manage-users**", "/api/manage-role**")
                     .hasAuthority(UserRole.DUNGEON_MASTER.name())
@@ -51,7 +51,7 @@ public class AuthConfig {
                             UserRole.ADMIN.name(),
                             UserRole.WORKER.name()
                     )
-                .anyRequest()//TODO удалить на релизе
+                .anyRequest()
                     .authenticated()
                 .and()
                 .sessionManagement()

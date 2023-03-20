@@ -11,7 +11,7 @@ public interface RoleService {
 
     void updateRole(Role role);
 
-    void createRole(Role role);
+    Role createRole(Role role);
 
     Role getRole(long id);
 }

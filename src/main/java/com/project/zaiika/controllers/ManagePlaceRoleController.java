@@ -3,6 +3,14 @@ package com.project.zaiika.controllers;
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.userModels.PlaceRole;
 import com.project.zaiika.services.userServices.PlaceRoleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/manage/role")
 @Slf4j
+@Tag(name = "Управление ролями в заведении")
 public class ManagePlaceRoleController {
     private final PlaceRoleService service;
 
@@ -20,6 +29,22 @@ public class ManagePlaceRoleController {
         this.service = service;
     }
 
+    @Operation(summary = "Получение всех ролей в заведении")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    implementation = PlaceRole.class
+                                            )
+                                    )
+                            )
+                    }
+            )
+    })
     @GetMapping
     public ResponseEntity<?> getAllPlaceRoles() {
         try {
@@ -30,7 +55,31 @@ public class ManagePlaceRoleController {
         }
     }
 
-    @PostMapping("/")
+    @Operation(summary = "Создание новых ролей в заведении",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            examples = {
+                                    @ExampleObject(
+                                            value = "{ \"name\" : \"some name\" }"
+                                    )
+                            }
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = PlaceRole.class
+                                    )
+                            )
+                    }
+            )
+    })
+    @PostMapping
     public ResponseEntity<?> createNewRoles(@RequestBody PlaceRole role) {
         try {
             service.createRole(role);
@@ -41,6 +90,16 @@ public class ManagePlaceRoleController {
         }
     }
 
+    @Operation(summary = "Удаление ролей в заведении")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    ref = "permissionDenied"
+            )
+    })
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRole(@PathVariable("roleId") Long roleId) {
         try {
@@ -55,6 +114,26 @@ public class ManagePlaceRoleController {
         }
     }
 
+    @Operation(summary = "Обновление роли в заведении по id",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            examples = {
+                                    @ExampleObject(
+                                            value = "{ \"name\" : \"some name\" }"
+                                    )
+                            }
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    ref = "permissionDenied"
+            )
+    })
     @PutMapping("/{roleId}")
     public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId,
                                         @RequestBody PlaceRole role) {

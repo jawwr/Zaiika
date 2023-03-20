@@ -5,7 +5,7 @@ import com.project.zaiika.models.placeModels.Place;
 import java.util.List;
 
 public interface PlaceService {
-    void createPlace(Place place);
+    Place createPlace(Place place);
 
     List<Place> getAllPlaces();
 

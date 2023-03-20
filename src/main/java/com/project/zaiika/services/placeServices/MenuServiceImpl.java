@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
-    private final SiteRepository siteRepository;
     private final ContextService ctx;
 
     @Override

@@ -26,7 +26,7 @@ public class WorkerServiceImpl implements WorkerService {
     private final ContextService ctx;
 
     @Override
-    public void createWorker(WorkerDto workerDto) {
+    public WorkerDto createWorker(WorkerDto workerDto) {
         var place = ctx.getPlace();
         workerDto.setPlaceId(place.getId());
 
@@ -40,7 +40,11 @@ public class WorkerServiceImpl implements WorkerService {
                 .placeRoleId(workerDto.getPlaceRoleId())
                 .placeId(workerDto.getPlaceId())
                 .build();
-        workerRepository.save(worker);
+        var savedUser = workerRepository.save(worker);
+        workerDto.setId(savedUser.getId());
+        workerDto.setPlaceId(savedUser.getPlaceId());
+        workerDto.setRole(user.getRole().getName());
+        return workerDto;
     }
 
     @Override

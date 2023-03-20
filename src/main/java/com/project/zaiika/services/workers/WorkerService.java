@@ -5,7 +5,7 @@ import com.project.zaiika.models.worker.WorkerDto;
 import java.util.List;
 
 public interface WorkerService {
-    void createWorker(WorkerDto worker);
+    WorkerDto createWorker(WorkerDto worker);
 
     void updateWorker(WorkerDto newWorker);
 

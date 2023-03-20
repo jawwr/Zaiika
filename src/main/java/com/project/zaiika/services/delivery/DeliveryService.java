@@ -5,7 +5,7 @@ import com.project.zaiika.models.order.Delivery;
 import java.util.List;
 
 public interface DeliveryService {
-    void create(Delivery delivery);
+    Delivery create(Delivery delivery);
 
     List<Delivery> getAll();
 

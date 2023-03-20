@@ -1,6 +1,15 @@
 package com.project.zaiika.controllers;
 
+import com.project.zaiika.models.order.Order;
 import com.project.zaiika.services.order.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/manage/order")
 @Slf4j
+@Tag(name = "Работа с заказами")
 public class ManageOrderController {
     private final OrderService service;
 
@@ -20,6 +30,22 @@ public class ManageOrderController {
         this.service = service;
     }
 
+    @Operation(summary = "Получение всех заказов")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    implementation = Order.class
+                                            )
+                                    )
+                            )
+                    }
+            )
+    })
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
         try {
@@ -30,6 +56,22 @@ public class ManageOrderController {
         }
     }
 
+    @Operation(summary = "Получение заказов по фильтру")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    implementation = Order.class
+                                            )
+                                    )
+                            )
+                    }
+            )
+    })
     @GetMapping("/filter")
     public ResponseEntity<?> getOrdersByDeliveryType(@RequestParam("delivery_type") String type) {
         try {

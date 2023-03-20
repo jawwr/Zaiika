@@ -16,11 +16,11 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final ContextService ctx;
 
     @Override
-    public void create(Delivery delivery) {
+    public Delivery create(Delivery delivery) {
         var place = ctx.getPlace();
         delivery.setPlaceId(place.getId());
 
-        deliveryRepository.save(delivery);
+        return deliveryRepository.save(delivery);
     }
 
     @Override
