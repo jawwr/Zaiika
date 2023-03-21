@@ -1,9 +1,7 @@
 package com.project.zaiika.controllers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.order.Delivery;
 import com.project.zaiika.models.utils.ResponseMessage;
-import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.services.workers.WorkerService;
 import io.swagger.v3.oas.annotations.Operation;
