@@ -33,7 +33,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void updateMenu(long siteId, Menu menu) {
         checkPermission(siteId);
-        menuRepository.updateMenu(menu);
+        menuRepository.save(menu);
     }
 
     @Override

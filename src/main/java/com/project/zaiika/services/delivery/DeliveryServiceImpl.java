@@ -40,7 +40,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         checkPermission(id);
 
         delivery.setId(id);
-        deliveryRepository.updateDelivery(delivery);
+        deliveryRepository.save(delivery);
     }
 
     private void checkPermission(long id) {

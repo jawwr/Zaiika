@@ -30,6 +30,6 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public void updatePlace(Place place) {
-        repository.updatePlace(place);
+        repository.save(place);
     }
 }

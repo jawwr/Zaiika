@@ -35,7 +35,7 @@ public class SiteServiceImpl implements SiteService {
         var place = ctx.getPlace();
         site.setPlace(place);
 
-        siteRepository.updateSite(site);
+        siteRepository.save(site);
     }
 
     @Override
