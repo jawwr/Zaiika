@@ -6,12 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
-    @Query(value = "SELECT * FROM ingredients WHERE product_id IN :#{#ids}", nativeQuery = true)
-    List<Ingredient> findAllByProductId(List<Long> ids);
-
     @Modifying
     @Transactional
     void deleteIngredientsByProductId(long productId);

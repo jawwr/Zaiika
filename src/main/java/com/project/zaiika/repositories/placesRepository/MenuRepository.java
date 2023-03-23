@@ -24,19 +24,4 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             and id = :#{#menuId}
             """, nativeQuery = true)
     void deleteMenuBySiteIdAndId(long siteId, long menuId);
-
-    @Modifying
-    @Transactional
-    @Query(value = """
-            UPDATE menus
-            SET title = :#{#menu.title}
-            WHERE id = :#{#menu.id}""", nativeQuery = true)
-    void updateMenu(Menu menu);
-
-    @Query(value = """
-            SELECT *
-            FROM menus
-            WHERE site_id IN :#{#ids}
-            """, nativeQuery = true)
-    List<Menu> getAllBySiteIds(List<Long> ids);
 }
