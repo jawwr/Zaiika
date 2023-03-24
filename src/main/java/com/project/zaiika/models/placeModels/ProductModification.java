@@ -2,11 +2,14 @@ package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +33,9 @@ public class ProductModification {
 
     @Column(name = "price", nullable = false)
     private int price;
+
+    @ManyToMany(mappedBy = "modifications")
+    @JsonBackReference
+    @JsonInclude
+    private List<Order> orders;
 }

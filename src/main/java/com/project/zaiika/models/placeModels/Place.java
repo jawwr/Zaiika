@@ -2,6 +2,8 @@ package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.zaiika.models.order.Order;
+import com.project.zaiika.models.userModels.PlaceRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,4 +34,11 @@ public class Place {
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Site> sites;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<PlaceRole> roles;
+
+    @OneToOne(mappedBy = "place")
+    private Order order;
 }

@@ -1,11 +1,8 @@
 package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.worker.WorkerDto;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Random;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,30 +38,4 @@ public class User {
     @JsonInclude
     @Transient
     private Role role;
-
-    public User(WorkerDto workerDto) {
-        this.name = workerDto.getName();
-        this.surname = workerDto.getSurname();
-        this.patronymic = workerDto.getPatronymic();
-        this.role = new Role(4L, UserRole.WORKER.name());
-        this.roleId = this.role.getId();
-        this.password = workerDto.getPinCode();
-        this.login = generateLogin(workerDto);
-    }
-
-    private String generateLogin(WorkerDto dto) {
-        Random random = new Random();
-        return "w" +
-                random.nextInt(1000) +
-                dto.getName().toCharArray()[0] +
-                dto.getName().toCharArray()[dto.getName().length() - 1] +
-                dto.getName().length() +
-                dto.getSurname().toCharArray()[0] +
-                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
-                dto.getSurname().length() +
-                dto.getPatronymic().toCharArray()[0] +
-                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
-                dto.getPatronymic().length() +
-                dto.getPlaceId();
-    }
 }

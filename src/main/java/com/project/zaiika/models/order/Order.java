@@ -2,6 +2,10 @@ package com.project.zaiika.models.order;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.zaiika.models.placeModels.Ingredient;
+import com.project.zaiika.models.placeModels.Place;
+import com.project.zaiika.models.placeModels.Product;
+import com.project.zaiika.models.placeModels.ProductModification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,21 +34,43 @@ public class Order {
     @Column(name = "delivery_type_id")
     private long deliveryTypeId;
 
-    @Column(name = "place_id")
-    @JsonInclude
-    private long placeId;
+//    @Column(name = "place_id")
+//    @JsonInclude
+//    private long placeId;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<OrderProductDto> products;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "place_id", referencedColumnName = "id")
+    private Place place;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<OrderIngredientDto> excludeIngredient;
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+    private List<Product> products;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<OrderModificationDto> modifications;
+    @ManyToMany
+    @JoinTable(
+            name = "order_exclude_ingredient",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "exclude_ingredient_id")
+    )
+//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+    private List<Ingredient> excludeIngredient;
+
+    @ManyToMany
+    @JoinTable(
+            name = "order_modification",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "modification_id")
+    )
+//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+    private List<ProductModification> modifications;
 
     @Column(name = "date")
     @JsonInclude

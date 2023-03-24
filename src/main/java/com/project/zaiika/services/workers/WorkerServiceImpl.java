@@ -1,7 +1,9 @@
 package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
+import com.project.zaiika.models.userModels.Role;
 import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.userModels.UserRole;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.repositories.userRepositories.PlaceRoleRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +35,7 @@ public class WorkerServiceImpl implements WorkerService {
 
         validatePinCode(workerDto.getPinCode());
         workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
-        var user = new User(workerDto);
+        var user = convertWorkerToUser(workerDto);
         var userId = userRepository.save(user).getId();
 
         var worker = Worker.builder()
@@ -45,6 +48,34 @@ public class WorkerServiceImpl implements WorkerService {
         workerDto.setPlaceId(savedUser.getPlaceId());
         workerDto.setRole(user.getRole().getName());
         return workerDto;
+    }
+
+    private User convertWorkerToUser(WorkerDto dto){
+        return User.builder()
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .patronymic(dto.getPatronymic())
+                .role(new Role(4L, UserRole.WORKER.name()))
+                .roleId(4L)
+                .password(dto.getPinCode())
+                .login(generateLoginFromWorkerDto(dto))
+                .build();
+    }
+
+    private String generateLoginFromWorkerDto(WorkerDto dto) {
+        Random random = new Random();
+        return "w" +
+                random.nextInt(1000) +
+                dto.getName().toCharArray()[0] +
+                dto.getName().toCharArray()[dto.getName().length() - 1] +
+                dto.getName().length() +
+                dto.getSurname().toCharArray()[0] +
+                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
+                dto.getSurname().length() +
+                dto.getPatronymic().toCharArray()[0] +
+                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
+                dto.getPatronymic().length() +
+                dto.getPlaceId();
     }
 
     @Override

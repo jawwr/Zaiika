@@ -1,11 +1,15 @@
 package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +36,9 @@ public class Ingredient {
     @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference
     private Product product;
+
+    @ManyToMany(mappedBy = "excludeIngredient")
+    @JsonBackReference
+    @JsonInclude
+    private List<Order> orders;
 }
