@@ -1,5 +1,6 @@
 package com.project.zaiika.services.userServices;
 
+import com.project.zaiika.models.userModels.Role;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDto;
 import com.project.zaiika.repositories.userRepositories.RoleRepository;
@@ -24,17 +25,20 @@ public class UserServiceImpl implements UserService {
         List<UserDto> dtos = new ArrayList<>();
         for (User user : users) {
             var role = roles.stream().filter(r -> r.getId() == user.getRoleId()).findFirst().get();
-            dtos.add(UserDto.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .surname(user.getSurname())
-                    .patronymic(user.getPatronymic())
-                    .login(user.getLogin())
-                    .role(role.getName())
-                    .build()
-            );
+            dtos.add(convertUserToDto(user, role));
         }
         return dtos;
+    }
+
+    private UserDto convertUserToDto(User user, Role role) {
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .patronymic(user.getPatronymic())
+                .login(user.getLogin())
+                .role(role.getName())
+                .build();
     }
 
     @Override

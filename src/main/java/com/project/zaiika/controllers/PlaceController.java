@@ -44,9 +44,9 @@ public class PlaceController {//TODO сделать управление для 
             )
     })
     @GetMapping
-    public ResponseEntity<?> getAllPlaces(@RequestParam(value = "full", required = false, defaultValue = "false") boolean isFullView) {
+    public ResponseEntity<?> getAllPlaces() {
         try {
-            return ResponseEntity.ok(service.getAllPlaces(isFullView));
+            return ResponseEntity.ok(service.getAllPlaces());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();

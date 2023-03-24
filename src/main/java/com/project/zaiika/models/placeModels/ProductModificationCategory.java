@@ -24,10 +24,12 @@ public class ProductModificationCategory {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+//    @JsonBackReference(value = "product modifications")
     @JsonIgnore
     private Product product;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "category modifications")
     private List<ProductModification> modification;
 
     @Column(name = "title")

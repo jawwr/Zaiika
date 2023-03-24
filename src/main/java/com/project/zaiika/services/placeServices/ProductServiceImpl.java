@@ -13,7 +13,6 @@ import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,8 +36,22 @@ public class ProductServiceImpl implements ProductService {
         checkPermission(menuId);
         var menu = ctx.getMenu(menuId);
         product.setMenu(menu);
+        setDependencies(product);
 
         return productRepository.save(product);
+    }
+
+    private void setDependencies(Product product) {
+        for (Ingredient ingredient : product.getComposition()) {
+            ingredient.setProduct(product);
+        }
+
+        for (ProductModificationCategory category : product.getModifications()) {
+            category.setProduct(product);
+            for (ProductModification productModification : category.getModification()) {
+                productModification.setCategory(category);
+            }
+        }
     }
 
     @Override
@@ -48,146 +61,8 @@ public class ProductServiceImpl implements ProductService {
 
         var menu = ctx.getMenu(menuId);
         updateProduct.setMenu(menu);
-
-//        var oldProduct = menu.getProducts()
-//                .stream()
-//                .filter(x -> x.getId() == updateProduct.getId())
-//                .findFirst()
-//                .get();
-
+        setDependencies(updateProduct);
         productRepository.save(updateProduct);
-
-//        updateProductIngredients(updateProduct.getComposition(), oldProduct.getComposition());
-//        updateProductModificationCategory(updateProduct.getModifications(), oldProduct.getModifications());
-    }
-
-    private void updateProductModification(List<ProductModification> modifications, List<ProductModification> oldModification) {
-        modifications.sort((a, b) -> (int) (a.getId() - b.getId()));
-        oldModification.sort((a, b) -> (int) (a.getId() - b.getId()));
-
-        var containsList = findContainsModification(modifications, oldModification);
-
-        updateExistModification(modifications, containsList);
-        deleteNotUsedModification(oldModification, containsList);
-    }
-
-    private void deleteNotUsedModification(List<ProductModification> oldModification, List<ProductModification> containsList) {
-        for (ProductModification modification : oldModification) {
-            var isContains = containsList.stream().anyMatch(x -> x.getId() == modification.getId());
-            if (!isContains) {
-                modificationRepository.deleteProductModificationById(modification.getId());
-            }
-        }
-    }
-
-    private void updateExistModification(List<ProductModification> modifications, List<ProductModification> containsList) {
-        for (ProductModification modification : modifications) {
-            if (containsList.contains(modification)) {
-                modificationRepository.updateModification(modification);
-            } else {
-                modificationRepository.save(modification);
-            }
-        }
-    }
-
-    private List<ProductModification> findContainsModification(List<ProductModification> modifications, List<ProductModification> oldModification) {
-        List<ProductModification> result = new ArrayList<>();
-        for (ProductModification modification : modifications) {
-            var isContains = oldModification.stream().anyMatch(x -> x.getId() == modification.getId());
-            if (isContains) {
-                result.add(modification);
-            }
-        }
-        return result;
-    }
-
-    private void updateProductModificationCategory(List<ProductModificationCategory> categories, List<ProductModificationCategory> oldCategories) {
-        categories.sort((a, b) -> (int) (a.getId() - b.getId()));
-        oldCategories.sort((a, b) -> (int) (a.getId() - b.getId()));
-
-        var containsList = findContainsCategory(categories, oldCategories);
-
-        updateCategory(categories, containsList, oldCategories);
-        deleteNotUsedCategories(oldCategories, containsList);
-    }
-
-    private void deleteNotUsedCategories(List<ProductModificationCategory> oldCategories, List<ProductModificationCategory> containsList) {
-        for (ProductModificationCategory category : oldCategories) {
-            var isContains = containsList.stream().anyMatch(x -> x.getId() == category.getId());
-            if (!isContains) {
-                deleteModifications(category.getModification());
-                categoryRepository.deleteProductModificationCategoryById(category.getId());
-            }
-        }
-    }
-
-    private void updateCategory(List<ProductModificationCategory> categories, List<ProductModificationCategory> containsList, List<ProductModificationCategory> oldCategories) {
-        for (ProductModificationCategory category : categories) {
-            if (containsList.contains(category)) {
-                categoryRepository.updateCategory(category);
-                var oldCategory = oldCategories.stream()
-                        .filter(x -> x.getId() == category.getId())
-                        .findFirst()
-                        .get();
-                updateProductModification(category.getModification(), oldCategory.getModification());
-            } else {
-                categoryRepository.save(category);
-                updateExistModification(category.getModification(), new ArrayList<>());
-            }
-        }
-    }
-
-    private List<ProductModificationCategory> findContainsCategory(List<ProductModificationCategory> categories, List<ProductModificationCategory> oldCategories) {
-        List<ProductModificationCategory> result = new ArrayList<>();
-        for (ProductModificationCategory category : categories) {
-            var isContains = oldCategories.stream().anyMatch(x -> x.getId() == category.getId());
-            if (isContains) {
-                result.add(category);
-            }
-        }
-
-        return result;
-    }
-
-    private void updateProductIngredients(List<Ingredient> ingredients, List<Ingredient> oldIngredients) {
-        ingredients.sort((a, b) -> (int) (a.getId() - b.getId()));
-        oldIngredients.sort((a, b) -> (int) (a.getId() - b.getId()));
-
-        var containsList = findContainsIngredients(ingredients, oldIngredients);
-
-        updateExistIngredients(ingredients, containsList);
-        deleteNotUsedIngredients(oldIngredients, containsList);
-    }
-
-    private void deleteNotUsedIngredients(List<Ingredient> ingredients, List<Ingredient> containsList) {
-        for (Ingredient oldIngredient : ingredients) {
-            var isContains = containsList.stream().anyMatch(x -> x.getId() == oldIngredient.getId());
-            if (!isContains) {
-                ingredientRepository.deleteIngredientById(oldIngredient.getId());
-            }
-        }
-    }
-
-    private void updateExistIngredients(List<Ingredient> ingredients, List<Ingredient> containsList) {
-        for (Ingredient ingredient : ingredients) {
-            var isContains = containsList.contains(ingredient);
-            if (isContains) {
-                ingredientRepository.save(ingredient);
-            } else {
-                ingredientRepository.save(ingredient);
-            }
-        }
-    }
-
-    private List<Ingredient> findContainsIngredients(List<Ingredient> ingredients, List<Ingredient> oldIngredients) {
-        List<Ingredient> result = new ArrayList<>();
-        for (Ingredient ingredient : ingredients) {
-            var isContains = oldIngredients.stream().anyMatch(x -> x.getId() == ingredient.getId());
-            if (isContains) {
-                result.add(ingredient);
-            }
-        }
-        return result;
     }
 
     @Override

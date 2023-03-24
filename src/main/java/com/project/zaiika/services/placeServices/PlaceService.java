@@ -7,7 +7,7 @@ import java.util.List;
 public interface PlaceService {
     Place createPlace(Place place);
 
-    List<Place> getAllPlaces(boolean isFull);
+    List<Place> getAllPlaces();
 
     void deletePlace(long placeId);
 

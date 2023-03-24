@@ -57,7 +57,6 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "exclude_ingredient_id")
     )
     @JsonIgnoreProperties("orders")
-//    @JsonManagedReference(value = "orderIngredients")
     private List<Ingredient> excludeIngredient;
 
     @ManyToMany
@@ -67,7 +66,6 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "modification_id")
     )
     @JsonIgnoreProperties("orders")
-    @JsonManagedReference(value = "orderModification")
     private List<ProductModification> modifications;
 
     @Column(name = "date")

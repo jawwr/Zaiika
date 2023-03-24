@@ -4,7 +4,6 @@ import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.repositories.placesRepository.PlaceRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
     }
 
     @Override
-    public List<Place> getAllPlaces(boolean isFull) {
+    public List<Place> getAllPlaces() {
         return repository.findAll();
     }
 
