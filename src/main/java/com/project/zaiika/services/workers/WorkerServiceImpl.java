@@ -35,30 +35,42 @@ public class WorkerServiceImpl implements WorkerService {
 
         validatePinCode(workerDto.getPinCode());
         workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
-        var user = convertWorkerToUser(workerDto);
-        var userId = userRepository.save(user).getId();
 
+        var user = saveWorkerAsUser(workerDto);
+        var savedWorker = saveWorker(user.getId(), workerDto);
+
+        workerDto.setId(savedWorker.getId());
+        workerDto.setPlaceId(savedWorker.getPlaceId());
+        workerDto.setRole(roleRepository.findPlaceRoleById(workerDto.getPlaceRoleId()).getName());
+
+        return workerDto;
+    }
+
+    private Worker saveWorker(long userId, WorkerDto workerDto) {
         var worker = Worker.builder()
+                .id(workerDto.getId())
                 .userId(userId)
                 .placeRoleId(workerDto.getPlaceRoleId())
                 .placeId(workerDto.getPlaceId())
                 .build();
-        var savedUser = workerRepository.save(worker);
-        workerDto.setId(savedUser.getId());
-        workerDto.setPlaceId(savedUser.getPlaceId());
-        workerDto.setRole(user.getRole().getName());
-        return workerDto;
+        return workerRepository.save(worker);
     }
 
-    private User convertWorkerToUser(WorkerDto dto){
+    private User saveWorkerAsUser(WorkerDto dto) {
+        var user = convertWorkerToUser(dto, true);
+        return userRepository.save(user);
+    }
+
+    private User convertWorkerToUser(WorkerDto dto, boolean generateLogin) {
         return User.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .patronymic(dto.getPatronymic())
                 .role(new Role(4L, UserRole.WORKER.name()))
                 .roleId(4L)
                 .password(dto.getPinCode())
-                .login(generateLoginFromWorkerDto(dto))
+                .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
                 .build();
     }
 
@@ -79,24 +91,19 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void updateWorker(WorkerDto newWorker) {
-        checkPermission(newWorker.getId());
+    public void updateWorker(WorkerDto updateWorker) {
+        checkPermission(updateWorker.getId());
 
-        validatePinCode(newWorker.getPinCode());
-        var worker = Worker.builder()
-                .placeId(newWorker.getPlaceId())
-                .placeRoleId(newWorker.getPlaceRoleId())
-                .build();
+        validatePinCode(updateWorker.getPinCode());
+        updateWorker.setPinCode(encoder.encode(updateWorker.getPinCode()));
 
-        workerRepository.updateWorker(worker);
+        var worker = workerRepository.findById(updateWorker.getId());
+        saveWorker(worker.getUserId(), updateWorker);
 
-        long userId = workerRepository.findById(newWorker.getId()).getUserId();
-
-        var user = userRepository.findUserById(userId);
-        user.setName(newWorker.getName());
-        user.setSurname(newWorker.getSurname());
-        user.setPatronymic(newWorker.getPatronymic());
-        userRepository.updateUser(user);
+        var user = userRepository.findUserById(worker.getId());
+        var userWorker = convertWorkerToUser(updateWorker, false);
+        userWorker.setLogin(user.getLogin());
+        userRepository.save(userWorker);
     }
 
     @Override
@@ -106,51 +113,50 @@ public class WorkerServiceImpl implements WorkerService {
         var workers = workerRepository.findAllByPlaceId(place.getId());
         List<Long> usersId = workers.stream().map(Worker::getUserId).toList();
         var users = userRepository.findUserByIds(usersId);
+        return generateWorkersDto(workers, users);
+    }
+
+    private List<WorkerDto> generateWorkersDto(List<Worker> workers, List<User> users) {
         List<WorkerDto> dtoUsers = new ArrayList<>();
 
         for (Worker worker : workers) {
             var user = users.stream().filter(x -> x.getId() == worker.getUserId()).findFirst().get();
-            var dto = WorkerDto.builder()
-                    .id(worker.getId())
-                    .name(user.getName())
-                    .surname(user.getSurname())
-                    .patronymic(user.getPatronymic())
-                    .role(worker.getPlaceRoleId() != 0
-                            ? roleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
-                            : "")
-                    .placeRoleId(worker.getPlaceRoleId())
-                    .build();
+            var dto = generateWorkerDto(user, worker);
 
             dtoUsers.add(dto);
         }
+
         return dtoUsers;
     }
 
-    @Override
-    public WorkerDto getWorker(long workerId) {
-        checkPermission(workerId);
-        var place = ctx.getPlace();
-
-        var worker = workerRepository.findWorkerByPlaceIdAndId(place.getId(), workerId);
-        var user = userRepository.findUserById(worker.getUserId());
-        var role = roleRepository.findPlaceRoleById(worker.getPlaceRoleId());
-
+    private WorkerDto generateWorkerDto(User user, Worker worker) {
         return WorkerDto.builder()
                 .id(worker.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .patronymic(user.getPatronymic())
-                .placeId(place.getId())
-                .role(role.getName())
+                .role(worker.getPlaceRoleId() != 0
+                        ? roleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
+                        : user.getRole().getName())
+                .placeRoleId(worker.getPlaceRoleId())
                 .build();
+    }
+
+    @Override
+    public WorkerDto getWorker(long workerId) {
+        checkPermission(workerId);
+
+        var worker = workerRepository.findById(workerId);
+        var user = userRepository.findUserById(worker.getUserId());
+
+        return generateWorkerDto(user, worker);
     }
 
     @Override
     public void deleteWorker(long workerId) {
         checkPermission(workerId);
-        var place = ctx.getPlace();
 
-        workerRepository.deleteWorkerByPlaceIdAndId(place.getId(), workerId);
+        workerRepository.deleteWorkerById(workerId);
     }
 
     @Override
@@ -158,10 +164,10 @@ public class WorkerServiceImpl implements WorkerService {
         checkPermission(workerId);
         var place = ctx.getPlace();
 
-        var role = roleRepository.findPlaceRoleByName(roleName);
-        var worker = workerRepository.findWorkerByPlaceIdAndId(place.getId(), workerId);
+        var role = roleRepository.findPlaceRoleByPlaceIdAndName(place.getId(), roleName);
+        var worker = workerRepository.findById(workerId);
         worker.setPlaceRoleId(role.getId());
-        workerRepository.updateWorker(worker);
+        workerRepository.save(worker);
     }
 
     private void validatePinCode(String pin) {

@@ -1,6 +1,6 @@
 package com.project.zaiika.models.placeModels;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.order.Order;
 import jakarta.persistence.*;
@@ -25,7 +25,7 @@ public class ProductModification {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private ProductModificationCategory category;
 
     @Column(name = "title", nullable = false)
@@ -35,7 +35,6 @@ public class ProductModification {
     private int price;
 
     @ManyToMany(mappedBy = "modifications")
-    @JsonBackReference
-    @JsonInclude
+    @JsonIgnore
     private List<Order> orders;
 }

@@ -1,7 +1,6 @@
 package com.project.zaiika.models.placeModels;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.userModels.PlaceRole;
 import jakarta.persistence.*;
@@ -33,12 +32,14 @@ public class Place {
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonInclude
     private List<Site> sites;
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonInclude
     private List<PlaceRole> roles;
 
-    @OneToOne(mappedBy = "place")
-    private Order order;
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "placeOrder")
+    private List<Order> order;
 }

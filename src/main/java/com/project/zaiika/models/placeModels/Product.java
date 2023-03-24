@@ -1,6 +1,7 @@
 package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.order.Order;
@@ -29,20 +30,17 @@ public class Product {
     private String title;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Ingredient> composition;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<ProductModificationCategory> modifications;
 
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Menu menu;
 
     @ManyToMany(mappedBy = "products")
-    @JsonBackReference
-    @JsonInclude
+    @JsonIgnore
     private List<Order> orders;
 }

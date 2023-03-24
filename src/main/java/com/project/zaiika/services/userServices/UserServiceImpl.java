@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
         user.setRole(role);
         user.setRoleId(role.getId());
-        userRepository.updateUser(user);
+        userRepository.save(user);
     }
 
     @Override

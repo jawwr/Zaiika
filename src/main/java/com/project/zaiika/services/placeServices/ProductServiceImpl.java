@@ -49,14 +49,16 @@ public class ProductServiceImpl implements ProductService {
         var menu = ctx.getMenu(menuId);
         updateProduct.setMenu(menu);
 
-        var oldProduct = menu.getProducts()
-                .stream()
-                .filter(x -> x.getId() == updateProduct.getId())
-                .findFirst()
-                .get();
+//        var oldProduct = menu.getProducts()
+//                .stream()
+//                .filter(x -> x.getId() == updateProduct.getId())
+//                .findFirst()
+//                .get();
 
-        updateProductIngredients(updateProduct.getComposition(), oldProduct.getComposition());
-        updateProductModificationCategory(updateProduct.getModifications(), oldProduct.getModifications());
+        productRepository.save(updateProduct);
+
+//        updateProductIngredients(updateProduct.getComposition(), oldProduct.getComposition());
+//        updateProductModificationCategory(updateProduct.getModifications(), oldProduct.getModifications());
     }
 
     private void updateProductModification(List<ProductModification> modifications, List<ProductModification> oldModification) {
@@ -170,7 +172,7 @@ public class ProductServiceImpl implements ProductService {
         for (Ingredient ingredient : ingredients) {
             var isContains = containsList.contains(ingredient);
             if (isContains) {
-                ingredientRepository.updateIngredient(ingredient);
+                ingredientRepository.save(ingredient);
             } else {
                 ingredientRepository.save(ingredient);
             }
@@ -197,7 +199,7 @@ public class ProductServiceImpl implements ProductService {
 
         deleteCategories(product.getModifications());
         ingredientRepository.deleteIngredientsByProductId(productId);
-        productRepository.deleteProductByMenuIdAndId(menuId, productId);
+        productRepository.deleteProductById(productId);
     }
 
     private void deleteCategories(List<ProductModificationCategory> categories) {

@@ -23,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
         var place = ctx.getPlace();
         var user = ctx.getContextUser();
         order.setWorkerId(user.getId());
-        order.setPlaceId(place.getId());
+        order.setPlace(place);
         order.setDate(LocalDateTime.now());
 
         orderRepository.save(order);
@@ -38,16 +38,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders(String type) {
-        var place = ctx.getPlace();
         var delivery = deliveryService.findDeliveryByDeliveryType(type);
-        return orderRepository.findOrdersByPlaceIdAndDeliveryTypeId(place.getId(), delivery.getId());
+        return orderRepository.findOrdersByDeliveryTypeId(delivery.getId());
     }
 
     @Override
     public void cancelOrder(long id) {
         var place = ctx.getPlace();
         var order = orderRepository.findOrderById(id);
-        if (place.getId() != order.getPlaceId()){
+        if (place.getId() != order.getPlace().getId()) {
             throw new PermissionDeniedException();
         }
         orderRepository.updateCancel(id);

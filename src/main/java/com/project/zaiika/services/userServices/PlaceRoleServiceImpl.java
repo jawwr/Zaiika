@@ -21,7 +21,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     @Override
     public void createRole(PlaceRole role) {
         var place = ctx.getPlace();
-        role.setPlaceId(place.getId());
+        role.setPlace(place);
         roleRepository.save(role);
     }
 
@@ -50,10 +50,10 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
         return roleRepository.findAllByPlaceId(place.getId());
     }
 
-    private void checkPermission(long roleId){
+    private void checkPermission(long roleId) {
         var role = roleRepository.findPlaceRoleById(roleId);
         var place = ctx.getPlace();
-        if (place.getId() != role.getPlaceId()){
+        if (place.getId() != role.getPlace().getId()) {
             throw new PermissionDeniedException();
         }
     }

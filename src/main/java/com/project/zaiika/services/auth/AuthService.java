@@ -57,12 +57,12 @@ public class AuthService {
     public TokenResponse login(LoginCredential credential) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        credential.getLogin(),
-                        credential.getPassword()
+                        credential.login(),
+                        credential.password()
                 )
         );
 
-        var user = userRepository.findUserByLogin(credential.getLogin());
+        var user = userRepository.findUserByLogin(credential.login());
         var jwt = jwtService.generateToken(UserDetailImpl.build(user));
         revokeAllUserTokens(user);
         saveUserToken(jwt, user);

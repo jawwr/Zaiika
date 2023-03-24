@@ -1,6 +1,8 @@
 package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.zaiika.models.placeModels.Place;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,11 +25,8 @@ public class PlaceRole {
     @Column(name = "name")
     private String name;
 
-//    @Column(name = "place_id")
-//    private long placeId;
-
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Place place;
 }

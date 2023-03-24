@@ -22,10 +22,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = """
-            DELETE FROM products
-            WHERE menu_id = :#{#menuId}
-            and id = :#{#productId}
-            """, nativeQuery = true)
-    void deleteProductByMenuIdAndId(long menuId, long productId);
+    void deleteProductById(long productId);
 }

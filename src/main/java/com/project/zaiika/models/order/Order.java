@@ -1,5 +1,7 @@
 package com.project.zaiika.models.order;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.placeModels.Ingredient;
@@ -34,12 +36,9 @@ public class Order {
     @Column(name = "delivery_type_id")
     private long deliveryTypeId;
 
-//    @Column(name = "place_id")
-//    @JsonInclude
-//    private long placeId;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "place_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "place_id", nullable = false)
+    @JsonBackReference(value = "placeOrder")
     private Place place;
 
     @ManyToMany
@@ -48,8 +47,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
+    @JsonIgnoreProperties("orders")
     private List<Product> products;
 
     @ManyToMany
@@ -58,8 +56,8 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "exclude_ingredient_id")
     )
-//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
+    @JsonIgnoreProperties("orders")
+//    @JsonManagedReference(value = "orderIngredients")
     private List<Ingredient> excludeIngredient;
 
     @ManyToMany
@@ -68,8 +66,8 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "modification_id")
     )
-//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
+    @JsonIgnoreProperties("orders")
+    @JsonManagedReference(value = "orderModification")
     private List<ProductModification> modifications;
 
     @Column(name = "date")

@@ -1,6 +1,5 @@
 package com.project.zaiika.models.worker;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +19,6 @@ public class WorkerDto {
     private String pinCode;
     private long placeRoleId;
     @JsonInclude
-    @JsonIgnore
     private long placeId;
     @JsonInclude
     private String role;
