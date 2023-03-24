@@ -10,4 +10,8 @@ public interface ProductModificationRepository extends JpaRepository<ProductModi
     @Modifying
     @Transactional
     void deleteProductModificationById(long id);
+
+    @Modifying
+    @Transactional
+    void deleteProductModificationsByCategoryId(long id);
 }

@@ -79,14 +79,8 @@ public class ProductServiceImpl implements ProductService {
 
     private void deleteCategories(List<ProductModificationCategory> categories) {
         for (ProductModificationCategory category : categories) {
-            deleteModifications(category.getModification());
+            modificationRepository.deleteProductModificationsByCategoryId(category.getId());
             categoryRepository.deleteProductModificationCategoryById(category.getId());
-        }
-    }
-
-    private void deleteModifications(List<ProductModification> modifications) {
-        for (ProductModification modification : modifications) {
-            modificationRepository.deleteProductModificationById(modification.getId());
         }
     }
 
