@@ -9,19 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ProductModificationRepository extends JpaRepository<ProductModification, Long> {
     @Modifying
     @Transactional
-    @Query(value = """
-            UPDATE product_modification
-            SET title = :#{#modification.title},
-            price = :#{#modification.price}
-            WHERE id = :#{#modification.id}
-            """, nativeQuery = true)
-    void updateModification(ProductModification modification);
-
-    @Modifying
-    @Transactional
-    @Query(value = """
-            DELETE FROM product_modification
-            WHERE id = :#{#id}
-            """, nativeQuery = true)
     void deleteProductModificationById(long id);
 }

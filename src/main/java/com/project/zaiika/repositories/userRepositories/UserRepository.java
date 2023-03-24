@@ -21,18 +21,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "SELECT * FROM users WHERE id IN :#{#ids}", nativeQuery = true)
     List<User> findUserByIds(List<Long> ids);
-
-//    @Modifying
-//    @Transactional
-//    @Query(value = """
-//            UPDATE users
-//            SET name = :#{#user.name},
-//            login = :#{#user.login},
-//            password = :#{#user.password},
-//            patronymic = :#{#user.patronymic},
-//            role_id = :#{#user.roleId},
-//            surname = :#{#user.surname}
-//            WHERE id = :#{#user.id}
-//            """, nativeQuery = true)
-//    void updateUser(User user);
 }

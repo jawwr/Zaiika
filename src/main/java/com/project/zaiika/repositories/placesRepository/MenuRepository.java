@@ -9,11 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    @Query(value = """
-            SELECT *
-            FROM menus
-            WHERE site_id = :#{#siteId}
-            """, nativeQuery = true)
     List<Menu> findAllBySiteId(long siteId);
 
     @Modifying

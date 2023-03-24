@@ -10,8 +10,4 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     @Modifying
     @Transactional
     void deleteIngredientsByProductId(long productId);
-
-    @Modifying
-    @Transactional
-    void deleteIngredientById(long id);
 }

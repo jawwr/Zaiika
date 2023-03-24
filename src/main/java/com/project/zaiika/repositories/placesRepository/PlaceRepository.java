@@ -10,10 +10,4 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     Place findPlaceByOwnerId(long ownerId);
 
     Place findPlaceById(long id);
-
-    @Query(value = """
-            SELECT *
-            FROM places
-            """, nativeQuery = true)
-    List<Place> findOnlyPlaceById();
 }

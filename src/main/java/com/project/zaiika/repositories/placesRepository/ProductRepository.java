@@ -11,11 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = """
-            SELECT *
-            FROM products
-            WHERE menu_id = :#{#menuId}
-            """, nativeQuery = true)
     List<Product> findAllByMenuId(long menuId);
 
     Product findProductById(long id);
