@@ -1,17 +1,7 @@
 package com.project.zaiika.models.userModels;
 
-import lombok.*;
+import lombok.Builder;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Builder
-public class UserDto {
-    private Long id;
-    private String name;
-    private String surname;
-    private String patronymic;
-    private String login;
-    private String role;
+public record UserDto(Long id, String name, String surname, String patronymic, String login, String role) {
 }

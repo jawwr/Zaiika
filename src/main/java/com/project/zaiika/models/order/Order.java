@@ -3,7 +3,6 @@ package com.project.zaiika.models.order;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.placeModels.Ingredient;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.placeModels.Product;

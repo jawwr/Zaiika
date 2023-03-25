@@ -1,6 +1,7 @@
 package com.project.zaiika.models.placeModels;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

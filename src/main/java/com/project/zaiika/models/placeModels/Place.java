@@ -1,6 +1,7 @@
 package com.project.zaiika.models.placeModels;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.userModels.PlaceRole;
 import jakarta.persistence.*;

@@ -1,8 +1,6 @@
 package com.project.zaiika.models.userModels;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.zaiika.models.placeModels.Place;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
