@@ -1,9 +1,7 @@
 package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.userModels.Role;
 import com.project.zaiika.models.userModels.User;
-import com.project.zaiika.models.userModels.UserRole;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.repositories.userRepositories.PlaceRoleRepository;
@@ -14,10 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,31 +33,32 @@ public class WorkerServiceImpl implements WorkerService {
         workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
 
         var user = saveWorkerAsUser(workerDto);
-        var savedWorker = saveWorker(user.getId(), workerDto);
+        var savedWorker = saveWorker(user, workerDto);
 
         workerDto.setId(savedWorker.getId());
-        workerDto.setPlaceId(savedWorker.getPlaceId());
+        workerDto.setPlaceId(savedWorker.getPlace().getId());
         workerDto.setRole(placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId()).getName());
 
         return workerDto;
     }
 
-    private Worker saveWorker(long userId, WorkerDto workerDto) {
+    private Worker saveWorker(User user, WorkerDto workerDto) {
+        var placeRole = placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId());
         var worker = Worker.builder()
                 .id(workerDto.getId())
-                .userId(userId)
-                .placeRoleId(workerDto.getPlaceRoleId())
-                .placeId(workerDto.getPlaceId())
+                .user(user)
+                .placeRole(placeRole)
+//                .place(user.getPlace())/TODO
                 .build();
         return workerRepository.save(worker);
     }
 
     private User saveWorkerAsUser(WorkerDto dto) {
-        var user = convertWorkerToUser(dto, true);
+        var user = convertWorkerDtoToUser(dto, true);
         return userRepository.save(user);
     }
 
-    private User convertWorkerToUser(WorkerDto dto, boolean generateLogin) {
+    private User convertWorkerDtoToUser(WorkerDto dto, boolean generateLogin) {
         return User.builder()
                 .id(dto.getId())
                 .name(dto.getName())
@@ -97,10 +94,10 @@ public class WorkerServiceImpl implements WorkerService {
         updateWorker.setPinCode(encoder.encode(updateWorker.getPinCode()));
 
         var worker = workerRepository.findById(updateWorker.getId());
-        saveWorker(worker.getUserId(), updateWorker);
+        saveWorker(worker.getUser(), updateWorker);
 
         var user = userRepository.findUserById(worker.getId());
-        var userWorker = convertWorkerToUser(updateWorker, false);
+        var userWorker = convertWorkerDtoToUser(updateWorker, false);
         userWorker.setLogin(user.getLogin());
         userRepository.save(userWorker);
     }
@@ -108,47 +105,35 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<WorkerDto> getAllWorkers() {
         var place = ctx.getPlace();
-
         var workers = workerRepository.findAllByPlaceId(place.getId());
-        List<Long> usersId = workers.stream().map(Worker::getUserId).toList();
-        var users = userRepository.findUserByIds(usersId);
-        return generateWorkersDto(workers, users);
+
+        return generateWorkersDto(workers);
     }
 
-    private List<WorkerDto> generateWorkersDto(List<Worker> workers, List<User> users) {
-        List<WorkerDto> dtoUsers = new ArrayList<>();
-
-        for (Worker worker : workers) {
-            var user = users.stream().filter(x -> x.getId() == worker.getUserId()).findFirst().get();
-            var dto = generateWorkerDto(user, worker);
-
-            dtoUsers.add(dto);
-        }
-
-        return dtoUsers;
+    private List<WorkerDto> generateWorkersDto(List<Worker> workers) {
+        return workers.stream().map(this::generateWorkerDto).toList();
     }
 
-    private WorkerDto generateWorkerDto(User user, Worker worker) {
+    private WorkerDto generateWorkerDto(Worker worker) {
+        var user = worker.getUser();
         return WorkerDto.builder()
                 .id(worker.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .patronymic(user.getPatronymic())
-                .role(worker.getPlaceRoleId() != 0
-                        ? placeRoleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
+                .role(worker.getPlaceRole() != null
+                        ? worker.getPlaceRole().getName()
                         : user.getRole().getName())
-                .placeRoleId(worker.getPlaceRoleId())
+                .placeRoleId(worker.getPlaceRole().getId())
                 .build();
     }
 
     @Override
     public WorkerDto getWorker(long workerId) {
         checkPermission(workerId);
-
         var worker = workerRepository.findById(workerId);
-        var user = userRepository.findUserById(worker.getUserId());
 
-        return generateWorkerDto(user, worker);
+        return generateWorkerDto(worker);
     }
 
     @Override
@@ -164,8 +149,12 @@ public class WorkerServiceImpl implements WorkerService {
         var place = ctx.getPlace();
 
         var role = placeRoleRepository.findPlaceRoleByPlaceIdAndName(place.getId(), roleName);
+        if (role == null) {
+            throw new IllegalArgumentException("Wrong role name");
+        }
+
         var worker = workerRepository.findById(workerId);
-        worker.setPlaceRoleId(role.getId());
+        worker.setPlaceRole(role);
         workerRepository.save(worker);
     }
 
@@ -176,11 +165,7 @@ public class WorkerServiceImpl implements WorkerService {
         var place = ctx.getPlace();
 
         var placeWorkers = workerRepository.findAllByPlaceId(place.getId());
-        var users = userRepository.findUserByIds(placeWorkers
-                .stream()
-                .map(Worker::getUserId)
-                .collect(Collectors.toList())
-        );
+        var users = placeWorkers.stream().map(Worker::getUser).toList();
         for (User user : users) {
             if (encoder.matches(pin, user.getPassword())) {
                 throw new IllegalArgumentException("Pin code already exist");
@@ -192,7 +177,7 @@ public class WorkerServiceImpl implements WorkerService {
         var place = ctx.getPlace();
         var worker = workerRepository.findById(workerId);
 
-        if (place.getId() != worker.getPlaceId()) {
+        if (place.getId() != worker.getPlace().getId()) {
             throw new PermissionDeniedException();
         }
     }

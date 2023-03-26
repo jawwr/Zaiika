@@ -7,11 +7,8 @@ import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
 import com.project.zaiika.models.userModels.UserRole;
 import com.project.zaiika.models.worker.Worker;
-import com.project.zaiika.repositories.placesRepository.MenuRepository;
 import com.project.zaiika.repositories.placesRepository.PlaceRepository;
-import com.project.zaiika.repositories.placesRepository.SiteRepository;
 import com.project.zaiika.repositories.userRepositories.UserRepository;
-import com.project.zaiika.repositories.worker.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,9 +21,6 @@ import java.util.List;
 public class ContextService {
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
-    private final SiteRepository siteRepository;
-    private final MenuRepository menuRepository;
-    private final WorkerRepository workerRepository;
 
     public User getContextUser() {
         var login = ((UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getLogin();
@@ -35,7 +29,7 @@ public class ContextService {
 
     public Worker getContextWorker() {
         var user = getContextUser();
-        return workerRepository.findWorkerByUserId(user.getId());
+        return user.getWorker();
     }
 
     public Place getPlace() {
@@ -46,13 +40,13 @@ public class ContextService {
             return placeRepository.findPlaceByOwnerId(user.getId());
         }
 
-        var worker = workerRepository.findWorkerByUserId(user.getId());
-        return placeRepository.findPlaceById(worker.getPlaceId());
+        var worker = user.getWorker();
+        return worker.getPlace();
     }
 
     public List<Site> getSite() {
         var place = getPlace();
-        return siteRepository.findAllByPlaceId(place.getId());
+        return place.getSites();
     }
 
     public Site getSite(long id) {
@@ -69,7 +63,7 @@ public class ContextService {
         var sites = getSite();
         List<Menu> menus = new ArrayList<>();
         for (Site site : sites) {
-            menus.addAll(menuRepository.findAllBySiteId(site.getId()));
+            menus.addAll(site.getMenus());
         }
         return menus;
     }

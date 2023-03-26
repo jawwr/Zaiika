@@ -31,9 +31,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
         roleRepository.deleteRoleById(roleId);
         var workers = workerRepository.findAllByPlaceRoleId(roleId);
-        for (Worker worker : workers) {
-            worker.setPlaceRoleId(0);
-        }
+        workers.forEach(x -> x.setPlaceRole(null));
         workerRepository.saveAll(workers);
     }
 

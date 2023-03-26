@@ -1,5 +1,6 @@
 package com.project.zaiika.models.userModels;
 
+import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToOne(mappedBy = "user")
+    private Worker worker;
 }

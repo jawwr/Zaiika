@@ -4,6 +4,7 @@ import com.project.zaiika.models.auth.LoginCredential;
 import com.project.zaiika.models.auth.RegisterCredential;
 import com.project.zaiika.models.auth.WorkerCredential;
 import com.project.zaiika.services.auth.AuthService;
+import com.project.zaiika.services.auth.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +23,7 @@ public class AuthController {
     private final AuthService service;
 
     @Autowired
-    public AuthController(AuthService service) {
+    public AuthController(AuthServiceImpl service) {
         this.service = service;
     }
 
