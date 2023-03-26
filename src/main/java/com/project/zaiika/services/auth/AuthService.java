@@ -5,6 +5,7 @@ import com.project.zaiika.models.auth.RegisterCredential;
 import com.project.zaiika.models.auth.WorkerCredential;
 import com.project.zaiika.models.token.Token;
 import com.project.zaiika.models.token.TokenResponse;
+import com.project.zaiika.models.userModels.Role;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
 import com.project.zaiika.models.userModels.UserRole;
@@ -34,19 +35,29 @@ public class AuthService {
 
 
     public TokenResponse register(RegisterCredential credential) {
-        if (userRepository.existsUserByLogin(credential.getLogin())) {
+        if (userRepository.existsUserByLogin(credential.login())) {
             throw new IllegalArgumentException("User already exist");
         }
-        var user = credential.convertToUser();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         var role = roleRepository.findRoleByName(UserRole.USER.name());
+        var user = convertCredentialsToUser(credential, role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         user.setRole(role);
-        user.setRoleId(role.getId());
         var savedUser = userRepository.save(user);
         var jwt = jwtService.generateToken(UserDetailImpl.build(user));
         saveUserToken(jwt, savedUser);
 
         return new TokenResponse(jwt);
+    }
+
+    public User convertCredentialsToUser(RegisterCredential credential, Role role) {
+        return User.builder()
+                .name(credential.name())
+                .surname(credential.surname())
+                .login(credential.login())
+                .password(credential.password())
+                .role(role)
+                .build();
     }
 
     private void saveUserToken(String jwtToken, User user) {

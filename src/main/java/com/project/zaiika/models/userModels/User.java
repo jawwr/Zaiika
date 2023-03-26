@@ -1,6 +1,5 @@
 package com.project.zaiika.models.userModels;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,10 +31,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role_id")
-    private long roleId;
-
-    @JsonInclude
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 }

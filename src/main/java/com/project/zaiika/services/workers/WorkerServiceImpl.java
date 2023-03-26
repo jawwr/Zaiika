@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository workerRepository;
     private final UserRepository userRepository;
-    private final PlaceRoleRepository roleRepository;
+    private final PlaceRoleRepository placeRoleRepository;
     private final PasswordEncoder encoder;
     private final ContextService ctx;
 
@@ -41,7 +41,7 @@ public class WorkerServiceImpl implements WorkerService {
 
         workerDto.setId(savedWorker.getId());
         workerDto.setPlaceId(savedWorker.getPlaceId());
-        workerDto.setRole(roleRepository.findPlaceRoleById(workerDto.getPlaceRoleId()).getName());
+        workerDto.setRole(placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId()).getName());
 
         return workerDto;
     }
@@ -67,8 +67,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .patronymic(dto.getPatronymic())
-                .role(new Role(4L, UserRole.WORKER.name()))
-                .roleId(4L)
+//                .role(new Role(4L, UserRole.WORKER.name()))//TODO
                 .password(dto.getPinCode())
                 .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
                 .build();
@@ -136,7 +135,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .surname(user.getSurname())
                 .patronymic(user.getPatronymic())
                 .role(worker.getPlaceRoleId() != 0
-                        ? roleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
+                        ? placeRoleRepository.findPlaceRoleById(worker.getPlaceRoleId()).getName()
                         : user.getRole().getName())
                 .placeRoleId(worker.getPlaceRoleId())
                 .build();
@@ -164,7 +163,7 @@ public class WorkerServiceImpl implements WorkerService {
         checkPermission(workerId);
         var place = ctx.getPlace();
 
-        var role = roleRepository.findPlaceRoleByPlaceIdAndName(place.getId(), roleName);
+        var role = placeRoleRepository.findPlaceRoleByPlaceIdAndName(place.getId(), roleName);
         var worker = workerRepository.findById(workerId);
         worker.setPlaceRoleId(role.getId());
         workerRepository.save(worker);

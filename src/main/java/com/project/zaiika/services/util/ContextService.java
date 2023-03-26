@@ -41,7 +41,7 @@ public class ContextService {
     public Place getPlace() {
         var user = getContextUser();
 
-        var role = UserRole.values()[(int) user.getRoleId()];
+        var role = UserRole.valueOf(user.getRole().getName());
         if (role.equals(UserRole.ADMIN) || role.equals(UserRole.PLACE_OWNER)) {
             return placeRepository.findPlaceByOwnerId(user.getId());
         }

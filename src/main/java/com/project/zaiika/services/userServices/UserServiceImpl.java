@@ -1,6 +1,5 @@
 package com.project.zaiika.services.userServices;
 
-import com.project.zaiika.models.userModels.Role;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDto;
 import com.project.zaiika.repositories.userRepositories.RoleRepository;
@@ -8,7 +7,6 @@ import com.project.zaiika.repositories.userRepositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,24 +18,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         var users = userRepository.findAll();
-        var roles = roleRepository.findAll();
 
-        List<UserDto> dtos = new ArrayList<>();
-        for (User user : users) {
-            var role = roles.stream().filter(r -> r.getId() == user.getRoleId()).findFirst().get();
-            dtos.add(convertUserToDto(user, role));
-        }
-        return dtos;
+        return users.stream().map(this::convertUserToDto).toList();
     }
 
-    private UserDto convertUserToDto(User user, Role role) {
+    private UserDto convertUserToDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .patronymic(user.getPatronymic())
                 .login(user.getLogin())
-                .role(role.getName())
+                .role(user.getRole().getName())
                 .build();
     }
 
@@ -51,7 +43,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setRole(role);
-        user.setRoleId(role.getId());
         userRepository.save(user);
     }
 
