@@ -7,7 +7,6 @@ import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
 import com.project.zaiika.models.userModels.UserRole;
 import com.project.zaiika.models.worker.Worker;
-import com.project.zaiika.repositories.placesRepository.PlaceRepository;
 import com.project.zaiika.repositories.userRepositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,6 @@ import java.util.List;
 @Component
 public class ContextService {
     private final UserRepository userRepository;
-    private final PlaceRepository placeRepository;
 
     public User getContextUser() {
         var login = ((UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getLogin();
@@ -37,7 +35,7 @@ public class ContextService {
 
         var role = UserRole.valueOf(user.getRole().getName());
         if (role.equals(UserRole.ADMIN) || role.equals(UserRole.PLACE_OWNER)) {
-            return placeRepository.findPlaceByOwnerId(user.getId());
+            return user.getPlace();
         }
 
         var worker = user.getWorker();

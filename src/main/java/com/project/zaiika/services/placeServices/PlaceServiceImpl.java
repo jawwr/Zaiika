@@ -17,7 +17,7 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
     @Override
     public Place createPlace(Place place) {
         var user = ctx.getContextUser();
-        place.setOwnerId(user.getId());
+        place.setOwner(user);
         return repository.save(place);
     }
 

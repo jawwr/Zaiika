@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.userModels.PlaceRole;
+import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,9 @@ public class Place {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "owner_id", nullable = false)
-    private long ownerId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

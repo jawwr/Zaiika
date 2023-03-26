@@ -1,5 +1,7 @@
 package com.project.zaiika.models.userModels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,5 +39,10 @@ public class User {
     private Role role;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Worker worker;
+
+    @OneToOne(mappedBy = "owner")
+    @JsonIgnore
+    private Place place;
 }

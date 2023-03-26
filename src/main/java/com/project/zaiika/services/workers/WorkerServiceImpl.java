@@ -2,9 +2,11 @@ package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.userModels.UserRole;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.repositories.userRepositories.PlaceRoleRepository;
+import com.project.zaiika.repositories.userRepositories.RoleRepository;
 import com.project.zaiika.repositories.userRepositories.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
 import com.project.zaiika.services.util.ContextService;
@@ -21,6 +23,7 @@ public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository workerRepository;
     private final UserRepository userRepository;
     private final PlaceRoleRepository placeRoleRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
     private final ContextService ctx;
 
@@ -48,7 +51,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .id(workerDto.getId())
                 .user(user)
                 .placeRole(placeRole)
-//                .place(user.getPlace())/TODO
+                .place(user.getPlace())
                 .build();
         return workerRepository.save(worker);
     }
@@ -64,7 +67,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .patronymic(dto.getPatronymic())
-//                .role(new Role(4L, UserRole.WORKER.name()))//TODO
+                .role(roleRepository.findRoleByName(UserRole.USER.name()))
                 .password(dto.getPinCode())
                 .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
                 .build();
@@ -148,7 +151,7 @@ public class WorkerServiceImpl implements WorkerService {
         checkPermission(workerId);
         var place = ctx.getPlace();
 
-        var role = placeRoleRepository.findPlaceRoleByPlaceIdAndName(place.getId(), roleName);
+        var role = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(place.getId(), roleName);
         if (role == null) {
             throw new IllegalArgumentException("Wrong role name");
         }
