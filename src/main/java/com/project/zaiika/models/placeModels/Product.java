@@ -2,7 +2,7 @@ package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.order.Order;
+import com.project.zaiika.models.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class Product {
     @JsonIgnore
     private Menu menu;
 
-    @ManyToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Order> orders;
+    private List<OrderItem> orderItem;
 }

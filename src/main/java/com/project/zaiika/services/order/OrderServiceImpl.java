@@ -2,6 +2,7 @@ package com.project.zaiika.services.order;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.order.Order;
+import com.project.zaiika.models.order.OrderItem;
 import com.project.zaiika.repositories.delivery.DeliveryRepository;
 import com.project.zaiika.repositories.order.OrderRepository;
 import com.project.zaiika.services.util.ContextService;
@@ -25,6 +26,10 @@ public class OrderServiceImpl implements OrderService {
         order.setWorkerId(user.getId());
         order.setPlace(place);
         order.setDate(LocalDateTime.now());
+
+        for (OrderItem orderItem : order.getOrderItems()) {
+            orderItem.setOrder(order);
+        }
 
         orderRepository.save(order);
     }

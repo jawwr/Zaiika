@@ -2,7 +2,7 @@ package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.order.Order;
+import com.project.zaiika.models.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,5 +40,5 @@ public class Ingredient {
     @ManyToMany(mappedBy = "excludeIngredient")
     @JsonInclude
     @JsonIgnore
-    private List<Order> orders;
+    private List<OrderItem> orders;
 }
