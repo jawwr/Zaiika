@@ -1,11 +1,15 @@
 package com.project.zaiika.models.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.placeModels.Place;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +26,13 @@ public class Delivery {
     @Column(name = "type")
     private String deliveryType;
 
-    @Column(name = "place_id")
+    @ManyToOne
+    @JoinColumn(name = "place_id", nullable = false)
+    @JsonIgnore
+    private Place place;
+
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonInclude
-    private long placeId;
+    @JsonIgnore
+    private List<Order> order;
 }

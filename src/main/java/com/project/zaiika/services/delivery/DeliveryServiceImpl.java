@@ -18,7 +18,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Delivery create(Delivery delivery) {
         var place = ctx.getPlace();
-        delivery.setPlaceId(place.getId());
+        delivery.setPlace(place);
 
         return deliveryRepository.save(delivery);
     }
@@ -47,7 +47,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         var place = ctx.getPlace();
         var delivery = deliveryRepository.findDeliveryById(id);
 
-        if (place.getId() != delivery.getPlaceId()) {
+        if (place.getId() != delivery.getPlace().getId()) {
             throw new PermissionDeniedException();
         }
     }

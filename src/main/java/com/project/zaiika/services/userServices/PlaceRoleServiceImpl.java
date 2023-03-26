@@ -2,7 +2,6 @@ package com.project.zaiika.services.userServices;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.userModels.PlaceRole;
-import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.repositories.userRepositories.PlaceRoleRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
 import com.project.zaiika.services.util.ContextService;
@@ -45,13 +44,15 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     @Override
     public List<PlaceRole> getAllRoles() {
         var place = ctx.getPlace();
+
         return roleRepository.findAllByPlaceId(place.getId());
     }
 
     private void checkPermission(long roleId) {
         var role = roleRepository.findPlaceRoleById(roleId);
         var place = ctx.getPlace();
-        if (place.getId() != role.getPlace().getId()) {
+
+        if (role == null || place.getId() != role.getPlace().getId()) {
             throw new PermissionDeniedException();
         }
     }

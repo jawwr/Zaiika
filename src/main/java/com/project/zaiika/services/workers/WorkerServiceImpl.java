@@ -108,7 +108,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<WorkerDto> getAllWorkers() {
         var place = ctx.getPlace();
-        var workers = workerRepository.findAllByPlaceId(place.getId());
+        var workers = place.getWorkers();
 
         return generateWorkersDto(workers);
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.placeModels.Place;
+import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,12 +27,15 @@ public class Order {
     @JsonInclude
     private long id;
 
-    @Column(name = "worker_id")
-    @JsonInclude
-    private long workerId;
+    @ManyToOne
+    @JoinColumn(name = "worker_id", nullable = false)
+    @JsonBackReference
+    private Worker worker;
 
-    @Column(name = "delivery_type_id")
-    private long deliveryTypeId;
+    @ManyToOne
+    @JoinColumn(name = "delivery_id", nullable = false)
+    @JsonBackReference
+    private Delivery delivery;
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
