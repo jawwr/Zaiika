@@ -33,8 +33,8 @@ public class ContextService {
     public Place getPlace() {
         var user = getContextUser();
 
-        var role = UserRole.valueOf(user.getRole().getName());
-        if (role.equals(UserRole.PLACE_OWNER)) {//TODO сделать другую зависимость
+        var isOwner = user.getRoles().stream().anyMatch(x -> x.getName().equals(UserRole.PLACE_OWNER.name()));
+        if (isOwner) {
             return user.getPlace();
         }
 

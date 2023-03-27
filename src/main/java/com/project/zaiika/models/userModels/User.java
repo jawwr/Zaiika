@@ -1,11 +1,14 @@
 package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,9 +39,14 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;//TODO сделать несколько ролей для юзера
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @JsonIgnoreProperties("user")
+    private List<Role> roles;
 
     @OneToOne(mappedBy = "user")
     @JsonIgnore

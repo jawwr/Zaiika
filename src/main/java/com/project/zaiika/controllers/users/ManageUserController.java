@@ -52,17 +52,35 @@ public class ManageUserController {
         }
     }
 
-    @Operation(summary = "Изменение роли человека по id")
+    @Operation(summary = "Добавление роли по id человека")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200"
             )
     })
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> changeRole(@PathVariable("userId") Long userId,
+    @PostMapping("/{userId}/role")
+    public ResponseEntity<?> addRole(@PathVariable("userId") Long userId,
+                                     @RequestParam("role") String role) {
+        try {
+            service.addUserRole(userId, role);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Operation(summary = "Удаление роли по id человека")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200"
+            )
+    })
+    @DeleteMapping("/{userId}/role")
+    public ResponseEntity<?> deleteRole(@PathVariable("userId") Long userId,
                                         @RequestParam("role") String role) {
         try {
-            service.changeUserRole(userId, role);
+            service.deleteUserRole(userId, role);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());

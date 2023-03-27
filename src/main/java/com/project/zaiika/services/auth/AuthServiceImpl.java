@@ -20,6 +20,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -41,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         var user = convertCredentialsToUser(credential, role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setRole(role);
+        user.setRoles(List.of(role));
         var savedUser = userRepository.save(user);
         var jwt = jwtService.generateToken(UserDetailImpl.build(user));
         saveUserToken(jwt, savedUser);
@@ -55,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
                 .surname(credential.surname())
                 .login(credential.login())
                 .password(credential.password())
-                .role(role)
+                .roles(List.of(role))
                 .build();
     }
 

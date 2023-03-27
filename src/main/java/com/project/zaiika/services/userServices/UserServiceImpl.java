@@ -1,5 +1,6 @@
 package com.project.zaiika.services.userServices;
 
+import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDto;
 import com.project.zaiika.repositories.role.RoleRepository;
@@ -29,20 +30,41 @@ public class UserServiceImpl implements UserService {
                 .surname(user.getSurname())
                 .patronymic(user.getPatronymic())
                 .login(user.getLogin())
-                .role(user.getRole().getName())
+                .role(user.getRoles().stream().map(Role::getName).toList())
                 .build();
     }
 
     @Override
-    public void changeUserRole(Long userId, String roleName) {
+    public void addUserRole(Long userId, String roleName) {
         var user = userRepository.findUserById(userId);
-        var role = roleRepository.findRoleByNameIgnoreCase(roleName);
+        var role = findRoleByName(roleName);
+
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
+    private Role findRoleByName(String roleName) {
+        var role = roleRepository.findRoleByName(roleName);
 
         if (role == null) {
             throw new IllegalArgumentException("Role does not exist");
         }
 
-        user.setRole(role);
+        return role;
+    }
+
+    @Override
+    public void deleteUserRole(long userId, String roleName) {
+        var user = userRepository.findUserById(userId);
+        var role = findRoleByName(roleName);
+
+        var roles = user.getRoles();
+        var userRole = roles.stream().filter(x -> x.getId() == role.getId()).findFirst().orElse(null);
+        if (userRole == null) {
+            throw new IllegalArgumentException("User does not have role with name " + roleName);
+        }
+
+        roles.remove(userRole);
         userRepository.save(user);
     }
 

@@ -67,7 +67,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .patronymic(dto.getPatronymic())
-                .role(roleRepository.findRoleByName(UserRole.USER.name()))
+                .roles(List.of(roleRepository.findRoleByName(UserRole.WORKER.name())))
                 .password(dto.getPinCode())
                 .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
                 .build();
@@ -126,7 +126,7 @@ public class WorkerServiceImpl implements WorkerService {
                 .patronymic(user.getPatronymic())
                 .role(worker.getPlaceRole() != null
                         ? worker.getPlaceRole().getName()
-                        : user.getRole().getName())
+                        : UserRole.WORKER.name())
                 .placeRoleId(worker.getPlaceRole().getId())
                 .build();
     }
@@ -171,7 +171,7 @@ public class WorkerServiceImpl implements WorkerService {
     private void addAdminRole(long workerId) {
         var worker = workerRepository.findById(workerId);
         var adminRole = roleRepository.findRoleByName(UserRole.ADMIN.name());
-        worker.getUser().setRole(adminRole);
+        worker.getUser().getRoles().add(adminRole);
         worker.setPlaceRole(null);
 
         workerRepository.save(worker);
