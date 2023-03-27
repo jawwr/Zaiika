@@ -2,6 +2,7 @@ package com.project.zaiika.models.userModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.zaiika.models.placeModels.Place;
+import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;

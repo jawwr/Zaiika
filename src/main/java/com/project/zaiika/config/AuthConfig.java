@@ -1,7 +1,7 @@
 package com.project.zaiika.config;
 
 import com.project.zaiika.auth.JwtAuthFilter;
-import com.project.zaiika.models.userModels.UserRole;
+import com.project.zaiika.models.roles.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

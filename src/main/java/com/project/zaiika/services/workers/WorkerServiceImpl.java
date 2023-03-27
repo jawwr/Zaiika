@@ -2,12 +2,12 @@ package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.userModels.User;
-import com.project.zaiika.models.userModels.UserRole;
+import com.project.zaiika.models.roles.UserRole;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
-import com.project.zaiika.repositories.userRepositories.PlaceRoleRepository;
-import com.project.zaiika.repositories.userRepositories.RoleRepository;
-import com.project.zaiika.repositories.userRepositories.UserRepository;
+import com.project.zaiika.repositories.role.PlaceRoleRepository;
+import com.project.zaiika.repositories.role.RoleRepository;
+import com.project.zaiika.repositories.user.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;

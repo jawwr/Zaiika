@@ -1,7 +1,7 @@
 package com.project.zaiika.services.placeServices;
 
 import com.project.zaiika.models.placeModels.Place;
-import com.project.zaiika.repositories.placesRepository.PlaceRepository;
+import com.project.zaiika.repositories.place.PlaceRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

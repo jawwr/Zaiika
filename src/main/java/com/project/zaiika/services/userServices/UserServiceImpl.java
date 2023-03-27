@@ -2,8 +2,8 @@ package com.project.zaiika.services.userServices;
 
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDto;
-import com.project.zaiika.repositories.userRepositories.RoleRepository;
-import com.project.zaiika.repositories.userRepositories.UserRepository;
+import com.project.zaiika.repositories.role.RoleRepository;
+import com.project.zaiika.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

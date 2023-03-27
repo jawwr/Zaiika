@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.order.Delivery;
 import com.project.zaiika.models.order.Order;
-import com.project.zaiika.models.userModels.PlaceRole;
+import com.project.zaiika.models.roles.PlaceRole;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;

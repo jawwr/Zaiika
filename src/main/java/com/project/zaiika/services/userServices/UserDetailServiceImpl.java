@@ -1,7 +1,7 @@
 package com.project.zaiika.services.userServices;
 
 import com.project.zaiika.models.userModels.UserDetailImpl;
-import com.project.zaiika.repositories.userRepositories.UserRepository;
+import com.project.zaiika.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
