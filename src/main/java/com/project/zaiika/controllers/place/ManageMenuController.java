@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/manage/site/{siteId}/menu")
 @Slf4j
-@Tag(name = "Управление меню")
+@Tag(name = "Работа с меню")
 public class ManageMenuController {
     private final MenuService service;
 

@@ -34,7 +34,7 @@ public class ContextService {
         var user = getContextUser();
 
         var role = UserRole.valueOf(user.getRole().getName());
-        if (role.equals(UserRole.PLACE_OWNER)) {
+        if (role.equals(UserRole.PLACE_OWNER)) {//TODO сделать другую зависимость
             return user.getPlace();
         }
 

@@ -30,32 +30,6 @@ public class ManageDeliveryController {
         this.service = service;
     }
 
-    @Operation(summary = "Получение всех способов доставки")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(
-                                            schema = @Schema(
-                                                    implementation = Delivery.class
-                                            )
-                                    )
-                            )
-                    }
-            )
-    })
-    @GetMapping
-    public ResponseEntity<?> getExistDelivery() {
-        try {
-            return ResponseEntity.ok(service.getAll());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @Operation(summary = "Добавление новой доставки", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(
                     mediaType = "application/json",

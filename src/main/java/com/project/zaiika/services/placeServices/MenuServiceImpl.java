@@ -32,6 +32,8 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void updateMenu(long siteId, Menu menu) {
         checkPermission(siteId);
+        var site = ctx.getSite(siteId);
+        menu.setSite(site);
         menuRepository.save(menu);
     }
 
@@ -43,7 +45,7 @@ public class MenuServiceImpl implements MenuService {
 
     private void checkPermission(long siteId) {
         var site = ctx.getSite(siteId);
-        if (site == null){
+        if (site == null) {
             throw new PermissionDeniedException();
         }
     }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/manage/site")
 @Slf4j
-@Tag(name = "Управление точками продажи")
+@Tag(name = "Работа с точками продажи")
 public class ManageSiteController {
     private final SiteService service;
 
@@ -43,7 +43,7 @@ public class ManageSiteController {
                     )
             )
     )
-    @ApiResponses(value = {
+    @ApiResponses(value = {//TODO поменять документацию
             @ApiResponse(
                     responseCode = "200",
                     content = {

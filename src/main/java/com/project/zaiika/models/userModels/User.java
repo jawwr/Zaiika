@@ -38,7 +38,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    private Role role;//TODO сделать несколько ролей для юзера
 
     @OneToOne(mappedBy = "user")
     @JsonIgnore
@@ -46,5 +46,5 @@ public class User {
 
     @OneToOne(mappedBy = "owner")
     @JsonIgnore
-    private Place place;
+    private Place place;//TODO может ли один юзер иметь несколько заведений?
 }

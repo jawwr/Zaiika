@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/manage/menu/{menuId}/products")
 @Slf4j
-@Tag(name = "Управление блюдами")
+@Tag(name = "Работа с блюдами")
 public class ManageProductController {
     private final ProductService service;
 

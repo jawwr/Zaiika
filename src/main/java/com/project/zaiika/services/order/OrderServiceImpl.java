@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrders(String type) {
         var delivery = deliveryService.findDeliveryByDeliveryType(type);
-        return orderRepository.findOrdersByDeliveryTypeId(delivery.getId());
+        return orderRepository.findOrdersByDeliveryId(delivery.getId());
     }
 
     @Override
