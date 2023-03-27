@@ -49,11 +49,6 @@ public class ContextService {
 
     public Site getSite(long id) {
         var sites = getSite();
-//        for (Site site : sites) {
-//            if (site.getId() == id) {
-//                return site;
-//            }
-//        }
         return sites.stream().filter(x -> x.getId() == id).findAny().orElse(null);
     }
 
@@ -68,11 +63,6 @@ public class ContextService {
 
     public Menu getMenu(long id) {
         var menus = getMenu();
-//        for (Menu menu : menus) {
-//            if (menu.getId() == id) {
-//                return menu;
-//            }
-//        }
         return menus.stream().filter(x -> x.getId() == id).findAny().orElse(null);
     }
 }
