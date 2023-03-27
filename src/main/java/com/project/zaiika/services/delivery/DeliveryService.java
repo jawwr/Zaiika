@@ -1,6 +1,6 @@
 package com.project.zaiika.services.delivery;
 
-import com.project.zaiika.models.order.Delivery;
+import com.project.zaiika.models.delivery.Delivery;
 
 import java.util.List;
 

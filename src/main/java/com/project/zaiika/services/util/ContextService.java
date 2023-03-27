@@ -34,7 +34,7 @@ public class ContextService {
         var user = getContextUser();
 
         var role = UserRole.valueOf(user.getRole().getName());
-        if (role.equals(UserRole.ADMIN) || role.equals(UserRole.PLACE_OWNER)) {
+        if (role.equals(UserRole.PLACE_OWNER)) {
             return user.getPlace();
         }
 
@@ -49,12 +49,12 @@ public class ContextService {
 
     public Site getSite(long id) {
         var sites = getSite();
-        for (Site site : sites) {
-            if (site.getId() == id) {
-                return site;
-            }
-        }
-        return null;
+//        for (Site site : sites) {
+//            if (site.getId() == id) {
+//                return site;
+//            }
+//        }
+        return sites.stream().filter(x -> x.getId() == id).findAny().orElse(null);
     }
 
     public List<Menu> getMenu() {
@@ -68,11 +68,11 @@ public class ContextService {
 
     public Menu getMenu(long id) {
         var menus = getMenu();
-        for (Menu menu : menus) {
-            if (menu.getId() == id) {
-                return menu;
-            }
-        }
-        return null;
+//        for (Menu menu : menus) {
+//            if (menu.getId() == id) {
+//                return menu;
+//            }
+//        }
+        return menus.stream().filter(x -> x.getId() == id).findAny().orElse(null);
     }
 }

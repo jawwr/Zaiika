@@ -1,7 +1,7 @@
 package com.project.zaiika.services.delivery;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.order.Delivery;
+import com.project.zaiika.models.delivery.Delivery;
 import com.project.zaiika.repositories.delivery.DeliveryRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;

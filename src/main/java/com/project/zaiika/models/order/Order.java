@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.delivery.Delivery;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;

@@ -1,7 +1,8 @@
-package com.project.zaiika.models.order;
+package com.project.zaiika.models.delivery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.placeModels.Place;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

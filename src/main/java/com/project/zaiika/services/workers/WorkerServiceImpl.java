@@ -149,8 +149,15 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void addWorkerRole(long workerId, String roleName) {
         checkPermission(workerId);
-        var place = ctx.getPlace();
+        if (UserRole.ADMIN.name().equals(roleName.toUpperCase())){
+            addAdminRole(workerId);
+        }else {
+            addPlaceRole(workerId, roleName);
+        }
+    }
 
+    private void addPlaceRole(long workerId, String roleName) {
+        var place = ctx.getPlace();
         var role = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(place.getId(), roleName);
         if (role == null) {
             throw new IllegalArgumentException("Wrong role name");
@@ -158,6 +165,15 @@ public class WorkerServiceImpl implements WorkerService {
 
         var worker = workerRepository.findById(workerId);
         worker.setPlaceRole(role);
+        workerRepository.save(worker);
+    }
+
+    private void addAdminRole(long workerId) {
+        var worker = workerRepository.findById(workerId);
+        var adminRole = roleRepository.findRoleByName(UserRole.ADMIN.name());
+        worker.getUser().setRole(adminRole);
+        worker.setPlaceRole(null);
+
         workerRepository.save(worker);
     }
 

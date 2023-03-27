@@ -1,5 +1,6 @@
 package com.project.zaiika.models.worker;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.placeModels.Place;
@@ -25,10 +26,12 @@ public class Worker {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "place_id")
+    @JsonIgnore
     private Place place;
 
     @ManyToOne
@@ -37,5 +40,6 @@ public class Worker {
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonInclude
+    @JsonIgnore
     private List<Order> order;
 }

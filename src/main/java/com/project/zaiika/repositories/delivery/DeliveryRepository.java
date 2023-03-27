@@ -1,6 +1,6 @@
 package com.project.zaiika.repositories.delivery;
 
-import com.project.zaiika.models.order.Delivery;
+import com.project.zaiika.models.delivery.Delivery;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

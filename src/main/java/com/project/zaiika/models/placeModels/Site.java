@@ -1,6 +1,7 @@
 package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -29,10 +30,12 @@ public class Site {
 
     @OneToMany(mappedBy = "site", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Menu> menus;
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private Place place;
 }

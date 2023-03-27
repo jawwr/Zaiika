@@ -33,6 +33,7 @@ public class User {
     private String login;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @ManyToOne

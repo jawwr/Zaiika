@@ -1,7 +1,7 @@
 package com.project.zaiika.controllers.delivery;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.order.Delivery;
+import com.project.zaiika.models.delivery.Delivery;
 import com.project.zaiika.models.utils.ResponseMessage;
 import com.project.zaiika.services.delivery.DeliveryService;
 import io.swagger.v3.oas.annotations.Operation;
