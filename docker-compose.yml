@@ -1,0 +1,28 @@
+version: "3"
+services:
+  db_zaiika:
+    image: postgres
+    container_name: db_zaiika
+    ports:
+      - "7450:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=zaiika
+    restart: on-failure
+
+  app_zaiika:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_zaiika
+    ports:
+      - "7451:8000"
+    depends_on:
+      - db_zaiika
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_zaiika:5432/zaiika
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=12345
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    restart: on-failure
