@@ -31,4 +31,9 @@ public class Role {
     @JsonInclude
     @JsonIgnore
     private List<User> user;
+
+    public Role(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
