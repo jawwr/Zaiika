@@ -41,4 +41,7 @@ public class Ingredient {
     @JsonInclude
     @JsonIgnore
     private List<OrderItem> orders;
+
+    @Column(name = "is_obligatory")
+    private boolean isObligatory;
 }
