@@ -43,5 +43,5 @@ public class Product {
     private List<OrderItem> orderItem;
 
     @Column(name = "price")
-    private long price;
+    private double price;
 }

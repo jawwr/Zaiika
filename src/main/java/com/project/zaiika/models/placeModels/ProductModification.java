@@ -32,7 +32,7 @@ public class ProductModification {
     private String title;
 
     @Column(name = "price", nullable = false)
-    private int price;
+    private double price;
 
     @ManyToMany(mappedBy = "modifications")
     @JsonIgnore
