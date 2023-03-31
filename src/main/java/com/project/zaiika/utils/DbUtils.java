@@ -28,6 +28,8 @@ public class DbUtils {
             }
         }
 
-        repository.saveAll(roles);
+        if (roles.size() > 0) {
+            repository.saveAll(roles);
+        }
     }
 }
