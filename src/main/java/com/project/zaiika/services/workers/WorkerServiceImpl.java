@@ -47,11 +47,12 @@ public class WorkerServiceImpl implements WorkerService {
 
     private Worker saveWorker(User user, WorkerDto workerDto) {
         var placeRole = placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId());
+        var place = ctx.getPlace();
         var worker = Worker.builder()
                 .id(workerDto.getId())
                 .user(user)
                 .placeRole(placeRole)
-                .place(user.getPlace())
+                .place(place)
                 .build();
         return workerRepository.save(worker);
     }

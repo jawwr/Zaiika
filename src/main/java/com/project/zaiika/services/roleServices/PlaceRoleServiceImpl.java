@@ -37,6 +37,8 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     @Override
     public void updateRole(PlaceRole role) {
         checkPermission(role.getId());
+        var savedRole = roleRepository.findPlaceRoleById(role.getId());
+        role.setPlace(savedRole.getPlace());
 
         roleRepository.save(role);
     }
