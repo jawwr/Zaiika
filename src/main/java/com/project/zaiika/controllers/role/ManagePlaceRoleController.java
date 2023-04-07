@@ -1,4 +1,4 @@
-package com.project.zaiika.controllers.place;
+package com.project.zaiika.controllers.role;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.roles.PlaceRole;

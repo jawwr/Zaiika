@@ -17,6 +17,9 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public Site createSite(Site site) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManageSitePermission);
+
         var place = ctx.getPlace();
         site.setPlace(place);
         return siteRepository.save(site);
@@ -24,12 +27,18 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public List<Site> getAllSites() {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isViewSitePermission);
+
         var place = ctx.getPlace();
         return siteRepository.findAllByPlaceId(place.getId());
     }
 
     @Override
     public void updateSite(Site site) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManageSitePermission);
+
         checkPermission(site.getId());
 
         var place = ctx.getPlace();
@@ -40,6 +49,9 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public void deleteSite(long siteId) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManageSitePermission);
+
         checkPermission(siteId);
         siteRepository.deleteSiteById(siteId);
     }

@@ -19,6 +19,9 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     @Override
     public void createRole(PlaceRole role) {
+        var workerRole = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(workerRole::isManagePlaceRolePermission);
+
         var place = ctx.getPlace();
         role.setPlace(place);
         roleRepository.save(role);
@@ -26,6 +29,9 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     @Override
     public void deleteRole(long roleId) {
+        var workerRole = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(workerRole::isManagePlaceRolePermission);
+
         checkPermission(roleId);
 
         roleRepository.deleteRoleById(roleId);
@@ -36,6 +42,9 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     @Override
     public void updateRole(PlaceRole role) {
+        var workerRole = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(workerRole::isManagePlaceRolePermission);
+
         checkPermission(role.getId());
         var savedRole = roleRepository.findPlaceRoleById(role.getId());
         role.setPlace(savedRole.getPlace());
@@ -45,6 +54,9 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     @Override
     public List<PlaceRole> getAllRoles() {
+        var workerRole = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(workerRole::isManagePlaceRolePermission);
+
         var place = ctx.getPlace();
 
         return roleRepository.findAllByPlaceId(place.getId());

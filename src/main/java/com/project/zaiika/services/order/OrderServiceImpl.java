@@ -21,6 +21,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void createOrder(Order order) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManageOrderPermission);
+
         var place = ctx.getPlace();
         var user = ctx.getContextWorker();
         order.setWorker(user);
@@ -36,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders() {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isViewOrderPermission);
+
         var place = ctx.getPlace();
 
         return orderRepository.findOrdersByPlaceId(place.getId());
@@ -43,12 +49,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders(String type) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isViewOrderPermission);
+
         var delivery = deliveryService.findDeliveryByDeliveryType(type);
         return orderRepository.findOrdersByDeliveryId(delivery.getId());
     }
 
     @Override
     public void cancelOrder(long id) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManageOrderPermission);
+
         var place = ctx.getPlace();
         var order = orderRepository.findOrderById(id);
         if (place.getId() != order.getPlace().getId()) {

@@ -21,13 +21,16 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public Place createPlace(Place place) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManagePlacePermission);
+
         var user = ctx.getContextUser();
         place.setOwner(user);
         setPlaceOwnerRole(user);
         return placeRepository.save(place);
     }
 
-    private void setPlaceOwnerRole(User user) {
+    private void setPlaceOwnerRole(User user) {//TODO сделать при добавлении владельца добавление работника со всеми привилегиями
         var roles = user.getRoles();
         var role = roleRepository.findRoleByName(UserRole.PLACE_OWNER.name());
         roles.add(role);
@@ -35,11 +38,17 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public List<Place> getAllPlaces() {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isViewPlacePermission);
+
         return placeRepository.findAll();
     }
 
     @Override
     public void deletePlace(long placeId) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManagePlacePermission);
+
         checkPermission(placeId);
 
         var place = placeRepository.findPlaceById(placeId);
@@ -59,6 +68,9 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public void updatePlace(Place place) {
+        var role = ctx.getWorkerPlaceRole();
+        ctx.checkRolePermission(role::isManagePlacePermission);
+
         checkPermission(place.getId());
 
         var savedPlace = placeRepository.findPlaceById(place.getId());
