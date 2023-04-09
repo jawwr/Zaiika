@@ -21,9 +21,6 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public Place createPlace(Place place) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManagePlacePermission);
-
         var user = ctx.getContextUser();
         place.setOwner(user);
         setPlaceOwnerRole(user);
@@ -38,17 +35,11 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public List<Place> getAllPlaces() {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isViewPlacePermission);
-
         return placeRepository.findAll();
     }
 
     @Override
     public void deletePlace(long placeId) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManagePlacePermission);
-
         checkPermission(placeId);
 
         var place = placeRepository.findPlaceById(placeId);
@@ -68,9 +59,6 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
 
     @Override
     public void updatePlace(Place place) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManagePlacePermission);
-
         checkPermission(place.getId());
 
         var savedPlace = placeRepository.findPlaceById(place.getId());

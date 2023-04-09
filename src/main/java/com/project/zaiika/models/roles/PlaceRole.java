@@ -36,20 +36,4 @@ public class PlaceRole {
     @JsonInclude
     @JsonIgnore
     private List<Worker> workers;
-
-    private boolean manageOrderPermission;
-    private boolean createOrderPermission;
-    private boolean manageManuPermission;
-    private boolean managePlaceRolePermission;
-    private boolean managePlacePermission;
-    private boolean manageProductPermission;
-    private boolean manageSitePermission;
-    private boolean manageWorkerPermission;
-    private boolean manageDeliveryPermission;
-    private boolean viewOrderPermission;
-    private boolean viewDeliveryPermission;
-    private boolean viewMenuPermission;
-    private boolean viewPlacePermission;
-    private boolean viewProductPermission;
-    private boolean viewSitePermission;
 }

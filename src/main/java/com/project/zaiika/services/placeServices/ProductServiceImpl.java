@@ -26,9 +26,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProductFromMenu(long menuId) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isViewProductPermission);
-
         checkPermission(menuId);
 
         return productRepository.findAllByMenuId(menuId);
@@ -36,9 +33,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProductToMenu(long menuId, Product product) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageProductPermission);
-
         checkPermission(menuId);
         var menu = ctx.getMenu(menuId);
         product.setMenu(menu);
@@ -62,9 +56,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(long menuId, Product updateProduct) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageProductPermission);
-
         checkPermission(menuId);
         validateProductId(updateProduct.getId());
 
@@ -76,9 +67,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductById(long menuId, long productId) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageProductPermission);
-
         checkPermission(menuId);
         validateProductId(productId);
 

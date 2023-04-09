@@ -1,6 +1,5 @@
 package com.project.zaiika.services.util;
 
-import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Menu;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.placeModels.Site;
@@ -10,7 +9,6 @@ import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.repositories.user.UserRepository;
-import com.project.zaiika.utils.FilterAccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -72,13 +70,5 @@ public class ContextService {
     public Menu getMenu(long id) {
         var menus = getMenu();
         return menus.stream().filter(x -> x.getId() == id).findAny().orElse(null);
-    }
-
-    public void checkRolePermission(FilterAccess... filters) {
-        for (FilterAccess filter : filters) {
-            if (!filter.access()) {
-                throw new PermissionDeniedException();
-            }
-        }
     }
 }

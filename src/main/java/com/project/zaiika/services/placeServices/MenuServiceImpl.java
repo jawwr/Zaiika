@@ -17,18 +17,12 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> getAllMenus(long siteId) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isViewMenuPermission);
-
         checkPermission(siteId);
         return menuRepository.findAllBySiteId(siteId);
     }
 
     @Override
     public Menu createMenu(long siteId, Menu menu) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageManuPermission);
-
         checkPermission(siteId);
         var site = ctx.getSite(siteId);
         menu.setSite(site);
@@ -37,9 +31,6 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void updateMenu(long siteId, Menu menu) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageManuPermission);
-
         checkPermission(siteId);
         var site = ctx.getSite(siteId);
         menu.setSite(site);
@@ -48,9 +39,6 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void deleteMenu(Long siteId, Long menuId) {
-        var role = ctx.getWorkerPlaceRole();
-        ctx.checkRolePermission(role::isManageManuPermission);
-
         checkPermission(siteId);
         menuRepository.deleteMenuById(menuId);
     }
