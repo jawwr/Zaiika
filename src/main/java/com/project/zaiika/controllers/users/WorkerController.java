@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/manage/workers")
 @Slf4j
 @Tag(name = "Управление работниками")
-public class ManageWorkerController {
+public class WorkerController {
     private final WorkerService service;
 
     @Autowired
-    public ManageWorkerController(WorkerService service) {
+    public WorkerController(WorkerService service) {
         this.service = service;
     }
 

@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/manage-users")
 @Slf4j
 @Tag(name = "Управление пользователями")
-public class ManageUserController {
+public class UserController {
     private final UserService service;
 
     @Autowired
-    public ManageUserController(UserService service) {
+    public UserController(UserService service) {
         this.service = service;
     }
 

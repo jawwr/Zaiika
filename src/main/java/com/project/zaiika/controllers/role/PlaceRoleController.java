@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/manage/role")
 @Slf4j
 @Tag(name = "Управление ролями в заведении")
-public class ManagePlaceRoleController {
+public class PlaceRoleController {
     private final PlaceRoleService service;
 
     @Autowired
-    public ManagePlaceRoleController(PlaceRoleService service) {
+    public PlaceRoleController(PlaceRoleService service) {
         this.service = service;
     }
 
