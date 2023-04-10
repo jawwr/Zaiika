@@ -1,7 +1,9 @@
 package com.project.zaiika.models.roles;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.permissio.Permission;
 import com.project.zaiika.models.userModels.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,15 @@ public class Role {
     @JsonInclude
     @JsonIgnore
     private List<User> user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    @JsonIgnoreProperties("roles")
+    private List<Permission> permissions;
 
     public Role(long id, String name) {
         this.id = id;

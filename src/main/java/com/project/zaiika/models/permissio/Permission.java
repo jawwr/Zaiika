@@ -3,6 +3,7 @@ package com.project.zaiika.models.permissio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.roles.PlaceRole;
+import com.project.zaiika.models.roles.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,11 @@ public class Permission {
     @JsonInclude
     @JsonIgnore
     private List<PlaceRole> placeRoles;
+
+    @ManyToMany(mappedBy = "permissions")
+    @JsonInclude
+    @JsonIgnore
+    private List<Role> roles;
 
     public Permission(long id, String name) {
         this.id = id;

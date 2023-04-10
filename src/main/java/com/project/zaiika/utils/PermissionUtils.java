@@ -22,8 +22,8 @@ public class PermissionUtils {
         var availablePermission = AvailablePermission.values();
         for (long i = 1; i <= availablePermission.length; i++) {
             var name = availablePermission[(int) i - 1].name();
-            if (!permissionRepository.existsByIdAndName(i, name)) {
-                var permission = new Permission(i, name);
+            if (!permissionRepository.existsByName(name)) {
+                var permission = new Permission(0, name);
                 permissions.add(permission);
             }
         }

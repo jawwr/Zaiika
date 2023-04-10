@@ -7,6 +7,7 @@ public enum AvailablePermission {
     VIEW_PLACE,
     VIEW_PRODUCT,
     VIEW_SITE,
+    MANAGE_PLACE,
     MANAGE_PLACE_ROLE,
     MANAGE_ROLE,
     MANAGE_USER,

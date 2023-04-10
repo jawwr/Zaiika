@@ -44,7 +44,7 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('DUNGEON_MASTER')")
+    @PreAuthorize("hasAnyAuthority('VIEW_PLACE')")
     @GetMapping
     public ResponseEntity<?> getAllPlaces() {
         try {
