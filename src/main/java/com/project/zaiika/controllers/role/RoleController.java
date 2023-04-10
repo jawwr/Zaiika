@@ -47,12 +47,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @GetMapping
     public ResponseEntity<?> getAllRoles() {
-        try {
-            return ResponseEntity.ok(service.getAllRoles());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getAllRoles());
     }
 
     @Operation(summary = "Получение роли в приложении по id")
@@ -72,12 +67,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @GetMapping("/{roleId}")
     public ResponseEntity<?> getRole(@PathVariable("roleId") Long roleId) {
-        try {
-            return ResponseEntity.ok(service.getRole(roleId));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getRole(roleId));
     }
 
     @Operation(summary = "Создание роли в приложении",
@@ -107,12 +97,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @PostMapping
     public ResponseEntity<?> createRole(@RequestBody Role role) {
-        try {
-            return ResponseEntity.ok(service.createRole(role));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.createRole(role));
     }
 
     @Operation(summary = "Обновление роли в приложении",
@@ -135,14 +120,9 @@ public class RoleController {
     @PutMapping("/{roleId}")
     public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId,
                                         @RequestBody Role role) {
-        try {
-            role.setId(roleId);
-            service.updateRole(role);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        role.setId(roleId);
+        service.updateRole(role);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Удаление роли в приложении по id")
@@ -154,12 +134,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRole(@PathVariable("roleId") Long roleId) {
-        try {
-            service.deleteRole(roleId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deleteRole(roleId);
+        return ResponseEntity.ok().build();
     }
 }

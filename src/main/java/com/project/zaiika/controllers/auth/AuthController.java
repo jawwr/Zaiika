@@ -36,12 +36,7 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterCredential credential) {
-        try {
-            return new ResponseEntity<>(service.register(credential), HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(service.register(credential), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Логин пользователя")
@@ -53,12 +48,7 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginCredential credential) {
-        try {
-            return ResponseEntity.ok(service.login(credential));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.login(credential));
     }
 
     @Operation(summary = "Логин работника")
@@ -71,11 +61,6 @@ public class AuthController {
     @PostMapping("/{placeId}/login")
     public ResponseEntity<?> login(@PathVariable("placeId") Long placeId,
                                    @RequestBody WorkerCredential credential) {
-        try {
-            return ResponseEntity.ok(service.login(placeId, credential));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.login(placeId, credential));
     }
 }

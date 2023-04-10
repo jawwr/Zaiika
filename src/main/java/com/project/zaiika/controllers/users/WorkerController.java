@@ -1,7 +1,5 @@
 package com.project.zaiika.controllers.users;
 
-import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.utils.ResponseMessage;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.services.workers.WorkerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,13 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/manage/workers")
+@RequestMapping("/api/workers")
 @Slf4j
 @Tag(name = "Управление работниками")
 public class WorkerController {
@@ -49,12 +46,7 @@ public class WorkerController {
     @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @GetMapping
     public ResponseEntity<?> getAllWorkers() {
-        try {
-            return ResponseEntity.ok(service.getAllWorkers());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getAllWorkers());
     }
 
     @Operation(summary = "Создание нового работника")
@@ -74,12 +66,7 @@ public class WorkerController {
     @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @PostMapping
     public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
-        try {
-            return ResponseEntity.ok(service.createWorker(worker));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(service.createWorker(worker));
     }
 
     @Operation(summary = "Обновление работника по id")
@@ -96,17 +83,9 @@ public class WorkerController {
     @PutMapping("/{workerId}")
     public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
                                           @RequestBody WorkerDto worker) {
-        try {
-            worker.setId(workerId);
-            service.updateWorker(worker);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        worker.setId(workerId);
+        service.updateWorker(worker);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Удаление работника заведения по id")
@@ -122,16 +101,8 @@ public class WorkerController {
     @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @DeleteMapping("/{workerId}")
     public ResponseEntity<?> deleteWorker(@PathVariable("workerId") Long workerId) {
-        try {
-            service.deleteWorker(workerId);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deleteWorker(workerId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Получение работника заведения по id")
@@ -155,15 +126,7 @@ public class WorkerController {
     @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @GetMapping("/{workerId}")
     public ResponseEntity<?> getWorkerById(@PathVariable("workerId") Long workerId) {
-        try {
-            return ResponseEntity.ok(service.getWorker(workerId));
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok(service.getWorker(workerId));
     }
 
     @Operation(summary = "Изменение роли заведения у работника")
@@ -180,15 +143,7 @@ public class WorkerController {
     @PostMapping("/{workerId}")
     public ResponseEntity<?> addWorkerRole(@PathVariable("workerId") Long workerId,
                                            @RequestParam(value = "roleName") String roleName) {
-        try {
-            service.addWorkerRole(workerId, roleName);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.addWorkerRole(workerId, roleName);
+        return ResponseEntity.ok().build();
     }
 }

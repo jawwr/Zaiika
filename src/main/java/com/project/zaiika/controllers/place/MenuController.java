@@ -1,8 +1,6 @@
 package com.project.zaiika.controllers.place;
 
-import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Menu;
-import com.project.zaiika.models.utils.ResponseMessage;
 import com.project.zaiika.services.placeServices.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,15 +47,7 @@ public class MenuController {
     @PreAuthorize("hasAnyAuthority('VIEW_MENU')")
     @GetMapping
     public ResponseEntity<?> getAllMenus(@PathVariable("siteId") Long placeId) {
-        try {
-            return ResponseEntity.ok(service.getAllMenus(placeId));
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getAllMenus(placeId));
     }
 
     @Operation(summary = "Создание меню",
@@ -102,15 +91,7 @@ public class MenuController {
     @PostMapping
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
-        try {
-            return ResponseEntity.ok(service.createMenu(siteId, menu));
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.createMenu(siteId, menu));
     }
 
     @Operation(summary = "Удаление меню")
@@ -127,16 +108,8 @@ public class MenuController {
     @DeleteMapping("/{menuId}")
     public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId) {
-        try {
-            service.deleteMenu(siteId, menuId);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deleteMenu(siteId, menuId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Обновление меню",
@@ -167,16 +140,8 @@ public class MenuController {
     public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId,
                                         @RequestBody Menu menu) {
-        try {
-            menu.setId(menuId);
-            service.updateMenu(siteId, menu);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        menu.setId(menuId);
+        service.updateMenu(siteId, menu);
+        return ResponseEntity.ok().build();
     }
 }

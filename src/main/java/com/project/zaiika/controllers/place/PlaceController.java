@@ -47,12 +47,7 @@ public class PlaceController {//TODO сделать управление для 
     @PreAuthorize("hasAnyAuthority('VIEW_PLACE')")
     @GetMapping
     public ResponseEntity<?> getAllPlaces() {
-        try {
-            return ResponseEntity.ok(service.getAllPlaces());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getAllPlaces());
     }
 
     @Operation(summary = "Создание заведения",
@@ -89,12 +84,7 @@ public class PlaceController {//TODO сделать управление для 
     @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
     @PostMapping
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
-        try {
-            return ResponseEntity.ok(service.createPlace(place));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.createPlace(place));
     }
 
     @Operation(summary = "Удаление заведения по id")
@@ -106,13 +96,8 @@ public class PlaceController {//TODO сделать управление для 
     @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
     @DeleteMapping("/{placeId}")
     public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
-        try {
-            service.deletePlace(placeId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deletePlace(placeId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Обновление заведения оп id",
@@ -135,13 +120,8 @@ public class PlaceController {//TODO сделать управление для 
     @PutMapping("/{placeId}")
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
                                          @RequestBody Place place) {
-        try {
-            place.setId(placeId);
-            service.updatePlace(place);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        place.setId(placeId);
+        service.updatePlace(place);
+        return ResponseEntity.ok().build();
     }
 }

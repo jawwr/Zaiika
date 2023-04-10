@@ -46,12 +46,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        try {
-            return ResponseEntity.ok(service.getAllUsers());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @Operation(summary = "Добавление роли по id человека")
@@ -64,13 +59,8 @@ public class UserController {
     @PostMapping("/{userId}/role")
     public ResponseEntity<?> addRole(@PathVariable("userId") Long userId,
                                      @RequestParam("role") String role) {
-        try {
-            service.addUserRole(userId, role);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.addUserRole(userId, role);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Удаление роли по id человека")
@@ -83,13 +73,8 @@ public class UserController {
     @DeleteMapping("/{userId}/role")
     public ResponseEntity<?> deleteRole(@PathVariable("userId") Long userId,
                                         @RequestParam("role") String role) {
-        try {
-            service.deleteUserRole(userId, role);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deleteUserRole(userId, role);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Удаление пользователя")
@@ -101,12 +86,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
-        try {
-            service.deleteUser(userId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.deleteUser(userId);
+        return ResponseEntity.ok().build();
     }
 }

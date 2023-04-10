@@ -1,8 +1,6 @@
 package com.project.zaiika.controllers.order;
 
-import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.order.Order;
-import com.project.zaiika.models.utils.ResponseMessage;
 import com.project.zaiika.services.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -71,13 +69,8 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
-        try {
-            service.createOrder(order);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.createOrder(order);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Отмена заказа")
@@ -93,16 +86,8 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
-        try {
-            service.cancelOrder(id);
-            return ResponseEntity.ok().build();
-        } catch (PermissionDeniedException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(new ResponseMessage(e.getMessage()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        service.cancelOrder(id);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Получение всех заказов")
@@ -124,12 +109,7 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
-        try {
-            return ResponseEntity.ok(service.getOrders());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getOrders());
     }
 
     @Operation(summary = "Получение заказов по фильтру")
@@ -151,11 +131,6 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
     @GetMapping("/filter")
     public ResponseEntity<?> getOrdersByDeliveryType(@RequestParam("delivery_type") String type) {
-        try {
-            return ResponseEntity.ok(service.getOrders(type));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(service.getOrders(type));
     }
 }
