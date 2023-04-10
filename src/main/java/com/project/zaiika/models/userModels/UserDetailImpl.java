@@ -32,6 +32,14 @@ public class UserDetailImpl implements UserDetails {
                 .stream().map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
 
+        if (user.getWorker() != null) {
+            var worker = user.getWorker();
+            List<GrantedAuthority> permissions = worker.getPlaceRole().getPermissions()
+                    .stream().map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                    .collect(Collectors.toList());
+            authorities.addAll(permissions);
+        }
+
         return new UserDetailImpl(
                 user.getId(),
                 user.getName(),
