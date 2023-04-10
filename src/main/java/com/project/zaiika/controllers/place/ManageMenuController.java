@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,6 +68,7 @@ public class ManageMenuController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_MENU')")
     @PostMapping
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
@@ -91,6 +93,7 @@ public class ManageMenuController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_MENU')")
     @DeleteMapping("/{menuId}")
     public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId) {
@@ -129,6 +132,7 @@ public class ManageMenuController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_MENU')")
     @PutMapping("/{menuId}")
     public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId,

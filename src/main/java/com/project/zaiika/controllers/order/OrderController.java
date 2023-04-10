@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,6 +68,7 @@ public class OrderController {
                     responseCode = "200"
             )
     })
+    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         try {
@@ -88,6 +90,7 @@ public class OrderController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
         try {

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -55,7 +56,6 @@ public class ManageSiteController {
                                                         "id" : 0,
                                                         "name" : "some name",
                                                         "place" : {
-                                                            ...
                                                         }
                                                     }"""
                                     )
@@ -67,6 +67,7 @@ public class ManageSiteController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PostMapping
     public ResponseEntity<?> createSite(@RequestBody Site site) {
         try {
@@ -103,6 +104,7 @@ public class ManageSiteController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PutMapping("/{siteId}")
     public ResponseEntity<?> updateSite(@PathVariable("siteId") Long siteId, @RequestBody Site site) {
         try {
@@ -128,6 +130,7 @@ public class ManageSiteController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @DeleteMapping("/{siteId}")
     public ResponseEntity<?> deleteSite(@PathVariable("siteId") Long siteId) {
         try {

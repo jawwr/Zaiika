@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,6 +52,7 @@ public class ManageDeliveryController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_DELIVERY')")
     @PostMapping
     public ResponseEntity<?> createDelivery(@RequestBody Delivery delivery) {
         try {
@@ -81,6 +83,7 @@ public class ManageDeliveryController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_DELIVERY')")
     @PutMapping("/{deliveryId}")
     public ResponseEntity<?> updateDelivery(@PathVariable("deliveryId") Long id,
                                             @RequestBody Delivery delivery) {
@@ -106,6 +109,7 @@ public class ManageDeliveryController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_DELIVERY')")
     @DeleteMapping("/{deliveryId}")
     public ResponseEntity<?> deleteDelivery(@PathVariable("deliveryId") Long id) {
         try {

@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,13 +33,24 @@ public class UserDetailImpl implements UserDetails {
                 .stream().map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
 
+        List<GrantedAuthority> rolePermissions = new ArrayList<>();
+        for (var role : user.getRoles()) {
+            var permission = role.getPermissions()
+                    .stream().map(perm -> new SimpleGrantedAuthority(perm.getName()))
+                    .toList();
+            rolePermissions.addAll(permission);
+        }
+        authorities.addAll(rolePermissions);
+
         if (user.getWorker() != null) {
             var worker = user.getWorker();
-            List<GrantedAuthority> permissions = worker.getPlaceRole().getPermissions()
+            List<GrantedAuthority> workerPermissions = worker.getPlaceRole().getPermissions()
                     .stream().map(permission -> new SimpleGrantedAuthority(permission.getName()))
                     .collect(Collectors.toList());
-            authorities.addAll(permissions);
+            authorities.addAll(workerPermissions);
         }
+
+        authorities = authorities.stream().distinct().toList();
 
         return new UserDetailImpl(
                 user.getId(),

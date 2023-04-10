@@ -86,6 +86,7 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
     @PostMapping
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
         try {
@@ -102,6 +103,7 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
     @DeleteMapping("/{placeId}")
     public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
         try {
@@ -129,6 +131,7 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
     @PutMapping("/{placeId}")
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
                                          @RequestBody Place place) {

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,6 +46,7 @@ public class ManageWorkerController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @GetMapping
     public ResponseEntity<?> getAllWorkers() {
         try {
@@ -69,6 +71,7 @@ public class ManageWorkerController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @PostMapping
     public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
         try {
@@ -89,6 +92,7 @@ public class ManageWorkerController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @PutMapping("/{workerId}")
     public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
                                           @RequestBody WorkerDto worker) {
@@ -115,6 +119,7 @@ public class ManageWorkerController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @DeleteMapping("/{workerId}")
     public ResponseEntity<?> deleteWorker(@PathVariable("workerId") Long workerId) {
         try {
@@ -147,6 +152,7 @@ public class ManageWorkerController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @GetMapping("/{workerId}")
     public ResponseEntity<?> getWorkerById(@PathVariable("workerId") Long workerId) {
         try {
@@ -170,6 +176,7 @@ public class ManageWorkerController {
                     ref = "permissionDenied"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
     @PostMapping("/{workerId}")
     public ResponseEntity<?> addWorkerRole(@PathVariable("workerId") Long workerId,
                                            @RequestParam(value = "roleName") String roleName) {

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,6 +44,7 @@ public class ManageRoleController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @GetMapping
     public ResponseEntity<?> getAllRoles() {
         try {
@@ -67,6 +69,7 @@ public class ManageRoleController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @GetMapping("/{roleId}")
     public ResponseEntity<?> getRole(@PathVariable("roleId") Long roleId) {
         try {
@@ -101,6 +104,7 @@ public class ManageRoleController {
                     }
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @PostMapping
     public ResponseEntity<?> createRole(@RequestBody Role role) {
         try {
@@ -127,6 +131,7 @@ public class ManageRoleController {
                     responseCode = "200"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @PutMapping("/{roleId}")
     public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId,
                                         @RequestBody Role role) {
@@ -146,6 +151,7 @@ public class ManageRoleController {
                     responseCode = "200"
             )
     })
+    @PreAuthorize("hasAnyAuthority('MANAGE_ROLE')")
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRole(@PathVariable("roleId") Long roleId) {
         try {

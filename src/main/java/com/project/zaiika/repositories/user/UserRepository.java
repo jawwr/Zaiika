@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    @Transactional
     User findUserByLogin(String login);
 
     boolean existsUserByLogin(String login);
