@@ -1,0 +1,35 @@
+package com.project.zaiika.utils;
+
+import com.project.zaiika.models.permissio.AvailablePermission;
+import com.project.zaiika.models.permissio.Permission;
+import com.project.zaiika.repositories.PermissionRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
+public class PermissionUtils {
+    private final PermissionRepository permissionRepository;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void createPermissions() {
+        List<Permission> permissions = new ArrayList<>();
+        var availablePermission = AvailablePermission.values();
+        for (long i = 1; i <= availablePermission.length; i++) {
+            var name = availablePermission[(int) i - 1].name();
+            if (!permissionRepository.existsByIdAndName(i, name)) {
+                var permission = new Permission(i, name);
+                permissions.add(permission);
+            }
+        }
+
+        if (permissions.size() > 0) {
+            permissionRepository.saveAll(permissions);
+        }
+    }
+}

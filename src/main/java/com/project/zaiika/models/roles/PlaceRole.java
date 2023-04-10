@@ -1,7 +1,9 @@
 package com.project.zaiika.models.roles;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.zaiika.models.permissio.Permission;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
@@ -36,4 +38,13 @@ public class PlaceRole {
     @JsonInclude
     @JsonIgnore
     private List<Worker> workers;
+
+    @ManyToMany
+    @JoinTable(
+            name = "place_role_permission",
+            joinColumns = @JoinColumn(name = "place_role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    @JsonIgnoreProperties("placeRoles")
+    private List<Permission> permissions;
 }

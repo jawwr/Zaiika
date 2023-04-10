@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         user.setRoles(List.of(role));
         var savedUser = userRepository.save(user);
-        var jwt = jwtService.generateToken(UserDetailImpl.build(user));
+        var jwt = jwtService.generateToken(UserDetailImpl.of(user));
         saveUserToken(jwt, savedUser);
 
         return new TokenResponse(jwt);
@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         var user = userRepository.findUserByLogin(credential.login());
-        var jwt = jwtService.generateToken(UserDetailImpl.build(user));
+        var jwt = jwtService.generateToken(UserDetailImpl.of(user));
         revokeAllUserTokens(user);
         saveUserToken(jwt, user);
 
@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
                         credential.pin()
                 )
         );
-        var userDetail = UserDetailImpl.build(workerUser);
+        var userDetail = UserDetailImpl.of(workerUser);
 
         var jwt = jwtService.generateToken(userDetail);
         revokeAllUserTokens(workerUser);
