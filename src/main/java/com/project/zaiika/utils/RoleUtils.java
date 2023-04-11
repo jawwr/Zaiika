@@ -41,7 +41,7 @@ public class RoleUtils {
     private List<Permission> initPermission(String roleName) {
         return switch (roleName) {
             case "DUNGEON_MASTER" -> getPermissions(AvailablePermission.values());
-            case "PLACE_OWNER" -> getPermissions(AvailablePermission.VIEW_DELIVERY,
+            case "PLACE_OWNER" -> getPermissions(AvailablePermission.VIEW_DELIVERY,//TODO убрать на релизе
                     AvailablePermission.VIEW_ORDER,
                     AvailablePermission.VIEW_MENU,
                     AvailablePermission.VIEW_PRODUCT,
@@ -54,7 +54,8 @@ public class RoleUtils {
                     AvailablePermission.MANAGE_MENU,
                     AvailablePermission.MANAGE_PRODUCT,
                     AvailablePermission.MANAGE_SITE,
-                    AvailablePermission.MANAGE_DELIVERY);
+                    AvailablePermission.MANAGE_DELIVERY,
+                    AvailablePermission.VIEW_PERMISSIONS);
             default -> new ArrayList<>();
         };
     }

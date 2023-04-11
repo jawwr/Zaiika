@@ -1,6 +1,7 @@
 package com.project.zaiika.models.permission;
 
 public enum AvailablePermission {
+    VIEW_PERMISSIONS,
     VIEW_DELIVERY,
     VIEW_ORDER,
     VIEW_MENU,
@@ -17,4 +18,5 @@ public enum AvailablePermission {
     MANAGE_PRODUCT,
     MANAGE_SITE,
     MANAGE_DELIVERY,
+    MANAGE_PERMISSION
 }
