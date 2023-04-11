@@ -49,7 +49,7 @@ public class PlaceRoleController {
     public ResponseEntity<?> getAllPlaceRoles() {
         return ResponseEntity.ok(service.getAllRoles());
     }
-
+    //TODO при создании роли можно задать привилегии
     @Operation(summary = "Создание новых ролей в заведении",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
