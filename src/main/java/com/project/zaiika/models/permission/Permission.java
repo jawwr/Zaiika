@@ -27,6 +27,9 @@ public class Permission {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany(mappedBy = "permissions")
     @JsonInclude
     @JsonIgnore
