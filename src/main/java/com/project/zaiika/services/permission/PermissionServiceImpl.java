@@ -20,7 +20,15 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> getAllPermissions() {
-        return new ArrayList<>();//todo
+        return permissionRepository.findAll();
+    }
+
+    @Override
+    public void updatePermission(Permission permission) {
+        if (permission.getId() <= 0) {
+            throw new IllegalArgumentException("Invalid permission id");
+        }
+        permissionRepository.save(permission);
     }
 
     @Override
