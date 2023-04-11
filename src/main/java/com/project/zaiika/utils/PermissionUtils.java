@@ -1,8 +1,8 @@
 package com.project.zaiika.utils;
 
-import com.project.zaiika.models.permissio.AvailablePermission;
-import com.project.zaiika.models.permissio.Permission;
-import com.project.zaiika.repositories.PermissionRepository;
+import com.project.zaiika.models.permission.AvailablePermission;
+import com.project.zaiika.models.permission.Permission;
+import com.project.zaiika.repositories.permissions.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

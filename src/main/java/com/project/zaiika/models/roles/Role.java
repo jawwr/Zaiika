@@ -3,7 +3,7 @@ package com.project.zaiika.models.roles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.permissio.Permission;
+import com.project.zaiika.models.permission.Permission;
 import com.project.zaiika.models.userModels.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

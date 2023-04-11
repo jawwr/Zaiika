@@ -71,4 +71,14 @@ public class ContextService {
         var menus = getMenu();
         return menus.stream().filter(x -> x.getId() == id).findAny().orElse(null);
     }
+
+    public List<PlaceRole> getPlaceRole() {
+        var place = getPlace();
+        return place.getRoles();
+    }
+
+    public PlaceRole getPlaceRole(long roleId) {
+        var roles = getPlaceRole();
+        return roles.stream().filter(role -> role.getId() == roleId).findAny().orElse(null);
+    }
 }

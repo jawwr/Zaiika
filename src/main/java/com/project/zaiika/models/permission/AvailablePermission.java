@@ -1,4 +1,4 @@
-package com.project.zaiika.models.permissio;
+package com.project.zaiika.models.permission;
 
 public enum AvailablePermission {
     VIEW_DELIVERY,
