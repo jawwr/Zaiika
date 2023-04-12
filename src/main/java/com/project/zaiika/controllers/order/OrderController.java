@@ -35,30 +35,6 @@ public class OrderController {
                                     implementation = Order.class
                             )
                     )
-//                            examples = {
-//                                    @ExampleObject(
-//                                            value = """
-//                                                    {
-//                                                       "deliveryTypeId": 0,
-//                                                       "products": [
-//                                                         {
-//                                                           "productId": 0
-//                                                         }
-//                                                       ],
-//                                                       "excludeIngredient": [
-//                                                         {
-//                                                           "ingredientId": 0
-//                                                         }
-//                                                       ],
-//                                                       "modifications": [
-//                                                         {
-//                                                           "modificationId": 0
-//                                                         }
-//                                                       ]
-//                                                    }"""
-//                                    )
-//                            }
-//                    )
             )
     )
     @ApiResponses(value = {
