@@ -12,25 +12,32 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RoleUtils {
+public final class RoleUtils {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initRoles() {
         List<Role> roles = new ArrayList<>();
-        var availableRoles = UserRole.values();
-        for (long i = 1; i <= availableRoles.length; i++) {
-            var roleName = availableRoles[(int) (i - 1)].name();
-            var role = roleRepository.existsByIdAndName(i, roleName)
-                    ? roleRepository.findRoleByName(roleName)
-                    : new Role(i, roleName);
-            role.setPermissions(initPermission(roleName));
-            roles.add(role);
+        for (UserRole userRole : UserRole.values()) {
+            Role role;
+            if (roleRepository.existsByName(userRole.name())) {
+                role = roleRepository.findRoleByNameWithoutUsers(userRole.name());
+                role.setPermissions(permissionRepository.findByRoleId(role.getId()));
+            } else {
+                role = new Role(userRole.name());
+            }
+            var permissions = getRolePermission(userRole.name());
+
+            if (!comparingRolePermissionList(permissions, role.getPermissions())) {
+                role.setPermissions(permissions);
+                roles.add(role);
+            }
         }
 
         if (roles.size() > 0) {
@@ -38,35 +45,30 @@ public class RoleUtils {
         }
     }
 
-    private List<Permission> initPermission(String roleName) {
-        return switch (roleName) {
-            case "DUNGEON_MASTER" -> getPermissions(AvailablePermission.values());
-            case "PLACE_OWNER" -> getPermissions(AvailablePermission.VIEW_DELIVERY,//TODO убрать на релизе
-                    AvailablePermission.VIEW_ORDER,
-                    AvailablePermission.VIEW_MENU,
-                    AvailablePermission.VIEW_PRODUCT,
-                    AvailablePermission.VIEW_SITE,
-                    AvailablePermission.MANAGE_PLACE_ROLE,
-                    AvailablePermission.MANAGE_ROLE,
-                    AvailablePermission.MANAGE_USER,
-                    AvailablePermission.MANAGE_WORKER,
-                    AvailablePermission.MANAGE_ORDER,
-                    AvailablePermission.MANAGE_MENU,
-                    AvailablePermission.MANAGE_PRODUCT,
-                    AvailablePermission.MANAGE_SITE,
-                    AvailablePermission.MANAGE_DELIVERY,
-                    AvailablePermission.VIEW_PERMISSIONS);
-            default -> new ArrayList<>();
-        };
+    private boolean comparingRolePermissionList(List<Permission> list1, List<Permission> list2) {
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+        list1.sort(Comparator.comparing(Permission::getName));
+        list2.sort(Comparator.comparing(Permission::getName));
+        for (int i = 0; i < list1.size(); i++) {
+            if (!list1.get(i).getName().equals(list2.get(i).getName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private List<Permission> getPermissions(AvailablePermission... permissions) {
+    private List<Permission> getRolePermission(String roleName) {
+        return initRolePermissions(UserRole.valueOf(roleName).permissions);
+    }
+
+    private List<Permission> initRolePermissions(AvailablePermission... permissions) {
         List<Permission> result = new ArrayList<>();
-        for (long i = 1; i <= permissions.length; i++) {
-            var permission = permissions[(int) i - 1];
+        for (AvailablePermission permission : permissions) {
             var newPermission = permissionRepository.existsByName(permission.name())
                     ? permissionRepository.findByName(permission.name())
-                    : new Permission(i, permission.name());
+                    : new Permission(permission.name());
             result.add(newPermission);
         }
         return result;

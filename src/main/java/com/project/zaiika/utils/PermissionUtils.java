@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class PermissionUtils {
+public final class PermissionUtils {
     private final PermissionRepository permissionRepository;
 
     @EventListener(ApplicationReadyEvent.class)
@@ -23,7 +23,7 @@ public class PermissionUtils {
         for (long i = 1; i <= availablePermission.length; i++) {
             var name = availablePermission[(int) i - 1].name();
             if (!permissionRepository.existsByName(name)) {
-                var permission = new Permission(0, name);
+                var permission = new Permission(name);
                 permissions.add(permission);
             }
         }

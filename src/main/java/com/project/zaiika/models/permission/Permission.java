@@ -40,8 +40,7 @@ public class Permission {
     @JsonIgnore
     private List<Role> roles;
 
-    public Permission(long id, String name) {
-        this.id = id;
+    public Permission(String name) {
         this.name = name;
     }
 }

@@ -43,8 +43,7 @@ public class Role {
     @JsonIgnoreProperties("roles")
     private List<Permission> permissions;
 
-    public Role(long id, String name) {
-        this.id = id;
+    public Role(String name) {
         this.name = name;
     }
 }
