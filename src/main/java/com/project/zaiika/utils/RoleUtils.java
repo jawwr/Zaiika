@@ -23,7 +23,6 @@ public final class RoleUtils {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initRoles() {
-        List<Role> roles = new ArrayList<>();
         for (UserRole userRole : UserRole.values()) {
             Role role;
             if (roleRepository.existsByName(userRole.name())) {
@@ -35,13 +34,27 @@ public final class RoleUtils {
             var permissions = getRolePermission(userRole.name());
 
             if (!comparingRolePermissionList(permissions, role.getPermissions())) {
-                role.setPermissions(permissions);
-                roles.add(role);
+                insertNotContainingValues(role.getId(), role.getPermissions(), permissions);
+                deleteNotContainingValues(role.getId(), role.getPermissions(), permissions);
             }
         }
+    }
 
-        if (roles.size() > 0) {
-            roleRepository.saveAll(roles);
+    private void insertNotContainingValues(long roleId, List<Permission> from, List<Permission> to) {
+        for (Permission permission : to) {
+            var isContains = from.stream().anyMatch(perm -> perm.getName().contains(permission.getName()));
+            if (!isContains) {
+                permissionRepository.insertRolePermission(roleId, permission.getId());
+            }
+        }
+    }
+
+    private void deleteNotContainingValues(long roleId, List<Permission> from, List<Permission> to) {
+        for (Permission permission : from) {
+            var isContains = to.stream().anyMatch(perm -> perm.getName().contains(permission.getName()));
+            if (!isContains) {
+                permissionRepository.removePermissionFromRole(roleId, permission.getId());
+            }
         }
     }
 

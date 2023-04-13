@@ -2,7 +2,9 @@ package com.project.zaiika.repositories.permissions;
 
 import com.project.zaiika.models.permission.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,4 +25,20 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             where rp.role_id = :#{#roleId}
             """, nativeQuery = true)
     List<Permission> findByRoleId(long roleId);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+            insert into role_permission(role_id, permission_id)  values(:#{#roleId}, :#{#permissionId})
+            """, nativeQuery = true)
+    void insertRolePermission(long roleId, long permissionId);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+            delete from role_permission
+            where role_id = :#{#roleId}
+            and permission_id = :#{#permissionId}
+            """, nativeQuery = true)
+    void removePermissionFromRole(long roleId, long permissionId);
 }
