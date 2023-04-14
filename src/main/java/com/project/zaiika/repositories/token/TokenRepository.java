@@ -2,7 +2,9 @@ package com.project.zaiika.repositories.token;
 
 import com.project.zaiika.models.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,4 +19,14 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     List<Token> findAllValidTokenByUserId(Long userId);
 
     Token findByToken(String token);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+            update tokens
+            set revoked = :#{#token.revoked},
+            expired = :#{#token.expired}
+            where id = :#{#token.id}
+            """, nativeQuery = true)
+    void updateToken(Token token);
 }

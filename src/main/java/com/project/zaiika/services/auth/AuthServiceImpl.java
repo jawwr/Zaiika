@@ -3,15 +3,15 @@ package com.project.zaiika.services.auth;
 import com.project.zaiika.models.auth.LoginCredential;
 import com.project.zaiika.models.auth.RegisterCredential;
 import com.project.zaiika.models.auth.WorkerCredential;
+import com.project.zaiika.models.roles.Role;
+import com.project.zaiika.models.roles.UserRole;
 import com.project.zaiika.models.token.Token;
 import com.project.zaiika.models.token.TokenResponse;
-import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.userModels.User;
 import com.project.zaiika.models.userModels.UserDetailImpl;
-import com.project.zaiika.models.roles.UserRole;
 import com.project.zaiika.models.worker.Worker;
-import com.project.zaiika.repositories.token.TokenRepository;
 import com.project.zaiika.repositories.role.RoleRepository;
+import com.project.zaiika.repositories.token.TokenRepository;
 import com.project.zaiika.repositories.user.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void saveUserToken(String jwtToken, User user) {
-        var token = new Token(-1L, jwtToken, false, false, user);
+        var token = new Token(jwtToken, false, false, user);
         tokenRepository.save(token);
     }
 
@@ -122,6 +122,6 @@ public class AuthServiceImpl implements AuthService {
             token.setExpired(true);
         });
 
-        tokenRepository.saveAll(userTokens);
+        userTokens.forEach(tokenRepository::updateToken);
     }
 }
