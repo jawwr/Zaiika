@@ -27,7 +27,7 @@ public class PlaceServiceImpl implements PlaceService {//TODO сделать
         return placeRepository.save(place);
     }
 
-    private void setPlaceOwnerRole(User user) {//TODO сделать при добавлении владельца добавление работника со всеми привилегиями
+    private void setPlaceOwnerRole(User user) {
         var roles = user.getRoles();
         var role = roleRepository.findRoleByName(UserRole.PLACE_OWNER.name());
         roles.add(role);

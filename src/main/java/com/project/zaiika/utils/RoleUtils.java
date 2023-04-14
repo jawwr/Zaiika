@@ -26,7 +26,7 @@ public final class RoleUtils {
         for (UserRole userRole : UserRole.values()) {
             Role role;
             if (roleRepository.existsByName(userRole.name())) {
-                role = roleRepository.findRoleByNameWithoutUsers(userRole.name());
+                role = roleRepository.findRoleByName(userRole.name());
                 role.setPermissions(permissionRepository.findByRoleId(role.getId()));
             } else {
                 role = new Role(userRole.name());

@@ -5,16 +5,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    @Query(value = """
+            select *
+            from roles
+            where id = :#{#id}
+            """, nativeQuery = true)
     Role findRoleById(long id);
-
-    Role findRoleByName(String name);
 
     @Query(value = """
             select *
             from roles
             where roles.name = :#{#name}
             """, nativeQuery = true)
-    Role findRoleByNameWithoutUsers(String name);
+    Role findRoleByName(String name);
 
     @Query(value = """
             select count(*) <> 0
