@@ -19,7 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """, countQuery = "select * from users limit 1", nativeQuery = true)
     User findOnlyUserByLogin(String userLogin);
 
-    boolean existsUserByLogin(String login);
+    @Query(value = """
+            select count(*) <> 0
+            from users
+            where login = :#{#login}
+            """, nativeQuery = true)
+    boolean existUserByLogin(String login);
 
     User findUserById(long id);
 }

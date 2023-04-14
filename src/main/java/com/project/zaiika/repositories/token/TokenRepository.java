@@ -18,6 +18,11 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
             AND (tokens.expired = false or tokens.revoked = false)""", nativeQuery = true)
     List<Token> findAllValidTokenByUserId(Long userId);
 
+    @Query(value = """
+            select *
+            from tokens
+            where token = :#{#token}
+            """, nativeQuery = true)
     Token findByToken(String token);
 
     @Modifying

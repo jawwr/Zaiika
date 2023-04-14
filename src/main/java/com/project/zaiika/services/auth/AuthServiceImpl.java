@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse register(RegisterCredential credential) {
-        if (userRepository.existsUserByLogin(credential.login())) {
+        if (userRepository.existUserByLogin(credential.login())) {
             throw new IllegalArgumentException("User already exist");
         }
         var role = roleRepository.findRoleByName(UserRole.USER.name());
