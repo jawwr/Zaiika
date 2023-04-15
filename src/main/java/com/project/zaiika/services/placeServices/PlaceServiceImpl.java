@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceServiceImpl implements PlaceService {//TODO сделать
+public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final RoleRepository roleRepository;
     private final ContextService ctx;

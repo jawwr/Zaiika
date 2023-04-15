@@ -64,7 +64,7 @@ public class SiteController {
                     )
             )
     )
-    @ApiResponses(value = {//TODO поменять документацию
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     content = {

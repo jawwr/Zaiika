@@ -4,9 +4,9 @@ import com.project.zaiika.models.permission.AvailablePermission;
 
 public enum UserRole {
     DUNGEON_MASTER(AvailablePermission.values()),
-    PLACE_OWNER(new AvailablePermission[]
+    PLACE_OWNER(new AvailablePermission[]//TODO изменить на релизе
             {
-                    AvailablePermission.VIEW_DELIVERY,//TODO убрать на релизе
+                    AvailablePermission.VIEW_DELIVERY,
                     AvailablePermission.VIEW_ORDER,
                     AvailablePermission.VIEW_MENU,
                     AvailablePermission.VIEW_PRODUCT,
