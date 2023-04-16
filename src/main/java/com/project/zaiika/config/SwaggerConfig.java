@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -14,6 +15,9 @@ import org.springframework.http.MediaType;
 @Configuration
 @OpenAPIDefinition
 public class SwaggerConfig {
+    @Value("${app.version}")
+    private String version;
+
     @Bean
     public OpenAPI baseOpenApi() {
         ApiResponse permissionDenied = new ApiResponse().content(
@@ -40,7 +44,7 @@ public class SwaggerConfig {
                 .components(components)
                 .info(new Info()
                         .title("Zaiika API Docs")
-                        .version("1.0.0")
+                        .version(version)
                         .description("APi Docs")
                 );
     }
