@@ -24,6 +24,9 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "count_in_order")
+    private int countInOrder;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("orderItem")
