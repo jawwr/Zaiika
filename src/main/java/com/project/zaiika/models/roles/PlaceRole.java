@@ -39,7 +39,7 @@ public class PlaceRole {
     @JsonIgnore
     private List<Worker> workers;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "place_role_permission",
             joinColumns = @JoinColumn(name = "place_role_id"),

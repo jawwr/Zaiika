@@ -29,13 +29,13 @@ public class Order {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "worker_id", nullable = false)
+    @JoinColumn(name = "worker_id")
     @JsonBackReference
     private Worker worker;
 
     @ManyToOne
     @JoinColumn(name = "delivery_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "delivery ref")
     private Delivery delivery;
 
     @ManyToOne

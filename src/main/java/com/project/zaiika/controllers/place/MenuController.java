@@ -74,9 +74,7 @@ public class MenuController {
                                             example = """
                                                     {
                                                         "id" : 0,
-                                                        "title" : "some title",
-                                                        "site" : {
-                                                        }
+                                                        "title" : "some title"
                                                     }"""
                                     )
                             )
