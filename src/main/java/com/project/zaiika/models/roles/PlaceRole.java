@@ -2,10 +2,8 @@ package com.project.zaiika.models.roles;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.permission.Permission;
 import com.project.zaiika.models.placeModels.Place;
-import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,11 +31,6 @@ public class PlaceRole {
     @JoinColumn(name = "place_id", nullable = false)
     @JsonIgnore
     private Place place;
-
-//    @OneToMany(mappedBy = "placeRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonInclude
-//    @JsonIgnore
-//    private List<Worker> workers;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

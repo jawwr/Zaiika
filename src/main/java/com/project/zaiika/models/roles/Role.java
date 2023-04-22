@@ -1,10 +1,8 @@
 package com.project.zaiika.models.roles;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.permission.Permission;
-import com.project.zaiika.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,11 +26,6 @@ public class Role {
 
     @Column(name = "name")
     private String name;
-
-//    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-//    @JsonInclude
-//    @JsonIgnore
-//    private List<User> user;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

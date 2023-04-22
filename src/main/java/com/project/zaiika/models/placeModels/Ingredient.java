@@ -1,15 +1,11 @@
 package com.project.zaiika.models.placeModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,11 +32,6 @@ public class Ingredient {
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private Product product;
-
-//    @ManyToMany(mappedBy = "excludeIngredient")
-//    @JsonInclude
-//    @JsonIgnore
-//    private List<OrderItem> orders;
 
     @Column(name = "is_obligatory")
     private boolean isObligatory;

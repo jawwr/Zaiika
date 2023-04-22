@@ -37,9 +37,4 @@ public class Worker {
     @ManyToOne
     @JoinColumn(name = "place_role_id")
     private PlaceRole placeRole;
-
-//    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonInclude
-//    @JsonIgnore
-//    private List<Order> order;
 }

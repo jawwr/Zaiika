@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -26,10 +24,6 @@ public class Menu {
 
     @Column(name = "title")
     private String title;
-
-//    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "site_id", nullable = false)

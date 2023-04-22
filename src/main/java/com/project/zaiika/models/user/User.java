@@ -2,9 +2,7 @@ package com.project.zaiika.models.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.roles.Role;
-import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,12 +45,4 @@ public class User {
     )
     @JsonIgnoreProperties("user")
     private List<Role> roles;
-
-//    @OneToOne(mappedBy = "user")
-//    @JsonIgnore
-//    private Worker worker;
-
-//    @OneToOne(mappedBy = "owner")
-//    @JsonIgnore
-//    private Place place;//TODO может ли один юзер иметь несколько заведений?
 }

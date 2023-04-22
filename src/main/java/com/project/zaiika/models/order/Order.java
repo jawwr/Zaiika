@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,10 +42,6 @@ public class Order {
     @JsonBackReference(value = "placeOrder")
     @JsonIgnore
     private Place place;
-
-//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonInclude
-//    private List<OrderItem> orderItems;
 
     @Column(name = "date")
     @JsonInclude
