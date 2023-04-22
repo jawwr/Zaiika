@@ -55,8 +55,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     private void checkPermission(long roleId) {
-        var role = ctx.getPlaceRole(roleId);
-        if (role == null) {
+        try {
+            ctx.checkPlaceRoleExisting(roleId);
+        } catch (IllegalArgumentException e) {
             throw new PermissionDeniedException();
         }
     }

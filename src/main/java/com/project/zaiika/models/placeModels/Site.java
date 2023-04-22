@@ -28,10 +28,10 @@ public class Site {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "site", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonIgnore
-    private List<Menu> menus;
+//    @OneToMany(mappedBy = "site", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    @JsonIgnore
+//    private List<Menu> menus;
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)

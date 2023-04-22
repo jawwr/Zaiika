@@ -38,9 +38,9 @@ public class Product {
     @JsonIgnore
     private Menu menu;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<OrderItem> orderItem;
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<OrderItem> orderItem;
 
     @Column(name = "price")
     private double price;

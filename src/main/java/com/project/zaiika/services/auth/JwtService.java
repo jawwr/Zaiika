@@ -1,6 +1,6 @@
 package com.project.zaiika.services.auth;
 
-import com.project.zaiika.models.userModels.UserDetailImpl;
+import com.project.zaiika.models.user.UserDetailImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

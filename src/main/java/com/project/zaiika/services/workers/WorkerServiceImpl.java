@@ -1,7 +1,7 @@
 package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.roles.UserRole;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
@@ -109,7 +109,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<WorkerDto> getAllWorkers() {
         var place = ctx.getPlace();
-        var workers = place.getWorkers();
+        var workers = workerRepository.findAllByPlaceId(place.getId()); // place.getWorkers();
 
         return generateWorkersDto(workers);
     }
@@ -150,9 +150,9 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void addWorkerRole(long workerId, String roleName) {
         checkPermission(workerId);
-        if (UserRole.ADMIN.name().equals(roleName.toUpperCase())){
+        if (UserRole.ADMIN.name().equals(roleName.toUpperCase())) {
             addAdminRole(workerId);
-        }else {
+        } else {
             addPlaceRole(workerId, roleName);
         }
     }

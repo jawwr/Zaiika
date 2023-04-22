@@ -2,7 +2,6 @@ package com.project.zaiika.models.delivery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.placeModels.Place;
 import jakarta.persistence.*;
@@ -33,9 +32,8 @@ public class Delivery {
     @JsonIgnore
     private Place place;
 
-    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonManagedReference
-    @JsonIgnore
-    private List<Order> order;
+//    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Order> order;
 }

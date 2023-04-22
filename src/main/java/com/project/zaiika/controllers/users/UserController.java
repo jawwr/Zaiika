@@ -1,6 +1,6 @@
 package com.project.zaiika.controllers.users;
 
-import com.project.zaiika.models.userModels.UserDto;
+import com.project.zaiika.models.user.UserDto;
 import com.project.zaiika.services.userServices.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

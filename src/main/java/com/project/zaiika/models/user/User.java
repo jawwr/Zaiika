@@ -1,4 +1,4 @@
-package com.project.zaiika.models.userModels;
+package com.project.zaiika.models.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -48,11 +48,11 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Role> roles;
 
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Worker worker;
+//    @OneToOne(mappedBy = "user")
+//    @JsonIgnore
+//    private Worker worker;
 
-    @OneToOne(mappedBy = "owner")
-    @JsonIgnore
-    private Place place;//TODO может ли один юзер иметь несколько заведений?
+//    @OneToOne(mappedBy = "owner")
+//    @JsonIgnore
+//    private Place place;//TODO может ли один юзер иметь несколько заведений?
 }

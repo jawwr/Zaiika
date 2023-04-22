@@ -34,10 +34,10 @@ public class PlaceRole {
     @JsonIgnore
     private Place place;
 
-    @OneToMany(mappedBy = "placeRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonIgnore
-    private List<Worker> workers;
+//    @OneToMany(mappedBy = "placeRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Worker> workers;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

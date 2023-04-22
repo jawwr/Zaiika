@@ -27,9 +27,9 @@ public class Menu {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Product> products;
+//    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "site_id", nullable = false)

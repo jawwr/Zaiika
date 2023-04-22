@@ -1,4 +1,4 @@
-package com.project.zaiika.models.userModels;
+package com.project.zaiika.models.user;
 
 import lombok.Builder;
 

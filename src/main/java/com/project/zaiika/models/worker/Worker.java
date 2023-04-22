@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.roles.PlaceRole;
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,8 +38,8 @@ public class Worker {
     @JoinColumn(name = "place_role_id")
     private PlaceRole placeRole;
 
-    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonIgnore
-    private List<Order> order;
+//    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Order> order;
 }

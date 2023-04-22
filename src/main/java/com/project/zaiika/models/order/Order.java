@@ -44,9 +44,9 @@ public class Order {
     @JsonIgnore
     private Place place;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    private List<OrderItem> orderItems;
+//    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    private List<OrderItem> orderItems;
 
     @Column(name = "date")
     @JsonInclude
@@ -55,5 +55,5 @@ public class Order {
 
     @Column(name = "is_cancelled", nullable = false)
     @JsonInclude
-    private boolean isCancelled;
+    private boolean isCanceled;
 }

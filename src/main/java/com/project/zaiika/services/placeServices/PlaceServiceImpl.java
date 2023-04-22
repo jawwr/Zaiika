@@ -3,7 +3,7 @@ package com.project.zaiika.services.placeServices;
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.roles.UserRole;
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import com.project.zaiika.repositories.place.PlaceRepository;
 import com.project.zaiika.repositories.role.RoleRepository;
 import com.project.zaiika.services.util.ContextService;
@@ -68,7 +68,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     private void checkPermission(long placeId) {
         var user = ctx.getContextUser();
-        var place = user.getPlace();
+        var place = ctx.getPlace();
         var isMainAdmin = user.getRoles()
                 .stream()
                 .anyMatch(x -> x.getName().equals(UserRole.DUNGEON_MASTER.name()));

@@ -91,8 +91,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void checkPermission(long menuId) {
-        var menu = ctx.getMenu(menuId);
-        if (menu == null) {
+        try {
+            ctx.getMenu(menuId);
+        } catch (IllegalArgumentException e) {
             throw new PermissionDeniedException();
         }
     }

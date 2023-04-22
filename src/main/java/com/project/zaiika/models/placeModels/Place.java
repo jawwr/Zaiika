@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.zaiika.models.delivery.Delivery;
 import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.roles.PlaceRole;
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.worker.Worker;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,29 +37,29 @@ public class Place {
     @JsonIgnore
     private User owner;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonInclude
-    @JsonIgnore
-    private List<Site> sites;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Site> sites;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonIgnore
-    private List<PlaceRole> roles;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<PlaceRole> roles;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "placeOrder")
-    @JsonIgnore
-    private List<Order> order;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference(value = "placeOrder")
+//    @JsonIgnore
+//    private List<Order> order;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonIgnore
-    private List<Worker> workers;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Worker> workers;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonInclude
-    @JsonIgnore
-    private List<Delivery> deliveries;
+//    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<Delivery> deliveries;
 }

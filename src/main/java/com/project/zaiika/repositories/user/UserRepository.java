@@ -1,6 +1,6 @@
 package com.project.zaiika.repositories.user;
 
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

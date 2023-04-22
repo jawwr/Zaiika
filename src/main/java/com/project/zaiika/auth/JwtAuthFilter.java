@@ -1,6 +1,6 @@
 package com.project.zaiika.auth;
 
-import com.project.zaiika.models.userModels.UserDetailImpl;
+import com.project.zaiika.models.user.UserDetailImpl;
 import com.project.zaiika.repositories.token.TokenRepository;
 import com.project.zaiika.services.auth.JwtService;
 import jakarta.servlet.FilterChain;

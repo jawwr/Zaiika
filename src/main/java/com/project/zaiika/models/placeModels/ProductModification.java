@@ -34,7 +34,7 @@ public class ProductModification {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @ManyToMany(mappedBy = "modifications")
-    @JsonIgnore
-    private List<OrderItem> orders;
+//    @ManyToMany(mappedBy = "modifications")
+//    @JsonIgnore
+//    private List<OrderItem> orders;
 }

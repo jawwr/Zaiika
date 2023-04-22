@@ -1,6 +1,6 @@
 package com.project.zaiika.models.token;
 
-import com.project.zaiika.models.userModels.User;
+import com.project.zaiika.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

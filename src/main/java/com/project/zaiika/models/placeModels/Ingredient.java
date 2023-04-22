@@ -37,10 +37,10 @@ public class Ingredient {
     @JsonIgnore
     private Product product;
 
-    @ManyToMany(mappedBy = "excludeIngredient")
-    @JsonInclude
-    @JsonIgnore
-    private List<OrderItem> orders;
+//    @ManyToMany(mappedBy = "excludeIngredient")
+//    @JsonInclude
+//    @JsonIgnore
+//    private List<OrderItem> orders;
 
     @Column(name = "is_obligatory")
     private boolean isObligatory;

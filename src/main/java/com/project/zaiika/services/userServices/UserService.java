@@ -1,6 +1,6 @@
 package com.project.zaiika.services.userServices;
 
-import com.project.zaiika.models.userModels.UserDto;
+import com.project.zaiika.models.user.UserDto;
 
 import java.util.List;
 

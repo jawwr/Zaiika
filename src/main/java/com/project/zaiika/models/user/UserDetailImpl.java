@@ -1,4 +1,4 @@
-package com.project.zaiika.models.userModels;
+package com.project.zaiika.models.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,14 +41,6 @@ public class UserDetailImpl implements UserDetails {
             rolePermissions.addAll(permission);
         }
         authorities.addAll(rolePermissions);
-
-        if (user.getWorker() != null) {
-            var worker = user.getWorker();
-            List<GrantedAuthority> workerPermissions = worker.getPlaceRole().getPermissions()
-                    .stream().map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                    .collect(Collectors.toList());
-            authorities.addAll(workerPermissions);
-        }
 
         authorities = authorities.stream().distinct().toList();
 

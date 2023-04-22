@@ -1,8 +1,8 @@
 package com.project.zaiika.services.userServices;
 
 import com.project.zaiika.models.roles.Role;
-import com.project.zaiika.models.userModels.User;
-import com.project.zaiika.models.userModels.UserDto;
+import com.project.zaiika.models.user.User;
+import com.project.zaiika.models.user.UserDto;
 import com.project.zaiika.repositories.role.RoleRepository;
 import com.project.zaiika.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
