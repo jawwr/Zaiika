@@ -41,4 +41,17 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             and permission_id = :#{#permissionId}
             """, nativeQuery = true)
     void removePermissionFromRole(long roleId, long permissionId);
+
+    @Query(value = """
+            select distinct p.*
+            from permissions p
+            join role_permission rp
+                on p.id = rp.permission_id
+            join roles r
+                on r.id = rp.role_id
+            join user_role ur
+                on ur.role_id = r.id
+            where ur.user_id = :#{#userId}
+            """, nativeQuery = true)
+    List<Permission> getUserPermission(long userId);
 }

@@ -24,11 +24,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
     List<Worker> findAllByPlaceRoleId(long roleId);
 
-    @Query(value = """
-            select workers.*
-            from workers
-            where user_id = :#{#userId}
-            """, nativeQuery = true)
     Worker findWorkerByUserId(long userId);
 
     @Query(value = """

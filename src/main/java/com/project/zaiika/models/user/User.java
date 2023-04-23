@@ -1,6 +1,7 @@
 package com.project.zaiika.models.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.zaiika.models.permission.Permission;
 import com.project.zaiika.models.roles.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,4 +45,8 @@ public class User {
     )
     @Transient
     private List<Role> roles;
+
+    @Transient
+    @JsonIgnore
+    private List<Permission> permissions;
 }

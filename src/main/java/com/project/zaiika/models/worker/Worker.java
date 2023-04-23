@@ -1,15 +1,11 @@
 package com.project.zaiika.models.worker;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.order.Order;
 import com.project.zaiika.models.placeModels.Place;
 import com.project.zaiika.models.roles.PlaceRole;
 import com.project.zaiika.models.user.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +25,7 @@ public class Worker {
     @JsonIgnore
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     @JsonIgnore
     private Place place;

@@ -2,7 +2,6 @@ package com.project.zaiika.models.permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.zaiika.models.roles.PlaceRole;
 import com.project.zaiika.models.roles.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +30,10 @@ public class Permission {
     @Column(name = "description")
     private String description;
 
+    public Permission(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,21 +41,11 @@ public class Permission {
         Permission that = (Permission) o;
         return id == that.id
                 && name.equals(that.name)
-                && description.equals(that.description)
-                && roles.equals(that.roles);
+                && description.equals(that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, roles);
-    }
-
-    @ManyToMany(mappedBy = "permissions")
-    @JsonInclude
-    @JsonIgnore
-    private List<Role> roles;
-
-    public Permission(String name) {
-        this.name = name;
+        return Objects.hash(id, name, description);
     }
 }

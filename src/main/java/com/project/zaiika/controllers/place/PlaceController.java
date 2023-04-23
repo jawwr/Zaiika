@@ -44,7 +44,7 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority(AvailablePermission.VIEW_PLACE.name())")
+    @PreAuthorize("hasAnyAuthority('VIEW_PLACE')")
     @GetMapping
     public ResponseEntity<?> getAllPlaces() {
         return ResponseEntity.ok(service.getAllPlaces());

@@ -3,6 +3,7 @@ package com.project.zaiika.services.userServices;
 import com.project.zaiika.models.permission.Permission;
 import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.user.UserDetailImpl;
+import com.project.zaiika.repositories.permissions.PermissionRepository;
 import com.project.zaiika.repositories.role.RoleRepository;
 import com.project.zaiika.repositories.user.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
@@ -21,14 +22,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final WorkerRepository workerRepository;
     private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         var user = userRepository.findUserByLogin(login);
 
-        List<Role> userRoles = getRoles(user.getId());
-        userRoles.addAll(getWorkerRole(user.getId()));
-        user.setRoles(userRoles);
+        user.setRoles(getRoles(user.getId()));
+
+        List<Permission> permissions = getPermissions(user.getId());
+        permissions.addAll(getWorkerPermission(user.getId()));
+
+        user.setPermissions(permissions);
 
         return UserDetailImpl.of(user);
     }
@@ -37,16 +42,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return roleRepository.findUserRole(userId);
     }
 
-    private List<Role> getWorkerRole(long userId) {
-        List<Role> roles = new ArrayList<>();
+    private List<Permission> getPermissions(long userId) {
+        return permissionRepository.getUserPermission(userId);
+    }
+
+    private List<Permission> getWorkerPermission(long userId) {
+        List<Permission> permissions = new ArrayList<>();
         if (!workerRepository.isWorkerExist(userId)) {
-            return roles;
+            return permissions;
         }
         var worker = workerRepository.findWorkerByUserId(userId);
         var placeRole = worker.getPlaceRole();
-        for (Permission permission : placeRole.getPermissions()) {
-            roles.add(new Role(permission.getName()));
-        }
-        return roles;
+
+        permissions.addAll(placeRole.getPermissions());
+        return permissions;
     }
 }
