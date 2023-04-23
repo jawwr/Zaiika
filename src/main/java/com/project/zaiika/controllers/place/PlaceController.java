@@ -44,7 +44,7 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('VIEW_PLACE')")
+    @PreAuthorize("hasAnyAuthority(AvailablePermission.VIEW_PLACE.name())")
     @GetMapping
     public ResponseEntity<?> getAllPlaces() {
         return ResponseEntity.ok(service.getAllPlaces());
@@ -68,14 +68,7 @@ public class PlaceController {//TODO сделать управление для 
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            example = """
-                                                    {
-                                                      "id": 0,
-                                                      "name": "string",
-                                                      "ownerId": 0,
-                                                      "sites": []
-                                                    }
-                                                    """
+                                            implementation = Place.class
                                     )
                             )
                     }

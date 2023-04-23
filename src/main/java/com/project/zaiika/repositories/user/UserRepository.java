@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             select id, login, name, patronymic, surname, password
             from users
             where login = :#{#userLogin}
-            """, countQuery = "select * from users limit 1", nativeQuery = true)
+            """, nativeQuery = true)
     User findOnlyUserByLogin(String userLogin);
 
     @Query(value = """

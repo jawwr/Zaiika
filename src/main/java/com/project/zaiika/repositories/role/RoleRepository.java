@@ -4,6 +4,8 @@ import com.project.zaiika.models.roles.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query(value = """
             select *
@@ -25,4 +27,13 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             where name = :#{#name}
             """, nativeQuery = true)
     boolean existsByName(String name);
+
+    @Query(value = """
+            select *
+            from roles
+            join user_role
+                on roles.id = user_role.role_id
+            where user_id = :#{#userId}
+            """, nativeQuery = true)
+    List<Role> findUserRole(long userId);
 }

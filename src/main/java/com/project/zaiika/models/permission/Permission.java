@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,10 +31,21 @@ public class Permission {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "permissions")
-    @JsonInclude
-    @JsonIgnore
-    private List<PlaceRole> placeRoles;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return id == that.id
+                && name.equals(that.name)
+                && description.equals(that.description)
+                && roles.equals(that.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, roles);
+    }
 
     @ManyToMany(mappedBy = "permissions")
     @JsonInclude

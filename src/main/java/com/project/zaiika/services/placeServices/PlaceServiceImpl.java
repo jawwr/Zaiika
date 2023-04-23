@@ -21,7 +21,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public Place createPlace(Place place) {
-        var user = ctx.getContextUser();
+        User user = ctx.getContextUser();
         place.setOwner(user);
         setPlaceOwnerRole(user);
         return placeRepository.save(place);
