@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
+    @Query(value = """
+            select *
+            from workers
+            where place_id = :#{#placeId}
+            """, nativeQuery = true)
     List<Worker> findAllByPlaceId(long placeId);
 
     @Modifying

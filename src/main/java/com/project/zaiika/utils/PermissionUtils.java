@@ -20,8 +20,8 @@ public final class PermissionUtils {
     public void createPermissions() {
         List<Permission> permissions = new ArrayList<>();
         var availablePermission = AvailablePermission.values();
-        for (long i = 1; i <= availablePermission.length; i++) {
-            var name = availablePermission[(int) i - 1].name();
+        for (int i = 1; i <= availablePermission.length; i++) {
+            var name = availablePermission[i - 1].name();
             if (!permissionRepository.existsByName(name)) {
                 var permission = new Permission(name);
                 permissions.add(permission);

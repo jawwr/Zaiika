@@ -5,7 +5,6 @@ import com.project.zaiika.models.roles.Role;
 import com.project.zaiika.models.user.UserDetailImpl;
 import com.project.zaiika.repositories.user.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
-import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +19,6 @@ import java.util.List;
 public class UserDetailServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final WorkerRepository workerRepository;
-    private final ContextService ctx;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -31,12 +29,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     private List<Role> getWorkerRole(long userId) {
         List<Role> roles = new ArrayList<>();
-        if (workerRepository.isWorkerExist(userId)) {
-            var worker = workerRepository.findWorkerByUserId(userId);
-            var placeRole = worker.getPlaceRole();
-            for (Permission permission : placeRole.getPermissions()) {
-                roles.add(new Role(permission.getName()));
-            }
+        if (!workerRepository.isWorkerExist(userId)) {
+            return roles;
+        }
+        var worker = workerRepository.findWorkerByUserId(userId);
+        var placeRole = worker.getPlaceRole();
+        for (Permission permission : placeRole.getPermissions()) {
+            roles.add(new Role(permission.getName()));
         }
         return roles;
     }

@@ -24,20 +24,23 @@ public final class RoleUtils {
     @EventListener(ApplicationReadyEvent.class)
     public void initRoles() {
         for (UserRole userRole : UserRole.values()) {
-            Role role;
-            if (roleRepository.existsByName(userRole.name())) {
-                role = roleRepository.findRoleByName(userRole.name());
-                role.setPermissions(permissionRepository.findByRoleId(role.getId()));
-            } else {
-                role = new Role(userRole.name());
+            Role role = getRoleByName(userRole.name());
+            List<Permission> permissions = getRolePermission(userRole.name());
+            if (comparingRolePermissionList(permissions, role.getPermissions())) {
+                return;
             }
-            var permissions = getRolePermission(userRole.name());
-
-            if (!comparingRolePermissionList(permissions, role.getPermissions())) {
-                insertNotContainingValues(role.getId(), role.getPermissions(), permissions);
-                deleteNotContainingValues(role.getId(), role.getPermissions(), permissions);
-            }
+            insertNotContainingValues(role.getId(), role.getPermissions(), permissions);
+            deleteNotContainingValues(role.getId(), role.getPermissions(), permissions);
         }
+    }
+
+    private Role getRoleByName(String roleName) {
+        if (!roleRepository.existsByName(roleName)) {
+            return new Role(roleName);
+        }
+        Role role = roleRepository.findRoleByName(roleName);
+        role.setPermissions(permissionRepository.findByRoleId(role.getId()));
+        return role;
     }
 
     private void insertNotContainingValues(long roleId, List<Permission> from, List<Permission> to) {
