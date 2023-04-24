@@ -11,9 +11,9 @@ services:
       - POSTGRES_DB=zaiika
     restart: on-failure
 
-  app_zaiika:
+  app_backend:
     build:
-      context: .
+      context: Backend
       dockerfile: Dockerfile
     container_name: app_zaiika
     ports:
