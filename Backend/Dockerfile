@@ -1,5 +1,5 @@
 FROM maven as builder
-COPY ../Zaiika /src
+COPY . /src
 WORKDIR /src
 RUN mvn clean package -DskipTests
 

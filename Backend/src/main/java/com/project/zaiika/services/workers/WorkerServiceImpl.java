@@ -1,8 +1,8 @@
 package com.project.zaiika.services.workers;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.roles.UserRole;
+import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.worker.Worker;
 import com.project.zaiika.models.worker.WorkerDto;
 import com.project.zaiika.repositories.role.PlaceRoleRepository;
@@ -21,7 +21,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository workerRepository;
-    private final UserRepository userRepository;
+    private final UserRepository userJpaRepository;
     private final PlaceRoleRepository placeRoleRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
@@ -59,7 +59,7 @@ public class WorkerServiceImpl implements WorkerService {
 
     private User saveWorkerAsUser(WorkerDto dto) {
         var user = convertWorkerDtoToUser(dto, true);
-        return userRepository.save(user);
+        return userJpaRepository.save(user);
     }
 
     private User convertWorkerDtoToUser(WorkerDto dto, boolean generateLogin) {
@@ -100,10 +100,10 @@ public class WorkerServiceImpl implements WorkerService {
         var worker = workerRepository.findById(updateWorker.getId());
         saveWorker(worker.getUser(), updateWorker);
 
-        var user = userRepository.findUserById(worker.getId());
+        var user = userJpaRepository.getUserById(worker.getId());
         var userWorker = convertWorkerDtoToUser(updateWorker, false);
         userWorker.setLogin(user.getLogin());
-        userRepository.save(userWorker);
+        userJpaRepository.save(userWorker);
     }
 
     @Override

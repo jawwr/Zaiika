@@ -75,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        var user = userRepository.findOnlyUserByLogin(credential.login());
+        var user = userRepository.getUserByLogin(credential.login());
         var jwt = jwtService.generateToken(UserDetailImpl.of(user));
         revokeAllUserTokens(user);
         saveUserToken(jwt, user);

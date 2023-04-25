@@ -44,6 +44,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @Transient
+    @JsonIgnore
     private List<Role> roles;
 
     @Transient

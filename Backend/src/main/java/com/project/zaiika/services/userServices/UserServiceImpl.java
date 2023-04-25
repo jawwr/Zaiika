@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        var users = userRepository.findAll();
+        var users = userRepository.getAllUsers();
 
         return users.stream().map(this::convertUserToDto).toList();
     }
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUserRole(Long userId, String roleName) {
-        var user = userRepository.findUserById(userId);
+        var user = userRepository.getUserById(userId);
         var role = findRoleByName(roleName);
 
         user.getRoles().add(role);
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserRole(long userId, String roleName) {
-        var user = userRepository.findUserById(userId);
+        var user = userRepository.getUserById(userId);
         var role = findRoleByName(roleName);
 
         var roles = user.getRoles();
@@ -70,6 +70,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+        userRepository.deleteUserById(userId);
     }
 }

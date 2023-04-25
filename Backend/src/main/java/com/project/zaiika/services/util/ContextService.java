@@ -32,7 +32,7 @@ public class ContextService {
 
     public User getContextUser() {
         var login = ((UserDetailImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getLogin();
-        return userRepository.findUserByLogin(login);
+        return userRepository.getUserByLogin(login);
     }
 
     public Worker getContextWorker() {
