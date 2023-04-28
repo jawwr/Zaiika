@@ -5,6 +5,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,11 +13,14 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     public static final String QUEUE_NAME = "users";
     public static final String QUEUE_EXCHANGE = "users_exchange";
-    public static final String QUEUE_KEY = "users_key";
+    public static final String QUEUE_KEY = "users.key";
+
+    @Value("${rabbitmq.host}")
+    private String host;
 
     @Bean
     public CachingConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("rabbitmq");
+        return new CachingConnectionFactory(host);
     }
 
     @Bean

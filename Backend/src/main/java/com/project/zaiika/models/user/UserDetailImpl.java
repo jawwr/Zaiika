@@ -33,13 +33,6 @@ public class UserDetailImpl implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
 
-        List<GrantedAuthority> roles = user.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
-
-        authorities.addAll(roles);
-
         return new UserDetailImpl(
                 user.getId(),
                 user.getName(),

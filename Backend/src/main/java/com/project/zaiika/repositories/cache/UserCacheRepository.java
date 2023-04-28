@@ -25,6 +25,6 @@ public class UserCacheRepository {
     }
 
     public void deleteUser(String key) {
-        template.opsForHash().delete(key);
+        template.opsForHash().delete(HASH_KEY, key);
     }
 }

@@ -1,20 +1,19 @@
 package com.project.zaiika.models.user;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.security.core.GrantedAuthority;
+import com.project.zaiika.models.permission.Permission;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.util.List;
 
-@RedisHash("CacheUser")
+@Builder
 public record UserCache(
-        @Id
         long id,
         String name,
         String surname,
         String patronymic,
         String login,
-        List<GrantedAuthority> authorities
+        String password,
+        List<Permission> permissions
 ) implements Serializable {
 }
