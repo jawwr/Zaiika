@@ -1,4 +1,4 @@
-package com.project.zaiika.repositories.place;
+package com.project.zaiika.repositories.place.ingredients;
 
 import com.project.zaiika.models.placeModels.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;

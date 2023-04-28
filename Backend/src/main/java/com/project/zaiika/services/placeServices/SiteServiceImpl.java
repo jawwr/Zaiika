@@ -2,7 +2,7 @@ package com.project.zaiika.services.placeServices;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Site;
-import com.project.zaiika.repositories.place.SiteRepository;
+import com.project.zaiika.repositories.place.site.SiteRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

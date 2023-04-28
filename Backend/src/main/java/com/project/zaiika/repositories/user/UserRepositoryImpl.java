@@ -3,9 +3,9 @@ package com.project.zaiika.repositories.user;
 import com.project.zaiika.models.permission.Permission;
 import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.user.UserCache;
-import com.project.zaiika.repositories.cache.UserCacheRepository;
 import com.project.zaiika.repositories.permissions.PermissionRepository;
 import com.project.zaiika.repositories.role.RoleRepository;
+import com.project.zaiika.repositories.user.cache.UserCacheRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByLogin(String login) {
-        var userCache = userCacheRepository.getUserByLogin(login);
+        var userCache = userCacheRepository.getById(login);
         if (userCache != null) {
             return convertUserCacheToUser(userCache);
         }
@@ -39,12 +39,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserById(long id) {
-        return userJpaRepository.findUserById(id);
+        var user = userJpaRepository.findUserById(id);
+        user.setRoles(roleRepository.findUserRole(user.getId()));
+        return user;
     }
 
     @Override
     public boolean existUserByLogin(String login) {
-        var user = userCacheRepository.getUserByLogin(login);
+        var user = userCacheRepository.getById(login);
         if (user != null) {
             return true;
         }
@@ -65,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteUserById(long id) {
         var deleteUser = userJpaRepository.deleteUserById(id);
-        userCacheRepository.deleteUser(deleteUser.getLogin());
+        userCacheRepository.delete(deleteUser.getLogin());
     }
 
     private UserCache convertUserToUserCache(User user) {

@@ -1,6 +1,6 @@
-package com.project.zaiika.repositories.place;
+package com.project.zaiika.repositories.place.menu;
 
-import com.project.zaiika.models.placeModels.Site;
+import com.project.zaiika.models.placeModels.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,17 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface SiteRepository extends JpaRepository<Site, Long> {
-    List<Site> findAllByPlaceId(long placeId);
+public interface MenuRepository extends JpaRepository<Menu, Long> {
+    List<Menu> findAllBySiteId(long siteId);
 
     @Modifying
     @Transactional
-    void deleteSiteById(long siteId);
+    void deleteMenuById(long menuId);
 
     @Query(value = """
             select *
-            from sites
-            where place_id = :#{#placeId}
+            from menus
+            where site_id in :#{#siteIds}
             """, nativeQuery = true)
-    List<Site> findSitesByPlaceId(long placeId);
+    List<Menu> findAllBySiteIds(List<Long> siteIds);
 }

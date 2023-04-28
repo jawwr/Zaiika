@@ -2,7 +2,7 @@ package com.project.zaiika.services.placeServices;
 
 import com.project.zaiika.exceptions.PermissionDeniedException;
 import com.project.zaiika.models.placeModels.Menu;
-import com.project.zaiika.repositories.place.MenuRepository;
+import com.project.zaiika.repositories.place.menu.MenuRepository;
 import com.project.zaiika.services.util.ContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

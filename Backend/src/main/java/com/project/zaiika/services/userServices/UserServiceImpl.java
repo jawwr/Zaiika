@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserRole(Long userId, String roleName) {
+    public void setRoleToUser(Long userId, String roleName) {
         var user = userRepository.getUserById(userId);
         var role = findRoleByName(roleName);
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserRole(long userId, String roleName) {
+    public void deleteRoleFromUser(long userId, String roleName) {
         var user = userRepository.getUserById(userId);
         var role = findRoleByName(roleName);
 

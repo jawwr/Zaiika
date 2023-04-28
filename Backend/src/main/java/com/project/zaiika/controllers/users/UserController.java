@@ -59,7 +59,7 @@ public class UserController {
     @PostMapping("/{userId}/role")
     public ResponseEntity<?> addRole(@PathVariable("userId") Long userId,
                                      @RequestParam("role") String role) {
-        service.addUserRole(userId, role);
+        service.setRoleToUser(userId, role);
         return ResponseEntity.ok().build();
     }
 
@@ -73,7 +73,7 @@ public class UserController {
     @DeleteMapping("/{userId}/role")
     public ResponseEntity<?> deleteRole(@PathVariable("userId") Long userId,
                                         @RequestParam("role") String role) {
-        service.deleteUserRole(userId, role);
+        service.deleteRoleFromUser(userId, role);
         return ResponseEntity.ok().build();
     }
 

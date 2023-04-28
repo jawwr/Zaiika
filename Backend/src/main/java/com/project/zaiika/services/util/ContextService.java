@@ -8,9 +8,9 @@ import com.project.zaiika.models.roles.UserRole;
 import com.project.zaiika.models.user.User;
 import com.project.zaiika.models.user.UserDetailImpl;
 import com.project.zaiika.models.worker.Worker;
-import com.project.zaiika.repositories.place.MenuRepository;
-import com.project.zaiika.repositories.place.PlaceRepository;
-import com.project.zaiika.repositories.place.SiteRepository;
+import com.project.zaiika.repositories.place.menu.MenuRepository;
+import com.project.zaiika.repositories.place.place.PlaceJpaRepository;
+import com.project.zaiika.repositories.place.site.SiteRepository;
 import com.project.zaiika.repositories.role.PlaceRoleRepository;
 import com.project.zaiika.repositories.user.UserRepository;
 import com.project.zaiika.repositories.worker.WorkerRepository;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ContextService {
     private final UserRepository userRepository;
     private final WorkerRepository workerRepository;
-    private final PlaceRepository placeRepository;
+    private final PlaceJpaRepository placeJpaRepository;
     private final SiteRepository siteRepository;
     private final MenuRepository menuRepository;
     private final PlaceRoleRepository placeRoleRepository;
@@ -52,7 +52,7 @@ public class ContextService {
                 .stream()
                 .anyMatch(x -> x.getName().equals(UserRole.PLACE_OWNER.name()));
         if (isOwner) {
-            return placeRepository.findPlaceByOwnerId(user.getId());
+            return placeJpaRepository.findPlaceByOwnerId(user.getId());
         }
 
         var worker = workerRepository.findWorkerByUserId(user.getId());
