@@ -15,6 +15,34 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/api/order/**
+        - id: deliveries
+          uri: lb://delivery-service
+          predicates:
+            - Path=/api/delivery/**
+        - id: places
+          uri: lb://place-service
+          predicates:
+            - Path=/api/manage-place/**
+        - id: menus
+          uri: lb://place-service
+          predicates:
+            - Path=/api/site/**/menu
+        - id: products
+          uri: lb://place-service
+          predicates:
+            - Path=/api/menu/**/products
+        - id: sites
+          uri: lb://place-service
+          predicates:
+            - Path=/api/sites
+        - id: workers
+          uri: lb://worker-service
+          predicates:
+            - Path=/api/workers
+        - id: users
+          uri: lb://user-service
+          predicates:
+            - Path=/api/user
 
 eureka:
   client:
