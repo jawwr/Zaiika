@@ -1,7 +1,7 @@
-package com.project.zaiika.controllers.order;
+package com.zaiika.orderservice.controller;
 
-import com.project.zaiika.models.order.Order;
-import com.project.zaiika.services.order.OrderService;
+import com.zaiika.orderservice.model.Order;
+import com.zaiika.orderservice.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,7 +41,7 @@ public class OrderController {
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
+//    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         service.createOrder(order);
@@ -59,7 +58,7 @@ public class OrderController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
+//    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
         service.cancelOrder(id);
@@ -82,10 +81,11 @@ public class OrderController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
-        return ResponseEntity.ok(service.getOrders());
+        return ResponseEntity.ok("it's work");
+//        return ResponseEntity.ok(service.getOrders());
     }
 
     @Operation(summary = "Получение заказов по фильтру")
@@ -104,7 +104,7 @@ public class OrderController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
     @GetMapping("/filter")
     public ResponseEntity<?> getOrdersByDeliveryType(@RequestParam("delivery_type") String type) {
         return ResponseEntity.ok(service.getOrders(type));

@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8765
 
 spring:
   application:
@@ -11,13 +11,13 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: order-service
+        - id: orders
           uri: lb://order-service
           predicates:
-            - Path=/api/order-service
+            - Path=/api/order
             - Method=GET
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8000/eureka
+      defaultZone: http://localhost:8761/eureka/

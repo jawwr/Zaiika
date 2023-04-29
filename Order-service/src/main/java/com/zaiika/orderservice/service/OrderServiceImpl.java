@@ -1,12 +1,9 @@
-package com.project.zaiika.services.order;
+package com.zaiika.orderservice.service;
 
-import com.project.zaiika.exceptions.PermissionDeniedException;
-import com.project.zaiika.models.order.Order;
-import com.project.zaiika.models.order.OrderItem;
-import com.project.zaiika.repositories.delivery.DeliveryRepository;
-import com.project.zaiika.repositories.order.OrderItemRepository;
-import com.project.zaiika.repositories.order.OrderRepository;
-import com.project.zaiika.services.util.ContextService;
+import com.zaiika.orderservice.model.Order;
+import com.zaiika.orderservice.model.OrderItem;
+import com.zaiika.orderservice.repository.OrderItemRepository;
+import com.zaiika.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +15,15 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ContextService ctx;
-    private final DeliveryRepository deliveryService;
+    //    private final DeliveryRepository deliveryService;
     private final OrderItemRepository orderItemRepository;
 
     @Override
     public void createOrder(Order order) {
-        var place = ctx.getPlace();
-        var user = ctx.getContextWorker();
-        order.setWorker(user);
-        order.setPlace(place);
+//        var place = ctx.getPlace();
+//        var user = ctx.getContextWorker();
+//        order.setWorker(user);
+//        order.setPlace(place);
         order.setDate(LocalDateTime.now());
         List<OrderItem> items = orderItemRepository.findAllItemsByOrderId(order.getId());
 
@@ -39,24 +36,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrders() {
-        var place = ctx.getPlace();
-
-        return orderRepository.findOrdersByPlaceId(place.getId());
+//        var place = ctx.getPlace();
+//
+//        return orderRepository.findOrdersByPlaceId(place.getId());
+        return null;
     }
 
     @Override
     public List<Order> getOrders(String type) {
-        var delivery = deliveryService.findDeliveryByDeliveryType(type);
-        return orderRepository.findOrdersByDeliveryId(delivery.getId());
+//        var delivery = deliveryService.findDeliveryByDeliveryType(type);
+//        return orderRepository.findOrdersByDeliveryId(delivery.getId());
+        return null;
     }
 
     @Override
     public void cancelOrder(long id) {
-        var place = ctx.getPlace();
-        var order = orderRepository.findOrderById(id);
-        if (place.getId() != order.getPlace().getId()) {
-            throw new PermissionDeniedException();
-        }
+//        var place = ctx.getPlace();
+//        var order = orderRepository.findOrderById(id);
+//        if (place.getId() != order.getPlace().getId()) {
+//            throw new PermissionDeniedException();
+//        }
         orderRepository.updateCancel(id);
     }
 }

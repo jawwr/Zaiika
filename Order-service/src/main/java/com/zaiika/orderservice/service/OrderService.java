@@ -1,6 +1,6 @@
-package com.project.zaiika.services.order;
+package com.zaiika.orderservice.service;
 
-import com.project.zaiika.models.order.Order;
+import com.zaiika.orderservice.model.Order;
 
 import java.util.List;
 

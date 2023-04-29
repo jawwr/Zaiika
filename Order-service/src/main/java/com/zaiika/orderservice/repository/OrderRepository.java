@@ -1,6 +1,6 @@
-package com.project.zaiika.repositories.order;
+package com.zaiika.orderservice.repository;
 
-import com.project.zaiika.models.order.Order;
+import com.zaiika.orderservice.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
