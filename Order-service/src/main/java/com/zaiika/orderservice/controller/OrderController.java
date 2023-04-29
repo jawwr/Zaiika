@@ -61,8 +61,9 @@ public class OrderController {
 //    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
-        service.cancelOrder(id);
-        return ResponseEntity.ok().build();
+//        service.cancelOrder(id);
+//        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("cancel order " + id);
     }
 
     @Operation(summary = "Получение всех заказов")

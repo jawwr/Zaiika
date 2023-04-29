@@ -14,8 +14,7 @@ spring:
         - id: orders
           uri: lb://order-service
           predicates:
-            - Path=/api/order
-            - Method=GET
+            - Path=/api/order/**
 
 eureka:
   client:
