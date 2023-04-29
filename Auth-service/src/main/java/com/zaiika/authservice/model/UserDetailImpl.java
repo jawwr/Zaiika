@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,13 @@ public class UserDetailImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailImpl of(User user) {
-        List<GrantedAuthority> authorities = user.getPermissions()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+        //TODO переделать
+//        List<GrantedAuthority> authorities = user.getPermissions()
+//                .stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName()))
+//                .collect(Collectors.toList());
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
         return new UserDetailImpl(
                 user.getId(),

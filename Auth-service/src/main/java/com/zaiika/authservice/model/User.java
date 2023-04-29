@@ -35,14 +35,12 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private long roleId;
-
-    //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    @JoinTable(
-//            name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     @Transient
     @JsonIgnore
     private List<Role> roles;
