@@ -38,7 +38,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 var isValidToken = template.convertSendAndReceive(
                         "auth.exchange",
                         "auth.token.key",
-                        new Message(token.getBytes(StandardCharsets.UTF_8)));
+                        new Message(token.getBytes(StandardCharsets.UTF_8))
+                );
 
                 if (isValidToken == null || !((boolean) isValidToken)) {
                     throw new IllegalArgumentException("Token not valid");

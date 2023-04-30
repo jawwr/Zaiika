@@ -1,5 +1,6 @@
 server:
   port: 8765
+  hostname: localhost
 
 spring:
   application:
@@ -10,55 +11,6 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-#      routes:
-#        - id: orders
-#          uri: lb://order-service
-#          predicates:
-#            - Path=/api/order/**
-#          filters:
-#            - AuthFilter
-
-#        - id: deliveries
-#          uri: lb://delivery-service
-#          predicates:
-#            - Path=/api/delivery/**
-
-#        - id: places
-#          uri: lb://place-service
-#          predicates:
-#            - Path=/api/manage-place/**
-
-#        - id: menus
-#          uri: lb://place-service
-#          predicates:
-#            - Path=/api/site/**
-
-#        - id: products
-#          uri: lb://place-service
-#          predicates:
-#            - Path=/api/menu/**
-
-#        - id: sites
-#          uri: lb://place-service
-#          predicates:
-#            - Path=/api/sites
-
-#        - id: workers
-#          uri: lb://worker-service
-#          predicates:
-#            - Path=/api/workers
-
-#        - id: users
-#          uri: lb://user-service
-#          predicates:
-#            - Path=/api/user
-
-#        - id: auth
-#          uri: lb://auth-service
-#          predicates:
-#            - Path=/api/auth/**
-#          filters:
-#            - AuthFilter
 
 eureka:
   client:
