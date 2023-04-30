@@ -1,21 +1,15 @@
 package com.zaiika.authservice.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaiika.authservice.config.RabbitConfig;
 import com.zaiika.authservice.model.UserDetailImpl;
 import com.zaiika.authservice.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.glassfish.jaxb.core.v2.model.core.TypeRef;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Map;
 
 @Component
 @EnableRabbit
@@ -26,12 +20,8 @@ public class TokenValidatorListener {
     private final UserDetailServiceImpl userDetailService;
 
     @RabbitListener(queues = RabbitConfig.VALIDATE_TOKEN_QUEUE_NAME)
-    public Message validateToken(Message message) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<Map<String, String>> mapType = new TypeReference<>() {
-        };
-        Map<String, String> token = mapper.readValue(message.getBody(), mapType);
-        var receiveToken = token.get("token");
+    public Message validateToken(Message message) {
+        var receiveToken = new String(message.getBody());
         try {
             var login = jwtService.extractLogin(receiveToken);
 
@@ -44,9 +34,7 @@ public class TokenValidatorListener {
 
             var isTokenValid = !savedToken.isRevoked() && !savedToken.isExpired();
             var result = jwtService.isTokenValid(receiveToken, user) && isTokenValid;
-            return result
-                    ? new Message("true".getBytes(StandardCharsets.UTF_8))
-                    : new Message("false".getBytes(StandardCharsets.UTF_8));
+            return new Message(Boolean.valueOf(result).toString().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             return new Message("false".getBytes(StandardCharsets.UTF_8));
         }

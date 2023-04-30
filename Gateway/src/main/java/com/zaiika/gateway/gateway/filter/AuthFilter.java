@@ -2,7 +2,6 @@ package com.zaiika.gateway.gateway.filter;
 
 import com.zaiika.gateway.gateway.validator.Validator;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -12,7 +11,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
@@ -40,9 +38,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 var isValidToken = template.convertSendAndReceive(
                         "auth.exchange",
                         "auth.token.key",
-                        Map.of("token", token));
-
-                System.out.println(isValidToken);
+                        new Message(token.getBytes(StandardCharsets.UTF_8)));
 
                 if (isValidToken == null || !((boolean) isValidToken)) {
                     throw new IllegalArgumentException("Token not valid");
@@ -53,6 +49,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         };
     }
 
-    protected static final class Config {
+    public static final class Config {
     }
 }
