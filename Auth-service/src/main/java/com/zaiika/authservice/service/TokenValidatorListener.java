@@ -1,7 +1,6 @@
 package com.zaiika.authservice.service;
 
 import com.zaiika.authservice.config.RabbitConfig;
-import com.zaiika.authservice.model.UserDetailImpl;
 import com.zaiika.authservice.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
@@ -17,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 public class TokenValidatorListener {
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
-    private final UserDetailServiceImpl userDetailService;
 
     @RabbitListener(queues = RabbitConfig.VALIDATE_TOKEN_QUEUE_NAME)
     public Message validateToken(Message message) {
@@ -30,10 +28,11 @@ public class TokenValidatorListener {
             }
 
             var savedToken = tokenRepository.findByToken(receiveToken);
-            var user = (UserDetailImpl) userDetailService.loadUserByUsername(login);
+            var user = savedToken.getUser();
 
             var isTokenValid = !savedToken.isRevoked() && !savedToken.isExpired();
-            var result = jwtService.isTokenValid(receiveToken, user) && isTokenValid;
+            var result = jwtService.isTokenValid(receiveToken, user.getLogin()) && isTokenValid;
+
             return new Message(Boolean.valueOf(result).toString().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             return new Message("false".getBytes(StandardCharsets.UTF_8));

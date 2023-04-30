@@ -1,6 +1,5 @@
 package com.zaiika.authservice.service;
 
-import com.zaiika.authservice.model.UserDetailImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,23 +23,23 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(Map<String, Object> extractClaims, UserDetailImpl userDetails) {
+    public String generateToken(Map<String, Object> extractClaims, String userLogin) {
         return Jwts.builder()
                 .setClaims(extractClaims)
-                .setSubject(userDetails.getLogin())
+                .setSubject(userLogin)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 8))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateToken(UserDetailImpl userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(String userLogin) {
+        return generateToken(new HashMap<>(), userLogin);
     }
 
-    public boolean isTokenValid(String token, UserDetailImpl userDetails) {
+    public boolean isTokenValid(String token, String userLogin) {
         final String login = extractLogin(token);
-        return login.equals(userDetails.getLogin()) && !isTokenExpired(token);
+        return login.equals(userLogin) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
