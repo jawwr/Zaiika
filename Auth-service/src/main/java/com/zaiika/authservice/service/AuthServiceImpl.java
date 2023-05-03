@@ -102,6 +102,15 @@ public class AuthServiceImpl implements AuthService {
         return new TokenResponse(jwt);
     }
 
+    @Override
+    public boolean isValidToken(String token) {
+        var savedToken = tokenRepository.findByToken(token);
+        if (savedToken == null || savedToken.getUser() == null) {
+            return false;
+        }
+        return jwtService.isTokenValid(token, savedToken.getUser().getLogin());
+    }
+
     private void revokeAllUserTokens(User user) {
         var userTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
         if (userTokens.isEmpty()) {

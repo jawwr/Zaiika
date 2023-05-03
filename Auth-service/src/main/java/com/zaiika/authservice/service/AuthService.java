@@ -11,4 +11,6 @@ public interface AuthService {
     TokenResponse login(LoginCredential credential);
 
     TokenResponse login(long placeId, WorkerCredential credential);
+
+    boolean isValidToken(String token);
 }

@@ -5,6 +5,7 @@ import com.zaiika.gateway.gateway.validator.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class AppConfig {
@@ -13,5 +14,10 @@ public class AppConfig {
         return RouteValidator.builder()
                 .addRoutes("/api/order")
                 .build();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

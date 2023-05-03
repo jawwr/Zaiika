@@ -62,4 +62,9 @@ public class AuthController {
                                    @RequestBody WorkerCredential credential) {
         return ResponseEntity.ok(service.login(placeId, credential));
     }
+
+    @GetMapping("/isValid")
+    public ResponseEntity<?> isValidToken(@RequestParam("token") String token) {
+        return ResponseEntity.ok(service.isValidToken(token));
+    }
 }
