@@ -1,4 +1,4 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.user.permission;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

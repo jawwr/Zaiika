@@ -1,5 +1,6 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.token;
 
+import com.zaiika.authservice.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

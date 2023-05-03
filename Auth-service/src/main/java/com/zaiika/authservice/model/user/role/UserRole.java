@@ -1,4 +1,6 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.user.role;
+
+import com.zaiika.authservice.model.user.permission.AvailablePermission;
 
 public enum UserRole {
     DUNGEON_MASTER(AvailablePermission.values()),

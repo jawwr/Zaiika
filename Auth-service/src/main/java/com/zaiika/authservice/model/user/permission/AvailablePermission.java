@@ -1,4 +1,4 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.user.permission;
 
 public enum AvailablePermission {
     VIEW_PERMISSIONS,

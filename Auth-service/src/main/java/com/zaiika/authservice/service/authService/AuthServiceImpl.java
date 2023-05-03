@@ -1,10 +1,20 @@
-package com.zaiika.authservice.service;
+package com.zaiika.authservice.service.authService;
 
-import com.zaiika.authservice.model.*;
+import com.zaiika.authservice.model.authCredentials.LoginCredential;
+import com.zaiika.authservice.model.authCredentials.RegisterCredential;
+import com.zaiika.authservice.model.token.Token;
+import com.zaiika.authservice.model.token.TokenResponse;
+import com.zaiika.authservice.model.user.User;
+import com.zaiika.authservice.model.user.UserDetailImpl;
+import com.zaiika.authservice.model.user.role.Role;
+import com.zaiika.authservice.model.user.role.UserRole;
+import com.zaiika.authservice.model.worker.Worker;
+import com.zaiika.authservice.model.worker.WorkerCredential;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.TokenRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import com.zaiika.authservice.repository.WorkerRepository;
+import com.zaiika.authservice.service.jwtService.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,11 +40,10 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existUserByLogin(credential.login())) {
             throw new IllegalArgumentException("User already exist");
         }
-        var role = roleRepository.findRoleByName(UserRole.USER.name());
-        var user = convertCredentialsToUser(credential, role);
+        var user = convertCredentialsToUser(credential);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(List.of(findRoleByName(UserRole.USER.name())));
 
-        user.setRoles(List.of(role));
         var savedUser = userRepository.save(user);
         var jwt = jwtService.generateToken(user.getLogin());
         saveUserToken(jwt, savedUser);
@@ -42,13 +51,16 @@ public class AuthServiceImpl implements AuthService {
         return new TokenResponse(jwt);
     }
 
-    private User convertCredentialsToUser(RegisterCredential credential, Role role) {
+    private Role findRoleByName(String name) {
+        return roleRepository.findRoleByName(name);
+    }
+
+    private User convertCredentialsToUser(RegisterCredential credential) {
         return User.builder()
                 .name(credential.name())
                 .surname(credential.surname())
                 .login(credential.login())
                 .password(credential.password())
-                .roles(List.of(role))
                 .build();
     }
 

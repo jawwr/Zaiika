@@ -1,9 +1,9 @@
 package com.zaiika.authservice.controller;
 
-import com.zaiika.authservice.model.LoginCredential;
-import com.zaiika.authservice.model.RegisterCredential;
-import com.zaiika.authservice.model.WorkerCredential;
-import com.zaiika.authservice.service.AuthService;
+import com.zaiika.authservice.model.authCredentials.LoginCredential;
+import com.zaiika.authservice.model.authCredentials.RegisterCredential;
+import com.zaiika.authservice.model.worker.WorkerCredential;
+import com.zaiika.authservice.service.authService.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

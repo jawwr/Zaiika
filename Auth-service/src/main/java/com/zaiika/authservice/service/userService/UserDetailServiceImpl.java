@@ -1,6 +1,6 @@
-package com.zaiika.authservice.service;
+package com.zaiika.authservice.service.userService;
 
-import com.zaiika.authservice.model.UserDetailImpl;
+import com.zaiika.authservice.model.user.UserDetailImpl;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

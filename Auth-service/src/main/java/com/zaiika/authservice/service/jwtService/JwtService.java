@@ -1,4 +1,4 @@
-package com.zaiika.authservice.service;
+package com.zaiika.authservice.service.jwtService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package com.zaiika.authservice.service;
+package com.zaiika.authservice.service.authService;
 
 import com.zaiika.authservice.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

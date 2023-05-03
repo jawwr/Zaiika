@@ -1,6 +1,8 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zaiika.authservice.model.user.permission.Permission;
+import com.zaiika.authservice.model.user.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

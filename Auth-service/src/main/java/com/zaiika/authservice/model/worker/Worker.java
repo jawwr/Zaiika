@@ -1,6 +1,7 @@
-package com.zaiika.authservice.model;
+package com.zaiika.authservice.model.worker;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zaiika.authservice.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,13 +25,4 @@ public class Worker {
 
     private long placeId;
     private long placeRoleId;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "place_id")
-//    @JsonIgnore
-//    private Place place;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "place_role_id")
-//    private PlaceRole placeRole;
 }

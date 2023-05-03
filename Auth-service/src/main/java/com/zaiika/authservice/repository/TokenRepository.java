@@ -1,6 +1,6 @@
 package com.zaiika.authservice.repository;
 
-import com.zaiika.authservice.model.Token;
+import com.zaiika.authservice.model.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
