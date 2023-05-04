@@ -5,6 +5,7 @@ import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImpl implements TokenService {
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
+    private final CacheManager cacheManager;
 
     @Override
     @Cacheable(cacheNames = {"usersToken"}, key = "#token")
     public User getUserByToken(String token) {
+        log.info("get user by token");
         return tokenRepository.findByToken(token).getUser();
     }
 
@@ -41,8 +44,13 @@ public class TokenServiceImpl implements TokenService {
         if (userTokens.isEmpty()) {
             return;
         }
-
+        var cache = cacheManager.getCache("usersToken");
         userTokens.forEach(token -> {
+
+            if (cache != null) {
+                cache.evict(token.getToken());
+            }
+
             token.setRevoked(true);
             token.setExpired(true);
         });
