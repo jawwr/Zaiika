@@ -12,4 +12,6 @@ public interface UserService {
     void deleteRoleFromUser(long userId, String role);
 
     void deleteUser(Long userId);
+
+    boolean hasUserPermission(long userId, String permissionName);
 }

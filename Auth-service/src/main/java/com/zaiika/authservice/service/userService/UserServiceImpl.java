@@ -2,6 +2,7 @@ package com.zaiika.authservice.service.userService;
 
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.role.Role;
+import com.zaiika.authservice.repository.PermissionRepository;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
     public List<User> getAllUsers() {
@@ -57,5 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteUserById(userId);
+    }
+
+    @Override
+    public boolean hasUserPermission(long userId, String permissionName) {
+        var permissions = permissionRepository.getUserPermission(userId);
+        return permissions.stream().anyMatch(x -> x.getName().equals(permissionName));
     }
 }

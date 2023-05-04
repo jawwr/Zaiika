@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -87,5 +88,12 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
         service.deleteUser(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAuthority('PERMISSION_VIEWER')")
+    @GetMapping("/hasPermission")
+    public ResponseEntity<?> hasPermission(@RequestParam("userId") long userId,
+                                           @RequestParam("pName") String permissionName){
+        return ResponseEntity.ok(service.hasUserPermission(userId, permissionName));
     }
 }
