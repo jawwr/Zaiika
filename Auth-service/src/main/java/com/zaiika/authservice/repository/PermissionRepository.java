@@ -56,8 +56,16 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
     List<Permission> getUserPermission(long userId);
 
     @Query(value = """
-            select exists(name)
-            from permissions
+            select count(*) <> 0
+            from permissions p
+            join role_permission rp
+                on p.id = rp.permission_id
+            join roles r
+                on r.id = rp.role_id
+            join user_role ur
+                on ur.role_id = r.id
+            where ur.user_id = :#{#userId}
+            and p.name = :#{#permissionName}
             """, nativeQuery = true)
     boolean hasPermission(long userId, String permissionName);
 }

@@ -1,19 +1,23 @@
 package com.zaiika.authservice.service.permissionEvaluator;
 
+import com.zaiika.authservice.repository.PermissionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-@Component
+@Component("customPermissionEvaluator")
+@RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
+    private final PermissionRepository permissionRepository;
+
     @Override
     public boolean hasPermission(Authentication authentication,
-                                 Object targetDomainObject,
+                                 Object userId,
                                  Object permission) {
-        System.out.println("has permission");
-        return false;
+        return permissionRepository.hasPermission((long) userId, (String) permission);
     }
 
     @Override
@@ -21,6 +25,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                                  Serializable targetId,
                                  String targetType,
                                  Object permission) {
-        return false;
+        return true;
     }
 }

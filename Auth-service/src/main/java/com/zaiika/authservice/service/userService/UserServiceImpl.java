@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasUserPermission(long userId, String permissionName) {
-        var permissions = permissionRepository.getUserPermission(userId);
-        return permissions.stream().anyMatch(x -> x.getName().equals(permissionName));
+        return permissionRepository.hasPermission(userId, permissionName);
     }
 }

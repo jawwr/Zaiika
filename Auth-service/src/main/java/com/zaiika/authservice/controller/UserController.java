@@ -90,10 +90,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_VIEWER')")
+    @PreAuthorize("hasPermission(#userId, 'PERMISSION_VIEWER')")
     @GetMapping("/hasPermission")
     public ResponseEntity<?> hasPermission(@RequestParam("userId") long userId,
                                            @RequestParam("pName") String permissionName){
-        return ResponseEntity.ok(service.hasUserPermission(userId, permissionName));
+        return ResponseEntity.ok(service.hasUserPermission(userId, permissionName.toUpperCase()));
     }
 }
