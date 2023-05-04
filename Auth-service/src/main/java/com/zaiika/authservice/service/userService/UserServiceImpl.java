@@ -5,17 +5,21 @@ import com.zaiika.authservice.model.user.role.Role;
 import com.zaiika.authservice.repository.PermissionRepository;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
+import com.zaiika.authservice.service.jwtService.TokenService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+    private final TokenService tokenService;
 
     @Override
     public List<User> getAllUsers() {
@@ -62,7 +66,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean hasUserPermission(long userId, String permissionName) {
-        return permissionRepository.hasPermission(userId, permissionName);
+    public boolean hasUserPermission(String token, String permissionName) {
+        token = token.substring(7);
+        var user = tokenService.getUserByToken(token);
+        return permissionRepository.hasPermission(user.getId(), permissionName);
     }
 }

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -90,10 +89,9 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasPermission(#userId, 'PERMISSION_VIEWER')")
     @GetMapping("/hasPermission")
-    public ResponseEntity<?> hasPermission(@RequestParam("userId") long userId,
-                                           @RequestParam("pName") String permissionName){
-        return ResponseEntity.ok(service.hasUserPermission(userId, permissionName.toUpperCase()));
+    public ResponseEntity<?> hasPermission(@RequestParam("pName") String permissionName,
+                                           @RequestHeader("AUTHORIZATION") String token) {
+        return ResponseEntity.ok(service.hasUserPermission(token, permissionName.toUpperCase()));
     }
 }

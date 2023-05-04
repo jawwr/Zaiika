@@ -2,7 +2,6 @@ package com.zaiika.authservice.service.authService;
 
 import com.zaiika.authservice.model.authCredentials.LoginCredential;
 import com.zaiika.authservice.model.authCredentials.RegisterCredential;
-import com.zaiika.authservice.model.token.Token;
 import com.zaiika.authservice.model.token.TokenResponse;
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.UserDetailImpl;
@@ -11,10 +10,9 @@ import com.zaiika.authservice.model.user.role.UserRole;
 import com.zaiika.authservice.model.worker.Worker;
 import com.zaiika.authservice.model.worker.WorkerCredential;
 import com.zaiika.authservice.repository.RoleRepository;
-import com.zaiika.authservice.repository.TokenRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import com.zaiika.authservice.repository.WorkerRepository;
-import com.zaiika.authservice.service.jwtService.JwtService;
+import com.zaiika.authservice.service.jwtService.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,9 +27,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
     private final WorkerRepository workerRepository;
-    private final TokenRepository tokenRepository;
+    private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
 
@@ -45,8 +42,8 @@ public class AuthServiceImpl implements AuthService {
         user.setRoles(List.of(findRoleByName(UserRole.USER.name())));
 
         var savedUser = userRepository.save(user);
-        var jwt = jwtService.generateToken(user.getLogin());
-        saveUserToken(jwt, savedUser);
+        var jwt = tokenService.generateToken(user.getLogin());
+        tokenService.saveUserToken(jwt, savedUser);
 
         return new TokenResponse(jwt);
     }
@@ -64,11 +61,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    private void saveUserToken(String jwtToken, User user) {
-        var token = new Token(jwtToken, false, false, user);
-        tokenRepository.save(token);
-    }
-
     @Override
     public TokenResponse login(LoginCredential credential) {
         authenticationManager.authenticate(
@@ -79,9 +71,9 @@ public class AuthServiceImpl implements AuthService {
         );
 
         var user = userRepository.findUserByLogin(credential.login());
-        var jwt = jwtService.generateToken(user.getLogin());
-        revokeAllUserTokens(user);
-        saveUserToken(jwt, user);
+        var jwt = tokenService.generateToken(user.getLogin());
+        tokenService.revokeAllUserTokens(user);
+        tokenService.saveUserToken(jwt, user);
 
         return new TokenResponse(jwt);
     }
@@ -107,33 +99,15 @@ public class AuthServiceImpl implements AuthService {
         );
         var userDetail = UserDetailImpl.of(workerUser);
 
-        var jwt = jwtService.generateToken(userDetail.getLogin());
-        revokeAllUserTokens(workerUser);
-        saveUserToken(jwt, workerUser);
+        var jwt = tokenService.generateToken(userDetail.getLogin());
+        tokenService.revokeAllUserTokens(workerUser);
+        tokenService.saveUserToken(jwt, workerUser);
 
         return new TokenResponse(jwt);
     }
 
     @Override
     public boolean isValidToken(String token) {
-        var savedToken = tokenRepository.findByToken(token);
-        if (savedToken == null || savedToken.getUser() == null) {
-            return false;
-        }
-        return jwtService.isTokenValid(token, savedToken.getUser().getLogin());
-    }
-
-    private void revokeAllUserTokens(User user) {
-        var userTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
-        if (userTokens.isEmpty()) {
-            return;
-        }
-
-        userTokens.forEach(token -> {
-            token.setRevoked(true);
-            token.setExpired(true);
-        });
-
-        userTokens.forEach(tokenRepository::updateToken);
+        return tokenService.isTokenValid(token);
     }
 }
