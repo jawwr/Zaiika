@@ -1,4 +1,4 @@
-package com.zaiika.orderservice.service;
+package com.zaiika.orderservice.service.order;
 
 import com.zaiika.orderservice.model.Order;
 import com.zaiika.orderservice.model.OrderItem;
@@ -12,9 +12,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl implements OrderService {//TODO
     private final OrderRepository orderRepository;
-    private final ContextService ctx;
     //    private final DeliveryRepository deliveryService;
     private final OrderItemRepository orderItemRepository;
 

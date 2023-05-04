@@ -1,7 +1,7 @@
 package com.zaiika.placeservice.controller;
 
 import com.zaiika.placeservice.model.Menu;
-import com.zaiika.placeservice.service.MenuService;
+import com.zaiika.placeservice.service.place.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

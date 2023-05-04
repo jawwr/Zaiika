@@ -25,5 +25,6 @@ public class Place {
 //    @JoinColumn(name = "owner_id", referencedColumnName = "id")
 //    @JsonIgnore
 //    private User owner;
+    @Column(name = "owner_id")
     private long ownerId;
 }

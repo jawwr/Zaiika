@@ -1,4 +1,4 @@
-package com.zaiika.orderservice.service;
+package com.zaiika.orderservice.service.order;
 
 import com.zaiika.orderservice.model.Order;
 

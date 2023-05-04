@@ -1,7 +1,7 @@
 package com.zaiika.orderservice.controller;
 
 import com.zaiika.orderservice.model.Order;
-import com.zaiika.orderservice.service.OrderService;
+import com.zaiika.orderservice.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/order")
 @Slf4j
 @Tag(name = "Работа с заказами")
-public class OrderController {
+public class OrderController {//TODO
     private final OrderService service;
 
     @Autowired
@@ -42,9 +42,10 @@ public class OrderController {
                     responseCode = "200"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
+    @PreAuthorize("hasPermission(#token, 'VIEW_ORDER')")
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody Order order) {
+    public ResponseEntity<?> createOrder(@RequestBody Order order,
+                                         @RequestHeader("AUTHORIZATION") String token) {
         service.createOrder(order);
         return ResponseEntity.ok().build();
     }
@@ -59,9 +60,10 @@ public class OrderController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('VIEW_ORDER')")
+    @PreAuthorize("hasPermission(#token, 'VIEW_ORDER')")
     @PostMapping("/{orderId}/cancel")
-    public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id) {
+    public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long id,
+                                         @RequestHeader("AUTHORIZATION") String token) {
 //        service.cancelOrder(id);
 //        return ResponseEntity.ok().build();
         return ResponseEntity.ok("cancel order " + id);
@@ -106,9 +108,10 @@ public class OrderController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_ORDER')")
+    @PreAuthorize("hasPermission(#token, 'MANAGE_ORDER')")
     @GetMapping("/filter")
-    public ResponseEntity<?> getOrdersByDeliveryType(@RequestParam("delivery_type") String type) {
+    public ResponseEntity<?> getOrdersByDeliveryType(@RequestParam("delivery_type") String type,
+                                                     @RequestHeader("AUTHORIZATION") String token) {
         return ResponseEntity.ok(service.getOrders(type));
     }
 }

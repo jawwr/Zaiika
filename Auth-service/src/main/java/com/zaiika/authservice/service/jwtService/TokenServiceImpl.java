@@ -60,7 +60,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public void saveUserToken(String jwtToken, User user) {
-        var token = new Token(jwtToken, false, false, user);
+        var token = new Token(jwtToken, user);
         tokenRepository.save(token);
     }
 }

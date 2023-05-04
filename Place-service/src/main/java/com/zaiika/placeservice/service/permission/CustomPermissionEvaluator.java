@@ -1,4 +1,4 @@
-package com.zaiika.orderservice.service;
+package com.zaiika.placeservice.service.permission;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -20,8 +20,20 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     public boolean hasPermission(Authentication authentication,
                                  Object token,
                                  Object permission) {
+        return hasPermission((String) token, (String) permission);
+    }
+
+    @Override
+    public boolean hasPermission(Authentication authentication,
+                                 Serializable targetId,
+                                 String targetType,
+                                 Object permission) {
+        return hasPermission((String) targetId, (String) permission);
+    }
+
+    private boolean hasPermission(String token, String permission) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        var authToken = ((String) token).substring(7);
+        var authToken = token.substring(7);
         httpHeaders.setBearerAuth(authToken);
         HttpEntity<?> entity = new HttpEntity<>(httpHeaders);
 
@@ -35,13 +47,5 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
         return hasPermission;
-    }
-
-    @Override
-    public boolean hasPermission(Authentication authentication,
-                                 Serializable targetId,
-                                 String targetType,
-                                 Object permission) {
-        return true;
     }
 }

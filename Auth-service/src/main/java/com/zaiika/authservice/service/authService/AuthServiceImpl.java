@@ -110,4 +110,9 @@ public class AuthServiceImpl implements AuthService {
     public boolean isValidToken(String token) {
         return tokenService.isTokenValid(token);
     }
+
+    @Override
+    public User getUser(String token) {
+        return tokenService.getUserByToken(token);
+    }
 }

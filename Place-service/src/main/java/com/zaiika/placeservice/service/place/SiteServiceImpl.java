@@ -1,4 +1,4 @@
-package com.zaiika.placeservice.service;
+package com.zaiika.placeservice.service.place;
 
 import com.zaiika.placeservice.model.Site;
 import com.zaiika.placeservice.repository.SiteRepository;

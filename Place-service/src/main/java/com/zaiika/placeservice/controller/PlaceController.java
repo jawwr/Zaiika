@@ -1,7 +1,7 @@
 package com.zaiika.placeservice.controller;
 
 import com.zaiika.placeservice.model.Place;
-import com.zaiika.placeservice.service.PlaceService;
+import com.zaiika.placeservice.service.place.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,9 +44,9 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('VIEW_PLACE')")
+    @PreAuthorize("hasPermission(#token, 'VIEW_PLACE')")
     @GetMapping
-    public ResponseEntity<?> getAllPlaces() {
+    public ResponseEntity<?> getAllPlaces(@RequestHeader("AUTHORIZATION") String token) {
         return ResponseEntity.ok(service.getAllPlaces());
     }
 
@@ -73,9 +74,10 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
+    @PreAuthorize("hasPermission(#token, 'MANAGE_PLACE')")
     @PostMapping
-    public ResponseEntity<?> createPlace(@RequestBody Place place) {
+    public ResponseEntity<?> createPlace(@RequestBody Place place,
+                                         @RequestHeader("AUTHORIZATION") String token) {
         return ResponseEntity.ok(service.createPlace(place));
     }
 
@@ -85,9 +87,10 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
+    @PreAuthorize("hasPermission(#token, 'MANAGE_PLACE')")
     @DeleteMapping("/{placeId}")
-    public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
+    public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId,
+                                         @RequestHeader("AUTHORIZATION") String token) {
         service.deletePlace(placeId);
         return ResponseEntity.ok().build();
     }
@@ -108,10 +111,11 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE')")
+    @PreAuthorize("hasPermission(#token, 'MANAGE_PLACE')")
     @PutMapping("/{placeId}")
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
-                                         @RequestBody Place place) {
+                                         @RequestBody Place place,
+                                         @RequestHeader("AUTHORIZATION") String token) {
         place.setId(placeId);
         service.updatePlace(place);
         return ResponseEntity.ok().build();

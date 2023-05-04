@@ -67,4 +67,9 @@ public class AuthController {
     public ResponseEntity<?> isValidToken(@RequestParam("token") String token) {
         return ResponseEntity.ok(service.isValidToken(token));
     }
+
+    @GetMapping("/getUserId")
+    public ResponseEntity<?> getUserId(@RequestParam("token") String token) {
+        return ResponseEntity.ok(service.getUser(token).getId());
+    }
 }
