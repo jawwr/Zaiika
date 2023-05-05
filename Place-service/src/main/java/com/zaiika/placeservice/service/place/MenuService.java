@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.service.place;
 
-import com.zaiika.placeservice.model.Menu;
+import com.zaiika.placeservice.model.place.Menu;
 
 import java.util.List;
 

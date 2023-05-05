@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.service.place;
 
-import com.zaiika.placeservice.model.Site;
+import com.zaiika.placeservice.model.place.Site;
 import com.zaiika.placeservice.repository.SiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

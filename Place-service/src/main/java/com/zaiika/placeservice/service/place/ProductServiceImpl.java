@@ -1,9 +1,9 @@
 package com.zaiika.placeservice.service.place;
 
-import com.zaiika.placeservice.model.Ingredient;
-import com.zaiika.placeservice.model.Product;
-import com.zaiika.placeservice.model.ProductModification;
-import com.zaiika.placeservice.model.ProductModificationCategory;
+import com.zaiika.placeservice.model.place.Ingredient;
+import com.zaiika.placeservice.model.place.Product;
+import com.zaiika.placeservice.model.place.ProductModification;
+import com.zaiika.placeservice.model.place.ProductModificationCategory;
 import com.zaiika.placeservice.repository.IngredientRepository;
 import com.zaiika.placeservice.repository.ProductModificationCategoryRepository;
 import com.zaiika.placeservice.repository.ProductModificationRepository;

@@ -1,4 +1,4 @@
-package com.zaiika.placeservice.model;
+package com.zaiika.placeservice.model.utils;
 
 import lombok.Builder;
 

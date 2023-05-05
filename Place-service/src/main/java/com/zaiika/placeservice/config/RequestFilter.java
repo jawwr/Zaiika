@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.config;
 
-import com.zaiika.placeservice.repository.TokenDto;
+import com.zaiika.placeservice.model.utils.TokenDto;
 import com.zaiika.placeservice.service.users.TokenRepo;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;

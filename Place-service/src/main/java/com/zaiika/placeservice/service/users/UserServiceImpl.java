@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.service.users;
 
-import com.zaiika.placeservice.model.UserDto;
+import com.zaiika.placeservice.model.utils.UserDto;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

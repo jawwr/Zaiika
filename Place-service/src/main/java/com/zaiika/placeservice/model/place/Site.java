@@ -1,4 +1,4 @@
-package com.zaiika.placeservice.model;
+package com.zaiika.placeservice.model.place;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.repository;
 
-import com.zaiika.placeservice.model.Menu;
+import com.zaiika.placeservice.model.place.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.controller;
 
-import com.zaiika.placeservice.model.Site;
+import com.zaiika.placeservice.model.place.Site;
 import com.zaiika.placeservice.service.place.SiteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

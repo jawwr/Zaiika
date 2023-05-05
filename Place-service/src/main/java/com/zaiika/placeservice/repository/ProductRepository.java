@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.repository;
 
-import com.zaiika.placeservice.model.Product;
+import com.zaiika.placeservice.model.place.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;

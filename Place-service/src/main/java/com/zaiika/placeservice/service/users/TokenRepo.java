@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.service.users;
 
-import com.zaiika.placeservice.repository.TokenDto;
+import com.zaiika.placeservice.model.utils.TokenDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

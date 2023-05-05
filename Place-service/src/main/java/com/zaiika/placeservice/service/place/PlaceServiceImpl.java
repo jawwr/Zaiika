@@ -1,6 +1,6 @@
 package com.zaiika.placeservice.service.place;
 
-import com.zaiika.placeservice.model.Place;
+import com.zaiika.placeservice.model.place.Place;
 import com.zaiika.placeservice.repository.PlaceRepository;
 import com.zaiika.placeservice.service.users.UserService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+//TODO caching
 @Service
 @RequiredArgsConstructor
 @Slf4j
