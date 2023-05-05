@@ -2,21 +2,25 @@ package com.zaiika.placeservice.service.place;
 
 import com.zaiika.placeservice.model.Place;
 import com.zaiika.placeservice.repository.PlaceRepository;
+import com.zaiika.placeservice.service.users.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository repository;
+    private final UserService userService;
 
     @Override
     public Place createPlace(Place place) {
-//        User user = ctx.getContextUser();
-//        place.setOwner(user);
-//        userService.setRoleToUser(user.getId(), UserRole.PLACE_OWNER.name());
+        var user = userService.getUser();
+        place.setOwnerId(user.id());
+//        userService.setRoleToUser(user.id(), UserRole.PLACE_OWNER.name());//TODO
         return repository.save(place);
     }
 
@@ -27,8 +31,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void deletePlace(long placeId) {
-        var place = repository.getPlaceById(placeId);
-//        userService.deleteRoleFromUser(place.getOwner().getId(), UserRole.PLACE_OWNER.name());
+//        var place = repository.getPlaceById(placeId);
+//        userService.deleteRoleFromUser(place.getOwner().getId(), UserRole.PLACE_OWNER.name());//TODO
         repository.deletePlaceById(placeId);
     }
 

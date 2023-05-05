@@ -1,6 +1,7 @@
 package com.zaiika.authservice.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.zaiika.authservice.model.user.permission.Permission;
 import com.zaiika.authservice.model.user.role.Role;
 import jakarta.persistence.*;
@@ -16,7 +17,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -38,13 +40,12 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @Transient
     @JsonIgnore
     private List<Role> roles;
 

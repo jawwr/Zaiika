@@ -71,4 +71,10 @@ public class UserServiceImpl implements UserService {
         var user = tokenService.getUserByToken(token);
         return permissionRepository.hasPermission(user.getId(), permissionName);
     }
+
+    @Override
+    public User getUserInfo(String token) {
+        token = token.substring(7);
+        return tokenService.getUserByToken(token);
+    }
 }

@@ -14,4 +14,6 @@ public interface UserService {
     void deleteUser(Long userId);
 
     boolean hasUserPermission(String token, String permissionName);
+
+    User getUserInfo(String token);
 }

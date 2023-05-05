@@ -1,5 +1,6 @@
 package com.zaiika.placeservice.service.permission;
 
+import com.zaiika.placeservice.service.users.TokenRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,12 +16,13 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private final RestTemplate restTemplate;
+    private final TokenRepo tokenRepo;
 
     @Override
     public boolean hasPermission(Authentication authentication,
                                  Object token,
                                  Object permission) {
-        return hasPermission((String) token, (String) permission);
+        return hasPermission((String) permission);
     }
 
     @Override
@@ -28,17 +30,17 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                                  Serializable targetId,
                                  String targetType,
                                  Object permission) {
-        return hasPermission((String) targetId, (String) permission);
+        return hasPermission((String) permission);
     }
 
-    private boolean hasPermission(String token, String permission) {
+    private boolean hasPermission(String permission) {
+        var token = tokenRepo.getTokenDto().token();
         HttpHeaders httpHeaders = new HttpHeaders();
-        var authToken = token.substring(7);
-        httpHeaders.setBearerAuth(authToken);
+        httpHeaders.setBearerAuth(token);
         HttpEntity<?> entity = new HttpEntity<>(httpHeaders);
 
         var hasPermission = restTemplate.exchange(
-                        "http://localhost:8765/api/manage-users/hasPermission?pName=" + permission,
+                        "http://localhost:8765/api/users/hasPermission?pName=" + permission,
                         HttpMethod.GET,
                         entity,
                         Boolean.class)

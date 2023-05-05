@@ -35,8 +35,4 @@ public class Role {
     )
     @JsonIgnoreProperties("roles")
     private List<Permission> permissions;
-
-    public Role(String name) {
-        this.name = name;
-    }
 }

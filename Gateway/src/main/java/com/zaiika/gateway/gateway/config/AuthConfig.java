@@ -47,7 +47,7 @@ public class AuthConfig {
                         .filters(filterSpec -> filterSpec.filter(filter))
                         .uri("lb://worker-service")
                 )
-                .route(rout -> rout.path("/api/auth/**", "/api/manage-users/**")
+                .route(rout -> rout.path("/api/auth/**", "/api/users/**")
                         .filters(filterSpec -> filterSpec.filter(filter))
                         .uri("lb://auth-service")
                 )

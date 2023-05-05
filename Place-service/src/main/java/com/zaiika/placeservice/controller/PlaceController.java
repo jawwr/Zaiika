@@ -44,9 +44,9 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasPermission(#token, 'VIEW_PLACE')")
+    @PreAuthorize("hasPermission(null, 'VIEW_PLACE')")
     @GetMapping
-    public ResponseEntity<?> getAllPlaces(@RequestHeader("AUTHORIZATION") String token) {
+    public ResponseEntity<?> getAllPlaces() {
         return ResponseEntity.ok(service.getAllPlaces());
     }
 
