@@ -2,6 +2,7 @@ package com.zaiika.placeservice.service.place;
 
 import com.zaiika.placeservice.model.place.Menu;
 import com.zaiika.placeservice.repository.MenuRepository;
+import com.zaiika.placeservice.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
-//    private final ContextService ctx;
+    private final UserService userService;
 
     @Override
     public List<Menu> getAllMenus(long siteId) {
-//        checkPermission(siteId);
+        checkPermission(siteId);
         return menuRepository.findAllBySiteId(siteId);
     }
 
@@ -42,9 +43,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void checkPermission(long siteId) {
-//        var site = ctx.getSite(siteId);
-//        if (site == null) {
-//            throw new PermissionDeniedException();
-//        }
+        var user = userService.getUser();
+
     }
 }

@@ -21,10 +21,6 @@ public class Place {
     @Column(name = "name")
     private String name;
 
-    //    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-//    @JsonIgnore
-//    private User owner;
     @Column(name = "owner_id")
     private long ownerId;
 }

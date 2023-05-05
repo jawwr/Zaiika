@@ -42,4 +42,5 @@ public class PlaceServiceImpl implements PlaceService {
         place.setOwnerId(savedPlace.getOwnerId());
         repository.save(place);
     }
+    //TODO check on relation with place
 }

@@ -1,6 +1,5 @@
 package com.zaiika.placeservice.model.place;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -27,7 +26,6 @@ public class Site {
 
     @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
-    @JsonBackReference
     @JsonIgnore
     private Place place;
 }
