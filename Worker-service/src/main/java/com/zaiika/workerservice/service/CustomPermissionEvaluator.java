@@ -1,6 +1,5 @@
-package com.zaiika.placeservice.service.permission;
+package com.zaiika.workerservice.service;
 
-import com.zaiika.placeservice.service.users.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

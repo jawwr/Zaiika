@@ -17,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/manage-place")
+@RequestMapping("/api/places")
 @Slf4j
 @Tag(name = "Работа с заведениями")
 public class PlaceController {//TODO сделать управление для владельцев

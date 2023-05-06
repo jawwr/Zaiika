@@ -153,6 +153,11 @@ public class WorkerServiceImpl implements WorkerService {
 //        }
     }
 
+    @Override
+    public boolean isWorker() {
+        return false;
+    }
+
     private void addPlaceRole(long workerId, String roleName) {
 //        var place = ctx.getPlace();
 //        var role = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(place.getId(), roleName);

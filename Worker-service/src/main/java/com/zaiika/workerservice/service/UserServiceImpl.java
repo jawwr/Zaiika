@@ -1,9 +1,7 @@
-package com.zaiika.placeservice.service.users;
+package com.zaiika.workerservice.service;
 
-import com.zaiika.placeservice.model.utils.UserDto;
-import jakarta.annotation.Resource;
+import com.zaiika.workerservice.model.UserDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,11 +10,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserServiceImpl implements UserService {
-    private final RestTemplate restTemplate;
-    @Resource(name = "tokenService")
     private final TokenService tokenService;
+    private final RestTemplate restTemplate;
+
+    @Override
     public UserDto getUser() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(tokenService.getToken());

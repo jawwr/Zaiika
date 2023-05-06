@@ -39,7 +39,7 @@ public class AuthConfig {
                                 "/api/sites/**",
                                 "/api/menu/**",
                                 "/api/site/**",
-                                "/api/manage-place/**")
+                                "/api/places/**")
                         .filters(filterSpec -> filterSpec.filter(filter))
                         .uri("lb://place-service")
                 )

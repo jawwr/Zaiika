@@ -12,7 +12,10 @@ public class AppConfig {
     @Bean
     public Validator<ServerHttpRequest> httpRequestValidator() {
         return RouteValidator.builder()
-                .addRoutes("/api/order")
+                .addRoutes(
+                        "/api/order/",
+                        "/api/users/"
+                )
                 .build();
     }
 

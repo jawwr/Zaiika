@@ -16,4 +16,6 @@ public interface WorkerService {
     void deleteWorker(long workerId);
 
     void addWorkerRole(long workerId, String roleName);
+
+    boolean isWorker();
 }

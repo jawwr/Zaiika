@@ -1,6 +1,6 @@
-package com.zaiika.placeservice.config;
+package com.zaiika.workerservice.config;
 
-import com.zaiika.placeservice.service.users.TokenService;
+import com.zaiika.workerservice.service.TokenService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,7 +43,7 @@ public class WorkerController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @GetMapping
     public ResponseEntity<?> getAllWorkers() {
         return ResponseEntity.ok(service.getAllWorkers());
@@ -62,7 +63,7 @@ public class WorkerController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PostMapping
     public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
         return ResponseEntity.ok(service.createWorker(worker));
@@ -78,7 +79,7 @@ public class WorkerController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PutMapping("/{workerId}")
     public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
                                           @RequestBody WorkerDto worker) {
@@ -97,7 +98,7 @@ public class WorkerController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @DeleteMapping("/{workerId}")
     public ResponseEntity<?> deleteWorker(@PathVariable("workerId") Long workerId) {
         service.deleteWorker(workerId);
@@ -122,7 +123,7 @@ public class WorkerController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @GetMapping("/{workerId}")
     public ResponseEntity<?> getWorkerById(@PathVariable("workerId") Long workerId) {
         return ResponseEntity.ok(service.getWorker(workerId));
@@ -138,11 +139,16 @@ public class WorkerController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_WORKER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PostMapping("/{workerId}")
     public ResponseEntity<?> addWorkerRole(@PathVariable("workerId") Long workerId,
                                            @RequestParam(value = "roleName") String roleName) {
         service.addWorkerRole(workerId, roleName);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/isWorker")
+    public ResponseEntity<?> isWorker(){
+        return ResponseEntity.ok(service.isWorker());
     }
 }
