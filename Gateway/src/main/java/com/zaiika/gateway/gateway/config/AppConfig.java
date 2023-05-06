@@ -13,6 +13,7 @@ public class AppConfig {
     public Validator<ServerHttpRequest> httpRequestValidator() {
         return RouteValidator.builder()
                 .addRoutes(
+                        "/api/",
                         "/api/order/",
                         "/api/users/"
                 )

@@ -43,7 +43,7 @@ public class UserController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")//TODO сделать кастомный преавторайз
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(service.getAllUsers());
