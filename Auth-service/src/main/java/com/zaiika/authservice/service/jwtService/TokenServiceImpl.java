@@ -3,6 +3,9 @@ package com.zaiika.authservice.service.jwtService;
 import com.zaiika.authservice.model.token.Token;
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.repository.TokenRepository;
+import com.zaiika.token.TokenServiceGrpc;
+import com.zaiika.token.TokenServiceOuterClass;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TokenServiceImpl implements TokenService {
+public class TokenServiceImpl extends TokenServiceGrpc.TokenServiceImplBase implements TokenService {
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final CacheManager cacheManager;
@@ -62,5 +65,23 @@ public class TokenServiceImpl implements TokenService {
     public void saveUserToken(String jwtToken, User user) {
         var token = new Token(jwtToken, user);
         tokenRepository.save(token);
+    }
+
+    @Override
+    public void isValid(TokenServiceOuterClass.TokenRequest request,
+                        StreamObserver<TokenServiceOuterClass.IsTokenValidResponse> responseObserver) {
+        boolean isValid;
+        try {
+            isValid = isTokenValid(request.getToken());
+        } catch (Exception e) {
+            isValid = false;
+        }
+        var response = TokenServiceOuterClass.IsTokenValidResponse
+                .newBuilder()
+                .setIsValid(isValid)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

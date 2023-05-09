@@ -1,0 +1,27 @@
+syntax = "proto3";
+package com.zaiika.users;
+
+message PermissionRequest {
+  string permission = 1;
+}
+
+message HasPermissionResponse {
+  bool hasPermission = 1;
+}
+
+message UserIdRequest {
+  int64 userId = 1;
+}
+
+message UserResponse {
+  int64 id = 1;
+  string name = 2;
+  string surname = 3;
+  string patronymic = 4;
+  string login = 5;
+}
+
+service UserService {
+  rpc hasPermission(PermissionRequest) returns (HasPermissionResponse);
+  rpc getUserInfo(UserIdRequest) returns (UserResponse);
+}
