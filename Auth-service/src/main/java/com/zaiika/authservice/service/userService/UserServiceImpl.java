@@ -6,6 +6,9 @@ import com.zaiika.authservice.repository.PermissionRepository;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import com.zaiika.authservice.service.jwtService.TokenService;
+import com.zaiika.users.UserServiceGrpc;
+import com.zaiika.users.UserServiceOuterClass;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase implements UserService {
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
@@ -76,5 +79,37 @@ public class UserServiceImpl implements UserService {
     public User getUserInfo(String token) {
         token = token.substring(7);
         return tokenService.getUserByToken(token);
+    }
+
+    @Override
+    public void hasPermission(UserServiceOuterClass.PermissionRequest request,
+                              StreamObserver<UserServiceOuterClass.HasPermissionResponse> responseObserver) {
+        var hasPermission = hasUserPermission(request.getToken(), request.getPermission());
+
+        var response = UserServiceOuterClass.HasPermissionResponse
+                .newBuilder()
+                .setHasPermission(hasPermission)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserInfo(UserServiceOuterClass.UserInfoRequest request,
+                            StreamObserver<UserServiceOuterClass.UserResponse> responseObserver) {
+        var userInfo = getUserInfo(request.getToken());
+
+        var response = UserServiceOuterClass.UserResponse
+                .newBuilder()
+                .setId(userInfo.getId())
+                .setLogin(userInfo.getLogin())
+                .setName(userInfo.getName())
+                .setSurname(userInfo.getSurname())
+                .setPatronymic(userInfo.getPatronymic())
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
