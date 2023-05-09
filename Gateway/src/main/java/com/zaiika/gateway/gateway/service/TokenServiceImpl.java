@@ -1,5 +1,9 @@
 package com.zaiika.gateway.gateway.service;
 
+import com.zaiika.token.TokenServiceGrpc;
+import com.zaiika.token.TokenServiceOuterClass;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +13,7 @@ public class TokenServiceImpl implements TokenService {
     private int port;
 
     @Override
-    public boolean isValid(String token) {/*
+    public boolean isValid(String token) {
         ManagedChannel channel = ManagedChannelBuilder
                 .forTarget("localhost:" + port)
                 .usePlaintext()
@@ -25,7 +29,6 @@ public class TokenServiceImpl implements TokenService {
         var response = stub.isValid(request);
         channel.shutdownNow();
 
-        return response.getIsValid();*/
-        return true;
+        return response.getIsValid();
     }
 }

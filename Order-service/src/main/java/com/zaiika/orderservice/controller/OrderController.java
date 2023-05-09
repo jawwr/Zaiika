@@ -85,7 +85,7 @@ public class OrderController {//TODO
                     }
             )
     })
-    @PreAuthorize("hasPermission(#token, 'MANAGE_ORDER')")
+//    @PreAuthorize("hasPermission(#token, 'MANAGE_ORDER')")
     @GetMapping
     public ResponseEntity<?> getAllOrders(@RequestHeader("AUTHORIZATION") String token) {
         return ResponseEntity.ok("it's work");
