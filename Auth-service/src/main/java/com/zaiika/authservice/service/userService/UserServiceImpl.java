@@ -94,22 +94,4 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
-
-    @Override
-    public void getUserInfo(UserServiceOuterClass.UserInfoRequest request,
-                            StreamObserver<UserServiceOuterClass.UserResponse> responseObserver) {
-        var userInfo = getUserInfo(request.getToken());
-
-        var response = UserServiceOuterClass.UserResponse
-                .newBuilder()
-                .setId(userInfo.getId())
-                .setLogin(userInfo.getLogin())
-                .setName(userInfo.getName())
-                .setSurname(userInfo.getSurname())
-                .setPatronymic(userInfo.getPatronymic())
-                .build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
-    }
 }

@@ -37,8 +37,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         httpHeaders.setBearerAuth(authToken);
         HttpEntity<?> entity = new HttpEntity<>(httpHeaders);
 
-        var hasPermission = restTemplate.exchange(
-                        "http://localhost:8765/api/manage-users/hasPermission?pName=" + permission,
+        var hasPermission = restTemplate.exchange(//TODO
+                        "http://localhost:8765/api/users/hasPermission?pName=" + permission,
                         HttpMethod.GET,
                         entity,
                         Boolean.class)
