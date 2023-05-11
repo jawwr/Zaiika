@@ -90,12 +90,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/hasPermission")
-    public ResponseEntity<?> hasPermission(@RequestParam("pName") String permissionName,
-                                           @RequestHeader("AUTHORIZATION") String token) {
-        return ResponseEntity.ok(service.hasUserPermission(token, permissionName.toUpperCase()));
-    }
-
     @GetMapping("/userInfo")
     public ResponseEntity<?> getUserInfo(@RequestHeader("AUTHORIZATION") String token) {
         return ResponseEntity.ok(service.getUserInfo(token));

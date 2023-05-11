@@ -12,6 +12,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     }
 
     @Override
+    @Transactional
     public void deleteRoleFromUser(long userId, String roleName) {
         var user = userRepository.findUserById(userId);
         var role = findRoleByName(roleName);
@@ -70,7 +72,6 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
 
     @Override
     public boolean hasUserPermission(String token, String permissionName) {
-        token = token.substring(7);
         var user = tokenService.getUserByToken(token);
         return permissionRepository.hasPermission(user.getId(), permissionName);
     }
@@ -82,6 +83,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     }
 
     @Override
+    @Transactional
     public void hasPermission(UserServiceOuterClass.PermissionRequest request,
                               StreamObserver<UserServiceOuterClass.HasPermissionResponse> responseObserver) {
         var hasPermission = hasUserPermission(request.getToken(), request.getPermission());

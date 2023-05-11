@@ -30,19 +30,34 @@ public class TokenServiceImpl extends TokenServiceGrpc.TokenServiceImplBase impl
 
     @Override
     public boolean isTokenValid(String token) {
-        var cache = cacheManager.getCache(CACHE_NAMES);
-        User cacheUser = null;
-        if (cache != null) {
-            cacheUser = cache.get(token, User.class);
-        }
-
+        var cacheUser = getUserFromCache(token);
         var user = cacheUser == null
                 ? getUserByToken(token)
                 : cacheUser;
         if (user == null) {
             return false;
         }
+        if (cacheUser == null) {
+            saveUserToCache(user, token);
+        }
         return jwtService.isTokenValid(token, user.getLogin());
+    }
+
+    private void saveUserToCache(User user, String token) {
+        var cache = cacheManager.getCache(CACHE_NAMES);
+        if (cache == null) {
+            return;
+        }
+        cache.put(token, user);
+    }
+
+    private User getUserFromCache(String token) {
+        var cache = cacheManager.getCache(CACHE_NAMES);
+        User cacheUser = null;
+        if (cache != null) {
+            cacheUser = cache.get(token, User.class);
+        }
+        return cacheUser;
     }
 
     @Override
@@ -73,6 +88,7 @@ public class TokenServiceImpl extends TokenServiceGrpc.TokenServiceImplBase impl
     @Override
     public void saveUserToken(String jwtToken, User user) {
         var token = new Token(jwtToken, user);
+        saveUserToCache(user, jwtToken);
         tokenRepository.save(token);
     }
 
