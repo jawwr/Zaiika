@@ -6,6 +6,7 @@ import com.zaiika.placeservice.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,6 +64,12 @@ public class PlaceServiceImpl implements PlaceService {
 
         savePlaceToCache(place, user.id());
         return place;
+    }
+
+    @Override
+    @Cacheable(cacheNames = {CACHE_NAME}, key = "#id")
+    public Place getPlace(long id) {
+        return placeRepository.getPlaceById(id);
     }
 
     private Place getPlaceFromCache(long userId) {

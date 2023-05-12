@@ -14,11 +14,18 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
     private final UserService userService;
+    private final SiteService siteService;
+    private static final String CACHE_NAME = "menu";
 
     @Override
     public List<Menu> getAllMenus(long siteId) {
         checkPermission(siteId);
         return menuRepository.findAllBySiteId(siteId);
+    }
+
+    @Override
+    public Menu getMenu(long id) {
+        return null;
     }
 
     @Override
@@ -45,6 +52,6 @@ public class MenuServiceImpl implements MenuService {
 
     private void checkPermission(long siteId) {
         var user = userService.getUser();
-
+        var site = siteService.getSite(siteId);
     }
 }

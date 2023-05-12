@@ -3,6 +3,7 @@ package com.zaiika.placeservice.service.place;
 import com.zaiika.placeservice.model.place.Site;
 import com.zaiika.placeservice.repository.SiteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public class SiteServiceImpl implements SiteService {
     private final SiteRepository siteRepository;
     private final PlaceService placeService;
+    private final CacheManager cacheManager;
+    private static final String CACHE_NAME = "siteUser";
 
     @Override
     public Site createSite(Site site) {
@@ -40,6 +43,39 @@ public class SiteServiceImpl implements SiteService {
     public void deleteSite(long siteId) {
         checkPermission(siteId);
         siteRepository.deleteSiteById(siteId);
+    }
+
+    @Override
+    public Site getSite(long id) {
+        checkPermission(id);
+        var place = placeService.getPlace();
+        var cache = getSiteFromCache(id);
+        if (cache != null && cache.getPlace().getId() == place.getId()) {
+            return cache;
+        }
+        var sites = siteRepository.findAllByPlaceId(place.getId());
+        var site = sites.stream()
+                .filter(x -> x.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Site with id " + id + " does not exist"));
+        saveSiteToCache(site);
+        return site;
+    }
+
+    private Site getSiteFromCache(long siteId) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return null;
+        }
+        return cache.get(siteId, Site.class);
+    }
+
+    private void saveSiteToCache(Site site) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return;
+        }
+        cache.put(site.getId(), site);
     }
 
     private void checkPermission(long siteId) {

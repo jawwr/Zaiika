@@ -12,4 +12,6 @@ public interface SiteService {
     void updateSite(Site site);
 
     void deleteSite(long siteId);
+
+    Site getSite(long id);
 }

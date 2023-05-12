@@ -14,4 +14,6 @@ public interface PlaceService {
     void updatePlace(Place place);
 
     Place getPlace();
+
+    Place getPlace(long id);
 }
