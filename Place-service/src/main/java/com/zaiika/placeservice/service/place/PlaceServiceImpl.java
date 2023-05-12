@@ -46,6 +46,17 @@ public class PlaceServiceImpl implements PlaceService {
         placeRepository.save(place);
     }
 
+    @Override
+    public Place getPlace() {
+        var user = userService.getUser();
+        var place = placeRepository.findPlaceByOwnerId(user.id());
+        if (place == null){
+            throw new IllegalArgumentException("Place does not exist");
+        }
+
+        return place;
+    }
+
     private void checkPermission(long placeId) {
         var user = userService.getUser();
         var place = placeRepository.getPlaceById(placeId);

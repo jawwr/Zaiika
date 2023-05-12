@@ -36,7 +36,6 @@ public class AuthConfig {
                         .uri("lb://delivery-service")
                 )
                 .route(rout -> rout.path(
-                                "/api/sites/**",
                                 "/api/menu/**",
                                 "/api/site/**",
                                 "/api/places/**")

@@ -12,4 +12,6 @@ public interface PlaceService {
     void deletePlace(long placeId);
 
     void updatePlace(Place place);
+
+    Place getPlace();
 }

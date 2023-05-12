@@ -11,28 +11,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SiteServiceImpl implements SiteService {
     private final SiteRepository siteRepository;
-//    private final ContextService ctx;
+    private final PlaceService placeService;
 
     @Override
     public Site createSite(Site site) {
-//        var place = ctx.getPlace();
-//        site.setPlace(place);
+        var place = placeService.getPlace();
+        site.setPlace(place);
         return siteRepository.save(site);
     }
 
     @Override
     public List<Site> getAllSites() {
-//        var place = ctx.getPlace();
-//        return siteRepository.findAllByPlaceId(place.getId());
-        return null;
+        var place = placeService.getPlace();
+        return siteRepository.findAllByPlaceId(place.getId());
     }
 
     @Override
     public void updateSite(Site site) {
         checkPermission(site.getId());
 
-//        var place = ctx.getPlace();
-//        site.setPlace(place);
+        var place = placeService.getPlace();
+        site.setPlace(place);
 
         siteRepository.save(site);
     }
@@ -44,9 +43,9 @@ public class SiteServiceImpl implements SiteService {
     }
 
     private void checkPermission(long siteId) {
-//        var site = ctx.getSite(siteId);
-//        if (site == null) {
-//            throw new PermissionDeniedException();
-//        }
+        var place = placeService.getPlace();
+        if (siteRepository.isSiteExistById(place.getId(), siteId)) {
+            throw new IllegalArgumentException("Site does not exist");
+        }
     }
 }

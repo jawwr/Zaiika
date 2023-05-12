@@ -21,4 +21,12 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
             where place_id = :#{#placeId}
             """, nativeQuery = true)
     List<Site> findSitesByPlaceId(long placeId);
+
+    @Query(value = """
+            select count(*) <> 0
+            from sites
+            where place_id = :#{#placeId}
+              and id = :#{#siteId}
+            """, nativeQuery = true)
+    boolean isSiteExistById(long placeId, long siteId);
 }
