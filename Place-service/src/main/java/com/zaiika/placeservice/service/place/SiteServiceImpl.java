@@ -5,6 +5,7 @@ import com.zaiika.placeservice.repository.SiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,9 +18,11 @@ public class SiteServiceImpl implements SiteService {
     private static final String CACHE_NAME = "siteUser";
 
     @Override
+    @Transactional
     public Site createSite(Site site) {
         var place = placeService.getPlace();
         site.setPlace(place);
+        saveSiteToCache(site);
         return siteRepository.save(site);
     }
 
@@ -30,6 +33,7 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
+    @Transactional
     public void updateSite(Site site) {
         checkPermission(site.getId());
 
@@ -81,7 +85,7 @@ public class SiteServiceImpl implements SiteService {
 
     private void checkPermission(long siteId) {
         var place = placeService.getPlace();
-        if (siteRepository.isSiteExistById(place.getId(), siteId)) {
+        if (!siteRepository.isSiteExistsById(place.getId(), siteId)) {
             throw new IllegalArgumentException("Site does not exist");
         }
     }

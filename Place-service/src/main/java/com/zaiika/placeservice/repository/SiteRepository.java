@@ -28,5 +28,5 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
             where place_id = :#{#placeId}
               and id = :#{#siteId}
             """, nativeQuery = true)
-    boolean isSiteExistById(long placeId, long siteId);
+    boolean isSiteExistsById(long placeId, long siteId);
 }

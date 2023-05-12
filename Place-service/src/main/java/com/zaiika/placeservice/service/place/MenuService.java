@@ -9,6 +9,8 @@ public interface MenuService {
 
     Menu getMenu(long siteId, long id);
 
+    Menu getMenu(long id);
+
     Menu createMenu(long siteId, Menu menu);
 
     void updateMenu(long siteId, Menu menu);
