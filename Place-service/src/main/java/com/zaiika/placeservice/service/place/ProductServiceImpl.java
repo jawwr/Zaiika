@@ -20,7 +20,6 @@ public class ProductServiceImpl implements ProductService {
     private final IngredientRepository ingredientRepository;
     private final ProductModificationRepository modificationRepository;
     private final ProductModificationCategoryRepository categoryRepository;
-//    private final ContextService ctx;
 
     @Override
     public List<Product> getAllProductFromMenu(long menuId) {

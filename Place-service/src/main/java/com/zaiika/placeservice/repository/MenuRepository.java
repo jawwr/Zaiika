@@ -21,4 +21,11 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             where site_id in :#{#siteIds}
             """, nativeQuery = true)
     List<Menu> findAllBySiteIds(List<Long> siteIds);
+
+    @Query(value = """
+            select *
+            from menus
+            where id = :#{#id}
+            """, nativeQuery = true)
+    Menu findMenuById(long id);
 }

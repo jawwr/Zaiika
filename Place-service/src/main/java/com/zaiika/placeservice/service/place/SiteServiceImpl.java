@@ -37,6 +37,7 @@ public class SiteServiceImpl implements SiteService {
         site.setPlace(place);
 
         siteRepository.save(site);
+        saveSiteToCache(site);
     }
 
     @Override
