@@ -1,5 +1,6 @@
 package com.zaiika.authservice.service.userService;
 
+import com.google.protobuf.Empty;
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.role.Role;
 import com.zaiika.authservice.repository.PermissionRepository;
@@ -32,11 +33,8 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
 
     @Override
     public void setRoleToUser(Long userId, String roleName) {
-        var user = userRepository.findUserById(userId);
         var role = findRoleByName(roleName);
-
-        user.getRoles().add(role);
-        userRepository.save(user);
+        roleRepository.setRoleToUser(userId, role);
     }
 
     private Role findRoleByName(String roleName) {
@@ -93,6 +91,29 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
                 .setHasPermission(hasPermission)
                 .build();
 
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    @Transactional
+    public void setRoleForUser(UserServiceOuterClass.RoleRequest request,
+                               StreamObserver<Empty> responseObserver) {
+        var user = tokenService.getUserByToken(request.getToken());
+        setRoleToUser(user.getId(), request.getRole());
+
+        var response = Empty.getDefaultInstance();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void deleteRoleFromUser(UserServiceOuterClass.RoleRequest request,
+                                   StreamObserver<Empty> responseObserver) {
+        var user = tokenService.getUserByToken(request.getToken());
+        deleteRoleFromUser(user.getId(), request.getRole());
+
+        var response = Empty.getDefaultInstance();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

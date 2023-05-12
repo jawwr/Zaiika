@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
+    @Transactional
     public TokenResponse register(RegisterCredential credential) {
         if (userRepository.existUserByLogin(credential.login())) {
             throw new IllegalArgumentException("User already exist");
@@ -62,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public TokenResponse login(LoginCredential credential) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -79,6 +82,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public TokenResponse login(long placeId, WorkerCredential credential) {
         var workers = workerRepository.findAllByPlaceId(placeId);
         var users = workers.stream().map(Worker::getUser).toList();

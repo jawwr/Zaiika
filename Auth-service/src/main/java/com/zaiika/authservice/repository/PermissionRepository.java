@@ -12,7 +12,8 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
     @Query(value = """
             select count(*) <> 0
             from permissions
-            where name = :#{#name}""", nativeQuery = true)
+            where name = :#{#name}
+            """, nativeQuery = true)
     boolean existsByName(String name);
 
     Permission findByName(String name);
@@ -29,7 +30,8 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
     @Modifying
     @Transactional
     @Query(value = """
-            insert into role_permission(role_id, permission_id)  values(:#{#roleId}, :#{#permissionId})
+            insert into role_permission(role_id, permission_id)
+            values(:#{#roleId}, :#{#permissionId})
             """, nativeQuery = true)
     void insertRolePermission(long roleId, long permissionId);
 
@@ -38,22 +40,9 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
     @Query(value = """
             delete from role_permission
             where role_id = :#{#roleId}
-            and permission_id = :#{#permissionId}
+              and permission_id = :#{#permissionId}
             """, nativeQuery = true)
     void removePermissionFromRole(long roleId, long permissionId);
-
-    @Query(value = """
-            select distinct p.*
-            from permissions p
-            join role_permission rp
-                on p.id = rp.permission_id
-            join roles r
-                on r.id = rp.role_id
-            join user_role ur
-                on ur.role_id = r.id
-            where ur.user_id = :#{#userId}
-            """, nativeQuery = true)
-    List<Permission> getUserPermission(long userId);
 
     @Query(value = """
             select count(*) <> 0

@@ -66,6 +66,7 @@ public class TokenServiceImpl extends TokenServiceGrpc.TokenServiceImplBase impl
     }
 
     @Override
+    @Transactional
     public void revokeAllUserTokens(User user) {
         var userTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
         if (userTokens.isEmpty()) {

@@ -18,7 +18,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     public boolean hasPermission(Authentication authentication,
                                  Object userId,
                                  Object permission) {
-        return true;// permissionRepository.hasPermission((long) userId, (String) permission);
+        return permissionRepository.hasPermission((long) userId, (String) permission);
     }
 
     @Override
