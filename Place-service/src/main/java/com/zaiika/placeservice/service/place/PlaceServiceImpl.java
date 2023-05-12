@@ -5,6 +5,7 @@ import com.zaiika.placeservice.repository.PlaceRepository;
 import com.zaiika.placeservice.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final UserService userService;
+    private final CacheManager cacheManager;
+    private static final String CACHE_NAME = "placeUser";
 
     @Override
     public Place createPlace(Place place) {
@@ -49,12 +52,33 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public Place getPlace() {
         var user = userService.getUser();
+        var cache = getPlaceFromCache(user.id());
+        if (cache != null) {
+            return cache;
+        }
         var place = placeRepository.findPlaceByOwnerId(user.id());
-        if (place == null){
+        if (place == null) {
             throw new IllegalArgumentException("Place does not exist");
         }
 
+        savePlaceToCache(place, user.id());
         return place;
+    }
+
+    private Place getPlaceFromCache(long userId) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return null;
+        }
+        return cache.get(userId, Place.class);
+    }
+
+    private void savePlaceToCache(Place place, long userId) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return;
+        }
+        cache.put(userId, place);
     }
 
     private void checkPermission(long placeId) {

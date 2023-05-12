@@ -9,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,20 +29,25 @@ public class UserServiceImpl implements UserService {
         if (cache != null) {
             return cache;
         }
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBearerAuth(tokenService.getToken());
-        HttpEntity<?> entity = new HttpEntity<>(httpHeaders);
 
-        var response = restTemplate.exchange(
-                        "http://localhost:8765/api/users/userInfo",
-                        HttpMethod.GET,
-                        entity,
-                        UserDto.class)
-                .getBody();
+        ManagedChannel channel = ManagedChannelBuilder
+                .forTarget("localhost:" + grpcServerPort)
+                .usePlaintext()
+                .build();
 
-        saveUserToCache(response);
+        var stub = UserServiceGrpc.newBlockingStub(channel);
 
-        return response;
+        var request = UserServiceOuterClass.TokenRequest
+                .newBuilder()
+                .setToken(tokenService.getToken())
+                .build();
+
+        var response = stub.getUserInfo(request);
+        channel.shutdownNow();
+        UserDto dto = new UserDto(response.getId());
+        saveUserToCache(dto);
+
+        return dto;
     }
 
     private UserDto getUserFromCache() {

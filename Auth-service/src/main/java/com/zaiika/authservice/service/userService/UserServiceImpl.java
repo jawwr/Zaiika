@@ -108,6 +108,24 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     }
 
     @Override
+    public void getUserInfo(UserServiceOuterClass.TokenRequest request,
+                            StreamObserver<UserServiceOuterClass.UserInfoResponse> responseObserver) {
+        var user = tokenService.getUserByToken(request.getToken());
+
+        var response = UserServiceOuterClass.UserInfoResponse
+                .newBuilder()
+                .setId(user.getId())
+                .setLogin(user.getLogin() == null ? "" : user.getLogin())
+                .setName(user.getName() == null ? "" : user.getName())
+                .setSurname(user.getSurname() == null ? "" : user.getSurname())
+                .setPatronymic(user.getPatronymic() == null ? "" : user.getPatronymic())
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void deleteRoleFromUser(UserServiceOuterClass.RoleRequest request,
                                    StreamObserver<Empty> responseObserver) {
         var user = tokenService.getUserByToken(request.getToken());
