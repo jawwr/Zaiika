@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
 
-//TODO TODO TODO !!!
+//TODO caching
 @Service
 @RequiredArgsConstructor
 public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase implements WorkerService {
@@ -25,7 +24,7 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
 
     @Override
     @Transactional
-    public Worker createWorker(WorkerCredentials workerDto) {//TODO
+    public Worker createWorker(WorkerCredentials workerDto) {
         var user = userService.getUser();
         var placeRole = placeRoleRepository
                 .findPlaceRoleByPlaceIdAndNameIgnoreCase(user.placeId(), workerDto.placeRole());
@@ -42,98 +41,48 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
         return workerRepository.save(worker);
     }
 
-    private String generateLoginFromWorkerDto(WorkerCredentials dto) {
-        Random random = new Random();
-        return "w" +
-                random.nextInt(1000) +
-                dto.name().toCharArray()[0] +
-                dto.name().toCharArray()[dto.name().length() - 1] +
-                dto.name().length() +
-                dto.surname().toCharArray()[0] +
-                dto.surname().toCharArray()[dto.surname().length() - 1] +
-                dto.surname().length() +
-                dto.patronymic().toCharArray()[0] +
-                dto.patronymic().toCharArray()[dto.patronymic().length() - 1] +
-                dto.patronymic().length() +
-                dto.placeId();
-    }
-
-    @Override
-    public void updateWorker(WorkerCredentials updateWorker) {
-//        checkPermission(updateWorker.getId());
-//
-//        validatePinCode(updateWorker.getPinCode());
-//        updateWorker.setPinCode(encoder.encode(updateWorker.getPinCode()));
-
-//        var worker = workerRepository.findById(updateWorker.getId());
-//        saveWorker(worker.getUser(), updateWorker);
-//
-//        var user = userJpaRepository.getUserById(worker.getId());
-//        var userWorker = convertWorkerDtoToUser(updateWorker, false);
-//        userWorker.setLogin(user.getLogin());
-//        userJpaRepository.save(userWorker);
-    }
-
     @Override
     public List<Worker> getAllWorkers() {
-        var user = userService.getUser();
-        var placeId = user.placeId();
-
-//        var place = ctx.getPlace();
-//        var workers = workerRepository.findAllByPlaceId(place.getId()); // place.getWorkers();
-
-//        return generateWorkersDto(workers);
-        return null;
+        var placeId = userService.getUser().placeId();
+        return workerRepository.findAllByPlaceId(placeId);
     }
-
-    private List<Worker> generateWorkersDto(List<Worker> workers) {
-//        return workers.stream().map(this::generateWorkerDto).toList();
-        return null;
-    }
-
-//    private WorkerDto generateWorkerDto(Worker worker) {
-//        var user = worker.getUser();
-//        return WorkerDto.builder()
-//                .id(worker.getId())
-//                .name(user.getName())
-//                .surname(user.getSurname())
-//                .patronymic(user.getPatronymic())
-//                .role(worker.getPlaceRole() != null
-//                        ? worker.getPlaceRole().getName()
-//                        : UserRole.WORKER.name())
-//                .placeRoleId(worker.getPlaceRole().getId())
-//                .build();
-//    }
 
     @Override
     public Worker getWorker(long workerId) {
-//        checkPermission(workerId);
-        var worker = workerRepository.findById(workerId);
+        var workers = getPlaceWorkers();
 
-//        return generateWorkerDto(worker);
-        return null;
+        return workers.stream()
+                .filter(x -> x.getId() == workerId)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Worker does not exist"));
     }
 
     @Override
+    @Transactional
     public void deleteWorker(long workerId) {
-//        checkPermission(workerId);
-
+        var workers = getPlaceWorkers();
+        var isWorkerExist = workers.stream().anyMatch(x -> x.getId() == workerId);
+        if (!isWorkerExist) {
+            throw new IllegalArgumentException("Worker does not exist");
+        }
         workerRepository.deleteWorkerById(workerId);
     }
 
     @Override
+    @Transactional
     public void addWorkerRole(long workerId, String roleName) {
-//        checkPermission(workerId);
-//        if (UserRole.ADMIN.name().equals(roleName.toUpperCase())) {
-//            addAdminRole(workerId);
-//        } else {
-//            addPlaceRole(workerId, roleName);
-//        }
-    }
+        var placeId = userService.getUser().placeId();
+        var worker = workerRepository.findById(workerId);
+        if (placeId != worker.getPlaceId()) {
+            throw new IllegalArgumentException("Worker does not exist");
+        }
+        var placeRole = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(placeId, roleName);
+        if (placeRole == null) {
+            throw new IllegalArgumentException("Role does not exist");
+        }
+        worker.setPlaceRole(placeRole);
 
-    @Override//TODO
-    public boolean isWorker() {
-        return false;
+        workerRepository.save(worker);
     }
 
     @Override
@@ -141,27 +90,6 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
         var worker = workerRepository.getWorkerByUserId(userId);
         var placesRole = worker.getPlaceRole();
         return placesRole.getPermissions().stream().anyMatch(x -> x.getName().equals(permissionName));
-    }
-
-    private void addPlaceRole(long workerId, String roleName) {
-//        var place = ctx.getPlace();
-//        var role = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(place.getId(), roleName);
-//        if (role == null) {
-//            throw new IllegalArgumentException("Wrong role name");
-//        }
-
-//        var worker = workerRepository.findById(workerId);
-//        worker.setPlaceRole(role);
-//        workerRepository.save(worker);
-    }
-
-    private void addAdminRole(long workerId) {
-//        var worker = workerRepository.findById(workerId);
-//        var adminRole = roleRepository.findRoleByName(UserRole.ADMIN.name());
-//        worker.getUser().getRoles().add(adminRole);
-//        worker.setPlaceRole(null);
-//
-//        workerRepository.save(worker);
     }
 
     private void validatePinCode(String pin) {
@@ -182,5 +110,10 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    private List<Worker> getPlaceWorkers() {
+        var placeId = userService.getUser().placeId();
+        return workerRepository.findAllByPlaceId(placeId);
     }
 }

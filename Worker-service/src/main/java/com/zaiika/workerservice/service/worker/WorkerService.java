@@ -8,8 +8,6 @@ import java.util.List;
 public interface WorkerService {
     Worker createWorker(WorkerCredentials worker);
 
-    void updateWorker(WorkerCredentials newWorker);
-
     List<Worker> getAllWorkers();
 
     Worker getWorker(long workerId);
@@ -17,8 +15,6 @@ public interface WorkerService {
     void deleteWorker(long workerId);
 
     void addWorkerRole(long workerId, String roleName);
-
-    boolean isWorker();
 
     boolean hasPermission(long userId, String permissionName);
 }
