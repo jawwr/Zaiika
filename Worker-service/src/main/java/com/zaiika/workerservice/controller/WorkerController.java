@@ -46,7 +46,8 @@ public class WorkerController {
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @GetMapping
     public ResponseEntity<?> getAllWorkers() {
-        return ResponseEntity.ok(service.getAllWorkers());
+        return ResponseEntity.ok("it's work!");
+//        return ResponseEntity.ok(service.getAllWorkers());
     }
 
     @Operation(summary = "Создание нового работника")
@@ -148,7 +149,7 @@ public class WorkerController {
     }
 
     @GetMapping("/isWorker")
-    public ResponseEntity<?> isWorker(){
+    public ResponseEntity<?> isWorker() {
         return ResponseEntity.ok(service.isWorker());
     }
 }
