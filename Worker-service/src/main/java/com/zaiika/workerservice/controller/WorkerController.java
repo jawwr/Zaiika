@@ -1,7 +1,7 @@
 package com.zaiika.workerservice.controller;
 
-import com.zaiika.workerservice.model.WorkerDto;
-import com.zaiika.workerservice.service.WorkerService;
+import com.zaiika.workerservice.model.Worker;
+import com.zaiika.workerservice.service.worker.WorkerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +36,7 @@ public class WorkerController {
                                     mediaType = "application/json",
                                     array = @ArraySchema(
                                             schema = @Schema(
-                                                    implementation = WorkerDto.class
+                                                    implementation = Worker.class
                                             )
                                     )
                             )
@@ -58,7 +58,7 @@ public class WorkerController {
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            implementation = WorkerDto.class
+                                            implementation = Worker.class
                                     )
                             )
                     }
@@ -66,7 +66,7 @@ public class WorkerController {
     })
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PostMapping
-    public ResponseEntity<?> createWorker(@RequestBody WorkerDto worker) {
+    public ResponseEntity<?> createWorker(@RequestBody Worker worker) {
         return ResponseEntity.ok(service.createWorker(worker));
     }
 
@@ -83,7 +83,7 @@ public class WorkerController {
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PutMapping("/{workerId}")
     public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
-                                          @RequestBody WorkerDto worker) {
+                                          @RequestBody Worker worker) {
         worker.setId(workerId);
         service.updateWorker(worker);
         return ResponseEntity.ok().build();
@@ -114,7 +114,7 @@ public class WorkerController {
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(
-                                            implementation = WorkerDto.class
+                                            implementation = Worker.class
                                     )
                             )
                     }

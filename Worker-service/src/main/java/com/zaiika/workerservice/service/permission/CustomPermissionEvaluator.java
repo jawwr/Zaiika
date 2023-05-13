@@ -1,7 +1,8 @@
-package com.zaiika.workerservice.service;
+package com.zaiika.workerservice.service.permission;
 
 import com.zaiika.users.UserServiceGrpc;
 import com.zaiika.users.UserServiceOuterClass;
+import com.zaiika.workerservice.service.token.TokenService;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.RequiredArgsConstructor;
@@ -9,14 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.Serializable;
 
 @Component("customPermissionEvaluator")
 @RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
-    private final RestTemplate restTemplate;
     private final TokenService tokenService;
     @Value("${grpc.server.port}")
     private int grpcServerPort;
@@ -44,30 +43,14 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
         var stub = UserServiceGrpc.newBlockingStub(channel);
 
-        var request = UserServiceOuterClass.PermissionRequest
+        var request = UserServiceOuterClass.RoleRequest
                 .newBuilder()
                 .setToken(tokenService.getToken())
-                .setPermission(permission)
+                .setRole(permission)
                 .build();
 
-        var response = stub.hasPermission(request);
+        var response = stub.hasRole(request);
         channel.shutdownNow();
-        return response.getHasPermission();
-
-//        var token = tokenService.getToken();
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setBearerAuth(token);
-//        HttpEntity<?> entity = new HttpEntity<>(httpHeaders);
-//
-//        var hasPermission = restTemplate.exchange(
-//                        "http://localhost:8765/api/users/hasPermission?pName=" + permission,
-//                        HttpMethod.GET,
-//                        entity,
-//                        Boolean.class)
-//                .getBody();
-//        if (hasPermission == null) {
-//            return false;
-//        }
-//        return true;
+        return response.getHasRole();
     }
 }

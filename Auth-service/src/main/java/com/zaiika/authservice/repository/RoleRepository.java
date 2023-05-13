@@ -17,4 +17,14 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             values (:#{#userId}, :#{#role.id})
             """, nativeQuery = true)
     void setRoleToUser(long userId, Role role);
+
+    @Query(value = """
+            select count(*) <> 0
+            from roles
+            join user_role ur
+                on ur.role_id = roles.id
+            where user_id = :#{#userId}
+              and roles.name = :#{#roleName}
+            """, nativeQuery = true)
+    boolean hasRole(long userId, String roleName);
 }

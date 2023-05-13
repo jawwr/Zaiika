@@ -1,4 +1,4 @@
-package com.zaiika.workerservice.service;
+package com.zaiika.workerservice.service.token;
 
 import com.zaiika.workerservice.model.TokenDto;
 import org.springframework.stereotype.Component;

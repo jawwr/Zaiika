@@ -3,7 +3,6 @@ package com.zaiika.authservice.service.userService;
 import com.google.protobuf.Empty;
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.role.Role;
-import com.zaiika.authservice.repository.PermissionRepository;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
 import com.zaiika.authservice.service.jwtService.TokenService;
@@ -23,7 +22,6 @@ import java.util.List;
 public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase implements UserService {
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PermissionRepository permissionRepository;
     private final TokenService tokenService;
 
     @Override
@@ -69,9 +67,9 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     }
 
     @Override
-    public boolean hasUserPermission(String token, String permissionName) {
+    public boolean hasUserRole(String token, String roleName) {
         var user = tokenService.getUserByToken(token);
-        return permissionRepository.hasPermission(user.getId(), permissionName);
+        return roleRepository.hasRole(user.getId(), roleName);
     }
 
     @Override
@@ -81,14 +79,12 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     }
 
     @Override
-    @Transactional
-    public void hasPermission(UserServiceOuterClass.PermissionRequest request,
-                              StreamObserver<UserServiceOuterClass.HasPermissionResponse> responseObserver) {
-        var hasPermission = hasUserPermission(request.getToken(), request.getPermission());
-
-        var response = UserServiceOuterClass.HasPermissionResponse
+    public void hasRole(UserServiceOuterClass.RoleRequest request,
+                        StreamObserver<UserServiceOuterClass.HasRoleResponse> responseObserver) {
+        var hasRole = hasUserRole(request.getToken(), request.getRole());
+        var response = UserServiceOuterClass.HasRoleResponse
                 .newBuilder()
-                .setHasPermission(hasPermission)
+                .setHasRole(hasRole)
                 .build();
 
         responseObserver.onNext(response);

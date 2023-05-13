@@ -1,0 +1,15 @@
+syntax = "proto3";
+package com.zaiika.worker;
+
+message HasPermissionRequest {
+  int64 userId = 1;
+  string permission = 2;
+}
+
+message HasPermissionResponse {
+  bool hasPermission = 1;
+}
+
+service WorkerService {
+  rpc hasPermission(HasPermissionRequest) returns (HasPermissionResponse);
+}

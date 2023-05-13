@@ -1,8 +1,8 @@
 package com.zaiika.placeservice.service.permission;
 
-import com.zaiika.placeservice.service.users.TokenService;
-import com.zaiika.users.UserServiceGrpc;
-import com.zaiika.users.UserServiceOuterClass;
+import com.zaiika.placeservice.service.users.UserService;
+import com.zaiika.worker.WorkerServiceGrpc;
+import com.zaiika.worker.WorkerServiceOuterClass;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ import java.io.Serializable;
 @Component("customPermissionEvaluator")
 @RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
-    private final TokenService tokenService;
-    @Value("${grpc.server.port}")
-    private int grpcServerPort;
+    private final UserService userService;
+    @Value("${grpc.server.worker-service.port}")
+    private int grpcWorkerServerPort;
 
     @Override
     public boolean hasPermission(Authentication authentication,
@@ -36,16 +36,17 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean hasPermission(String permission) {
+        var user = userService.getUser();
         ManagedChannel channel = ManagedChannelBuilder
-                .forTarget("localhost:" + grpcServerPort)
+                .forTarget("localhost:" + grpcWorkerServerPort)
                 .usePlaintext()
                 .build();
 
-        var stub = UserServiceGrpc.newBlockingStub(channel);
+        var stub = WorkerServiceGrpc.newBlockingStub(channel);
 
-        var request = UserServiceOuterClass.PermissionRequest
+        var request = WorkerServiceOuterClass.HasPermissionRequest
                 .newBuilder()
-                .setToken(tokenService.getToken())
+                .setUserId(user.id())
                 .setPermission(permission)
                 .build();
 

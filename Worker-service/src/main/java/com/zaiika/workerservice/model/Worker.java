@@ -18,19 +18,11 @@ public class Worker {
     private long id;
 
     private long placeId;
-//    private long userId;
-//    private long placeRoleId;
 
-    //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @Column(name = "user_id")
     @JsonIgnore
     private long userId;
-    //
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "place_id")
-//    @JsonIgnore
-//    private Place place;
-//
+
     @ManyToOne
     @JoinColumn(name = "place_role_id")
     private PlaceRole placeRole;

@@ -2,7 +2,6 @@ package com.zaiika.authservice.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.zaiika.authservice.model.user.permission.Permission;
 import com.zaiika.authservice.model.user.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,8 +47,4 @@ public class User implements Serializable {
     )
     @JsonIgnore
     private List<Role> roles;
-
-    @Transient
-    @JsonIgnore
-    private List<Permission> permissions;
 }

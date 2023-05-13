@@ -1,4 +1,4 @@
-package com.zaiika.workerservice.service;
+package com.zaiika.workerservice.service.role;
 
 import com.zaiika.workerservice.model.PlaceRole;
 

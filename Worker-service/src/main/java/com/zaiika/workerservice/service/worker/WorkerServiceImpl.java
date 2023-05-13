@@ -1,32 +1,35 @@
-package com.zaiika.workerservice.service;
+package com.zaiika.workerservice.service.worker;
 
+import com.zaiika.worker.WorkerServiceGrpc;
+import com.zaiika.worker.WorkerServiceOuterClass;
 import com.zaiika.workerservice.model.Worker;
-import com.zaiika.workerservice.model.WorkerDto;
+import com.zaiika.workerservice.repository.PlaceRoleRepository;
 import com.zaiika.workerservice.repository.WorkerRepository;
+import com.zaiika.workerservice.service.user.UserService;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 
+//TODO TODO TODO !!!
 @Service
 @RequiredArgsConstructor
-public class WorkerServiceImpl implements WorkerService {
+public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase implements WorkerService {
     private final WorkerRepository workerRepository;
+    private final UserService userService;
     //    private final UserRepository userJpaRepository;
-//    private final PlaceRoleRepository placeRoleRepository;
-//    private final RoleRepository roleRepository;
+    private final PlaceRoleRepository placeRoleRepository;
     private final PasswordEncoder encoder;
-//    private final ContextService ctx;
 
     @Override
-    public WorkerDto createWorker(WorkerDto workerDto) {
+    public Worker createWorker(Worker workerDto) {//TODO
 //        var place = ctx.getPlace();
 //        workerDto.setPlaceId(place.getId());
 
-        validatePinCode(workerDto.getPinCode());
-        workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
+//        validatePinCode(workerDto.getPinCode());
+//        workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
 
 //        var user = saveWorkerAsUser(workerDto);
 //        var savedWorker = saveWorker(user, workerDto);
@@ -49,12 +52,12 @@ public class WorkerServiceImpl implements WorkerService {
 //                .build();
 //        return workerRepository.save(worker);
 //    }
-
+//
 //    private User saveWorkerAsUser(WorkerDto dto) {
 //        var user = convertWorkerDtoToUser(dto, true);
 //        return userJpaRepository.save(user);
 //    }
-
+//
 //    private User convertWorkerDtoToUser(WorkerDto dto, boolean generateLogin) {
 //        return User.builder()
 //                .id(dto.getId())
@@ -66,29 +69,29 @@ public class WorkerServiceImpl implements WorkerService {
 //                .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
 //                .build();
 //    }
-
-    private String generateLoginFromWorkerDto(WorkerDto dto) {
-        Random random = new Random();
-        return "w" +
-                random.nextInt(1000) +
-                dto.getName().toCharArray()[0] +
-                dto.getName().toCharArray()[dto.getName().length() - 1] +
-                dto.getName().length() +
-                dto.getSurname().toCharArray()[0] +
-                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
-                dto.getSurname().length() +
-                dto.getPatronymic().toCharArray()[0] +
-                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
-                dto.getPatronymic().length() +
-                dto.getPlaceId();
-    }
+//
+//    private String generateLoginFromWorkerDto(WorkerDto dto) {
+//        Random random = new Random();
+//        return "w" +
+//                random.nextInt(1000) +
+//                dto.getName().toCharArray()[0] +
+//                dto.getName().toCharArray()[dto.getName().length() - 1] +
+//                dto.getName().length() +
+//                dto.getSurname().toCharArray()[0] +
+//                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
+//                dto.getSurname().length() +
+//                dto.getPatronymic().toCharArray()[0] +
+//                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
+//                dto.getPatronymic().length() +
+//                dto.getPlaceId();
+//    }
 
     @Override
-    public void updateWorker(WorkerDto updateWorker) {
-        checkPermission(updateWorker.getId());
-
-        validatePinCode(updateWorker.getPinCode());
-        updateWorker.setPinCode(encoder.encode(updateWorker.getPinCode()));
+    public void updateWorker(Worker updateWorker) {
+//        checkPermission(updateWorker.getId());
+//
+//        validatePinCode(updateWorker.getPinCode());
+//        updateWorker.setPinCode(encoder.encode(updateWorker.getPinCode()));
 
 //        var worker = workerRepository.findById(updateWorker.getId());
 //        saveWorker(worker.getUser(), updateWorker);
@@ -100,7 +103,10 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<WorkerDto> getAllWorkers() {
+    public List<Worker> getAllWorkers() {
+        var user = userService.getUser();
+        var placeId = user.placeId();
+
 //        var place = ctx.getPlace();
 //        var workers = workerRepository.findAllByPlaceId(place.getId()); // place.getWorkers();
 
@@ -108,7 +114,7 @@ public class WorkerServiceImpl implements WorkerService {
         return null;
     }
 
-    private List<WorkerDto> generateWorkersDto(List<Worker> workers) {
+    private List<Worker> generateWorkersDto(List<Worker> workers) {
 //        return workers.stream().map(this::generateWorkerDto).toList();
         return null;
     }
@@ -128,8 +134,8 @@ public class WorkerServiceImpl implements WorkerService {
 //    }
 
     @Override
-    public WorkerDto getWorker(long workerId) {
-        checkPermission(workerId);
+    public Worker getWorker(long workerId) {
+//        checkPermission(workerId);
         var worker = workerRepository.findById(workerId);
 
 //        return generateWorkerDto(worker);
@@ -138,14 +144,14 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public void deleteWorker(long workerId) {
-        checkPermission(workerId);
+//        checkPermission(workerId);
 
         workerRepository.deleteWorkerById(workerId);
     }
 
     @Override
     public void addWorkerRole(long workerId, String roleName) {
-        checkPermission(workerId);
+//        checkPermission(workerId);
 //        if (UserRole.ADMIN.name().equals(roleName.toUpperCase())) {
 //            addAdminRole(workerId);
 //        } else {
@@ -153,9 +159,16 @@ public class WorkerServiceImpl implements WorkerService {
 //        }
     }
 
-    @Override
+    @Override//TODO
     public boolean isWorker() {
         return false;
+    }
+
+    @Override
+    public boolean hasPermission(long userId, String permissionName) {
+        var worker = workerRepository.getWorkerByUserId(userId);
+        var placesRole = worker.getPlaceRole();
+        return placesRole.getPermissions().stream().anyMatch(x -> x.getName().equals(permissionName));
     }
 
     private void addPlaceRole(long workerId, String roleName) {
@@ -194,12 +207,17 @@ public class WorkerServiceImpl implements WorkerService {
 //        }
     }
 
-    private void checkPermission(long workerId) {
-//        var place = ctx.getPlace();
-//        var worker = workerRepository.findById(workerId);
-//
-//        if (place.getId() != worker.getPlace().getId()) {
-//            throw new PermissionDeniedException();
-//        }
+    @Override
+    public void hasPermission(WorkerServiceOuterClass.HasPermissionRequest request,
+                              StreamObserver<WorkerServiceOuterClass.HasPermissionResponse> responseObserver) {
+        var hasPermission = hasPermission(request.getUserId(), request.getPermission());
+
+        var response = WorkerServiceOuterClass.HasPermissionResponse
+                .newBuilder()
+                .setHasPermission(hasPermission)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

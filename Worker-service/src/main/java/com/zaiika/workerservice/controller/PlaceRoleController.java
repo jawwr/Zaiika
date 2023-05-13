@@ -1,7 +1,7 @@
 package com.zaiika.workerservice.controller;
 
 import com.zaiika.workerservice.model.PlaceRole;
-import com.zaiika.workerservice.service.PlaceRoleService;
+import com.zaiika.workerservice.service.role.PlaceRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

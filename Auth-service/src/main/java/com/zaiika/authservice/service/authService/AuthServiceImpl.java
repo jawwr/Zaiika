@@ -86,15 +86,8 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponse login(long placeId, WorkerCredential credential) {
         var workers = workerRepository.findAllByPlaceId(placeId);
         var users = workers.stream().map(Worker::getUser).toList();
-        User workerUser = null;
-        for (User user : users) {
-            if (passwordEncoder.matches(credential.pin(), user.getPassword())) {
-                workerUser = user;
-            }
-        }
-        if (workerUser == null) {
-            throw new IllegalArgumentException("Worker with this pin not exist");
-        }
+        User workerUser = getWorkerByPin(users, credential.pin());
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         workerUser.getLogin(),
@@ -108,6 +101,19 @@ public class AuthServiceImpl implements AuthService {
         tokenService.saveUserToken(jwt, workerUser);
 
         return new TokenResponse(jwt);
+    }
+
+    private User getWorkerByPin(List<User> users, String pin) {
+        User worker = null;
+        for (User user : users) {
+            if (passwordEncoder.matches(pin, user.getPassword())) {
+                worker = user;
+            }
+        }
+        if (worker == null) {
+            throw new IllegalArgumentException("Worker with this pin not exist");
+        }
+        return worker;
     }
 
     @Override

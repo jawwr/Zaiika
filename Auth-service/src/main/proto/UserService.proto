@@ -3,13 +3,8 @@ package com.zaiika.users;
 
 import "google/protobuf/empty.proto";
 
-message PermissionRequest {
-  string token = 1;
-  string permission = 2;
-}
-
-message HasPermissionResponse {
-  bool hasPermission = 1;
+message HasRoleResponse {
+  bool hasRole= 1;
 }
 
 message RoleRequest {
@@ -30,7 +25,7 @@ message UserInfoResponse {
 }
 
 service UserService {
-  rpc hasPermission(PermissionRequest) returns (HasPermissionResponse);
+  rpc hasRole(RoleRequest) returns (HasRoleResponse);
   rpc setRoleForUser(RoleRequest) returns (google.protobuf.Empty);
   rpc deleteRoleFromUser(RoleRequest) returns (google.protobuf.Empty);
   rpc getUserInfo(TokenRequest) returns (UserInfoResponse);

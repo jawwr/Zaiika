@@ -13,7 +13,7 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
-    boolean hasUserPermission(String token, String permissionName);
+    boolean hasUserRole(String token, String roleName);
 
     User getUserInfo(String token);
 }
