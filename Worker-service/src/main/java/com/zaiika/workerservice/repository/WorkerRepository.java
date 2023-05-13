@@ -31,8 +31,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
     List<Worker> findAllByPlaceRoleId(long roleId);
 
-    Worker findWorkerByUserId(long userId);
-
     @Query(value = """
             select count(*) <> 0
             from workers

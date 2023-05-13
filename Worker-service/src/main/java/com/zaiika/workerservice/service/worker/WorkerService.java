@@ -1,13 +1,14 @@
 package com.zaiika.workerservice.service.worker;
 
 import com.zaiika.workerservice.model.Worker;
+import com.zaiika.workerservice.model.WorkerCredentials;
 
 import java.util.List;
 
 public interface WorkerService {
-    Worker createWorker(Worker worker);
+    Worker createWorker(WorkerCredentials worker);
 
-    void updateWorker(Worker newWorker);
+    void updateWorker(WorkerCredentials newWorker);
 
     List<Worker> getAllWorkers();
 

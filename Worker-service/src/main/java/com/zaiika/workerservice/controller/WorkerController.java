@@ -1,6 +1,7 @@
 package com.zaiika.workerservice.controller;
 
 import com.zaiika.workerservice.model.Worker;
+import com.zaiika.workerservice.model.WorkerCredentials;
 import com.zaiika.workerservice.service.worker.WorkerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -66,7 +67,7 @@ public class WorkerController {
     })
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PostMapping
-    public ResponseEntity<?> createWorker(@RequestBody Worker worker) {
+    public ResponseEntity<?> createWorker(@RequestBody WorkerCredentials worker) {
         return ResponseEntity.ok(service.createWorker(worker));
     }
 
@@ -83,8 +84,8 @@ public class WorkerController {
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @PutMapping("/{workerId}")
     public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
-                                          @RequestBody Worker worker) {
-        worker.setId(workerId);
+                                          @RequestBody WorkerCredentials worker) {
+//        worker.setId(workerId);
         service.updateWorker(worker);
         return ResponseEntity.ok().build();
     }

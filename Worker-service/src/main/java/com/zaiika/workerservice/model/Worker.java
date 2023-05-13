@@ -17,6 +17,7 @@ public class Worker {
     @Column(name = "id")
     private long id;
 
+    @JsonIgnore
     private long placeId;
 
     @Column(name = "user_id")

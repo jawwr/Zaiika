@@ -24,9 +24,23 @@ message UserInfoResponse {
   string login = 5;
 }
 
+message WorkerCredentialsRequest {
+  string pin = 1;
+  string name = 2;
+  string surname = 3;
+  string patronymic = 4;
+  string login = 5;
+  int64 placeId = 6;
+}
+
+message UserResponse {
+  int64 userId = 1;
+}
+
 service UserService {
   rpc hasRole(RoleRequest) returns (HasRoleResponse);
   rpc setRoleForUser(RoleRequest) returns (google.protobuf.Empty);
   rpc deleteRoleFromUser(RoleRequest) returns (google.protobuf.Empty);
   rpc getUserInfo(TokenRequest) returns (UserInfoResponse);
+  rpc saveWorkerAsUser(WorkerCredentialsRequest) returns (UserResponse);
 }

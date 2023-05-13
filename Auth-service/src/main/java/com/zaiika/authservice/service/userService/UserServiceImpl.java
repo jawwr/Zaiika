@@ -3,14 +3,17 @@ package com.zaiika.authservice.service.userService;
 import com.google.protobuf.Empty;
 import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.role.Role;
+import com.zaiika.authservice.model.worker.Worker;
 import com.zaiika.authservice.repository.RoleRepository;
 import com.zaiika.authservice.repository.UserJpaRepository;
+import com.zaiika.authservice.repository.WorkerRepository;
 import com.zaiika.authservice.service.jwtService.TokenService;
 import com.zaiika.users.UserServiceGrpc;
 import com.zaiika.users.UserServiceOuterClass;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
     private final UserJpaRepository userRepository;
     private final RoleRepository roleRepository;
     private final TokenService tokenService;
+    private final WorkerRepository workerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -130,5 +135,38 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
         var response = Empty.getDefaultInstance();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void saveWorkerAsUser(UserServiceOuterClass.WorkerCredentialsRequest request,
+                                 StreamObserver<UserServiceOuterClass.UserResponse> responseObserver) {
+        validatePinCode(request.getPlaceId(), request.getPin());
+        var user = User
+                .builder()
+                .name(request.getName())
+                .surname(request.getSurname())
+                .patronymic(request.getPatronymic())
+                .login(request.getLogin())
+                .password(passwordEncoder.encode(request.getPin()))
+                .build();
+
+        var savedUser = userRepository.save(user);
+        var response = UserServiceOuterClass.UserResponse
+                .newBuilder()
+                .setUserId(savedUser.getId())
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    private void validatePinCode(long placeId, String pin) {
+        var workers = workerRepository.findAllByPlaceId(placeId);
+        var users = workers.stream().map(Worker::getUser).toList();
+        for (var user : users) {
+            if (passwordEncoder.matches(pin, user.getPassword())) {
+                throw new IllegalArgumentException("Pin code already exist");
+            }
+        }
     }
 }

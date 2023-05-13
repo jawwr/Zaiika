@@ -3,6 +3,7 @@ package com.zaiika.workerservice.service.user;
 import com.zaiika.users.UserServiceGrpc;
 import com.zaiika.users.UserServiceOuterClass;
 import com.zaiika.workerservice.model.UserDto;
+import com.zaiika.workerservice.model.WorkerCredentials;
 import com.zaiika.workerservice.repository.WorkerRepository;
 import com.zaiika.workerservice.service.token.TokenService;
 import io.grpc.ManagedChannel;
@@ -34,6 +35,29 @@ public class UserServiceImpl implements UserService {
         var dto = new UserDto(userId, placeId);
         saveUserDtoToCache(dto, tokenService.getToken());
         return dto;
+    }
+
+    @Override
+    public long saveWorker(WorkerCredentials worker) {
+        ManagedChannel channel = ManagedChannelBuilder
+                .forTarget("localhost:" + grpcUserServicePort)
+                .usePlaintext()
+                .build();
+
+        var stub = UserServiceGrpc.newBlockingStub(channel);
+        var request = UserServiceOuterClass.WorkerCredentialsRequest
+                .newBuilder()
+                .setLogin(worker.login())
+                .setName(worker.name())
+                .setSurname(worker.surname())
+                .setPatronymic(worker.patronymic())
+                .setPin(worker.pin())
+                .setPlaceId(worker.placeId())
+                .build();
+
+        var response = stub.saveWorkerAsUser(request);
+        channel.shutdownNow();
+        return response.getUserId();
     }
 
     private long getUserIdFromAuthService() {

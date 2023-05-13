@@ -3,15 +3,17 @@ package com.zaiika.workerservice.service.worker;
 import com.zaiika.worker.WorkerServiceGrpc;
 import com.zaiika.worker.WorkerServiceOuterClass;
 import com.zaiika.workerservice.model.Worker;
+import com.zaiika.workerservice.model.WorkerCredentials;
 import com.zaiika.workerservice.repository.PlaceRoleRepository;
 import com.zaiika.workerservice.repository.WorkerRepository;
 import com.zaiika.workerservice.service.user.UserService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 //TODO TODO TODO !!!
 @Service
@@ -19,75 +21,45 @@ import java.util.List;
 public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase implements WorkerService {
     private final WorkerRepository workerRepository;
     private final UserService userService;
-    //    private final UserRepository userJpaRepository;
     private final PlaceRoleRepository placeRoleRepository;
-    private final PasswordEncoder encoder;
 
     @Override
-    public Worker createWorker(Worker workerDto) {//TODO
-//        var place = ctx.getPlace();
-//        workerDto.setPlaceId(place.getId());
+    @Transactional
+    public Worker createWorker(WorkerCredentials workerDto) {//TODO
+        var user = userService.getUser();
+        var placeRole = placeRoleRepository
+                .findPlaceRoleByPlaceIdAndNameIgnoreCase(user.placeId(), workerDto.placeRole());
 
-//        validatePinCode(workerDto.getPinCode());
-//        workerDto.setPinCode(encoder.encode(workerDto.getPinCode()));
+        validatePinCode(workerDto.pin());
+        var userId = userService.saveWorker(workerDto);
+        Worker worker = Worker
+                .builder()
+                .placeId(user.placeId())
+                .userId(userId)
+                .placeRole(placeRole)
+                .build();
 
-//        var user = saveWorkerAsUser(workerDto);
-//        var savedWorker = saveWorker(user, workerDto);
-
-//        workerDto.setId(savedWorker.getId());
-//        workerDto.setPlaceId(savedWorker.getPlace().getId());
-//        workerDto.setRole(placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId()).getName());
-
-        return workerDto;
+        return workerRepository.save(worker);
     }
 
-//    private Worker saveWorker(User user, WorkerDto workerDto) {
-//        var placeRole = placeRoleRepository.findPlaceRoleById(workerDto.getPlaceRoleId());
-//        var place = ctx.getPlace();
-//        var worker = Worker.builder()
-//                .id(workerDto.getId())
-//                .user(user)
-//                .placeRole(placeRole)
-//                .place(place)
-//                .build();
-//        return workerRepository.save(worker);
-//    }
-//
-//    private User saveWorkerAsUser(WorkerDto dto) {
-//        var user = convertWorkerDtoToUser(dto, true);
-//        return userJpaRepository.save(user);
-//    }
-//
-//    private User convertWorkerDtoToUser(WorkerDto dto, boolean generateLogin) {
-//        return User.builder()
-//                .id(dto.getId())
-//                .name(dto.getName())
-//                .surname(dto.getSurname())
-//                .patronymic(dto.getPatronymic())
-//                .roles(List.of(roleRepository.findRoleByName(UserRole.WORKER.name())))
-//                .password(dto.getPinCode())
-//                .login(generateLogin ? generateLoginFromWorkerDto(dto) : "")
-//                .build();
-//    }
-//
-//    private String generateLoginFromWorkerDto(WorkerDto dto) {
-//        Random random = new Random();
-//        return "w" +
-//                random.nextInt(1000) +
-//                dto.getName().toCharArray()[0] +
-//                dto.getName().toCharArray()[dto.getName().length() - 1] +
-//                dto.getName().length() +
-//                dto.getSurname().toCharArray()[0] +
-//                dto.getSurname().toCharArray()[dto.getSurname().length() - 1] +
-//                dto.getSurname().length() +
-//                dto.getPatronymic().toCharArray()[0] +
-//                dto.getPatronymic().toCharArray()[dto.getPatronymic().length() - 1] +
-//                dto.getPatronymic().length() +
-//                dto.getPlaceId();
-//    }
+    private String generateLoginFromWorkerDto(WorkerCredentials dto) {
+        Random random = new Random();
+        return "w" +
+                random.nextInt(1000) +
+                dto.name().toCharArray()[0] +
+                dto.name().toCharArray()[dto.name().length() - 1] +
+                dto.name().length() +
+                dto.surname().toCharArray()[0] +
+                dto.surname().toCharArray()[dto.surname().length() - 1] +
+                dto.surname().length() +
+                dto.patronymic().toCharArray()[0] +
+                dto.patronymic().toCharArray()[dto.patronymic().length() - 1] +
+                dto.patronymic().length() +
+                dto.placeId();
+    }
 
     @Override
-    public void updateWorker(Worker updateWorker) {
+    public void updateWorker(WorkerCredentials updateWorker) {
 //        checkPermission(updateWorker.getId());
 //
 //        validatePinCode(updateWorker.getPinCode());
@@ -193,18 +165,9 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
     }
 
     private void validatePinCode(String pin) {
-//        if (pin.length() != 4) {
-//            throw new IllegalArgumentException("Pin code should have 4 digits");
-//        }
-//        var place = ctx.getPlace();
-//
-//        var placeWorkers = workerRepository.findAllByPlaceId(place.getId());
-//        var users = placeWorkers.stream().map(Worker::getUser).toList();
-//        for (User user : users) {
-//            if (encoder.matches(pin, user.getPassword())) {
-//                throw new IllegalArgumentException("Pin code already exist");
-//            }
-//        }
+        if (!pin.matches("\\d{4}")) {
+            throw new IllegalArgumentException("Pin code must be of 4 digits");
+        }
     }
 
     @Override
