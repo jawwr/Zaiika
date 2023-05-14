@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//TODO caching
 @Service
 @RequiredArgsConstructor
 public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase implements WorkerService {
@@ -47,8 +46,7 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
 
     @Override
     public List<Worker> getAllWorkers() {
-        var placeId = userService.getUser().placeId();
-        return workerRepository.findAllByPlaceId(placeId);
+        return getPlaceWorkers();
     }
 
     @Override
@@ -110,7 +108,9 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
     public boolean hasPermission(long userId, String permissionName) {
         var worker = workerRepository.getWorkerByUserId(userId);
         var placesRole = worker.getPlaceRole();
-        return placesRole.getPermissions().stream().anyMatch(x -> x.getName().equals(permissionName));
+        return placesRole.getPermissions()
+                .stream()
+                .anyMatch(x -> x.getName().equals(permissionName));
     }
 
     private void validatePinCode(String pin) {

@@ -16,13 +16,6 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
     void deleteSiteById(long siteId);
 
     @Query(value = """
-            select *
-            from sites
-            where place_id = :#{#placeId}
-            """, nativeQuery = true)
-    List<Site> findSitesByPlaceId(long placeId);
-
-    @Query(value = """
             select count(*) <> 0
             from sites
             where place_id = :#{#placeId}

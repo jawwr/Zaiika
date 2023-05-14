@@ -31,7 +31,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<Place> getAllPlaces() {
-        return placeRepository.getAllPlaces();
+        return placeRepository.findAll();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PlaceServiceImpl implements PlaceService {
     public void updatePlace(Place place) {
         checkPermission(place.getId());
 
-        var savedPlace = placeRepository.getPlaceById(place.getId());
+        var savedPlace = placeRepository.findPlaceById(place.getId());
         place.setOwnerId(savedPlace.getOwnerId());
         placeRepository.save(place);
     }
@@ -69,7 +69,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     @Cacheable(cacheNames = {CACHE_NAME}, key = "#id")
     public Place getPlace(long id) {
-        return placeRepository.getPlaceById(id);
+        return placeRepository.findPlaceById(id);
     }
 
     private Place getPlaceFromCache(long userId) {
@@ -90,7 +90,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     private void checkPermission(long placeId) {
         var user = userService.getUser();
-        var place = placeRepository.getPlaceById(placeId);
+        var place = placeRepository.findPlaceById(placeId);
         if (user.id() != place.getOwnerId()) {
             throw new IllegalArgumentException("User is not owner for this place");
         }
