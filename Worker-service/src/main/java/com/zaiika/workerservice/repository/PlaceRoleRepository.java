@@ -22,5 +22,11 @@ public interface PlaceRoleRepository extends JpaRepository<PlaceRole, Long> {
 
     PlaceRole findPlaceRoleById(long id);
 
-    PlaceRole findPlaceRoleByPlaceIdAndNameIgnoreCase(long placeId, String name);
+    @Query(value = """
+            select *
+            from place_roles
+            where place_id = :#{#placeId}
+              and upper(name) = upper(:#{#name})
+            """, nativeQuery = true)
+    PlaceRole findPlaceRoleByPlaceIdAndName(long placeId, String name);
 }

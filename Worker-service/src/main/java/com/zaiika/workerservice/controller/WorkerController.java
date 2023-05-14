@@ -47,8 +47,7 @@ public class WorkerController {
     @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
     @GetMapping
     public ResponseEntity<?> getAllWorkers() {
-        return ResponseEntity.ok("it's work!");
-//        return ResponseEntity.ok(service.getAllWorkers());
+        return ResponseEntity.ok(service.getAllWorkers());
     }
 
     @Operation(summary = "Создание нового работника")
@@ -70,25 +69,26 @@ public class WorkerController {
     public ResponseEntity<?> createWorker(@RequestBody WorkerCredentials worker) {
         return ResponseEntity.ok(service.createWorker(worker));
     }
+//TODO
 
-    @Operation(summary = "Обновление работника по id")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200"
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    ref = "permissionDenied"
-            )
-    })
-    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
-    @PutMapping("/{workerId}")
-    public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
-                                          @RequestBody WorkerCredentials worker) {
+//    @Operation(summary = "Обновление работника по id")
+//    @ApiResponses(value = {
+//            @ApiResponse(
+//                    responseCode = "200"
+//            ),
+//            @ApiResponse(
+//                    responseCode = "403",
+//                    ref = "permissionDenied"
+//            )
+//    })
+//    @PreAuthorize("hasPermission(null, 'MANAGE_WORKER')")
+//    @PutMapping("/{workerId}")
+//    public ResponseEntity<?> updateWorker(@PathVariable("workerId") Long workerId,
+//                                          @RequestBody WorkerCredentials worker) {
 //        worker.setId(workerId);
-        service.updateWorker(worker);
-        return ResponseEntity.ok().build();
-    }
+//        service.updateWorker(worker);
+//        return ResponseEntity.ok().build();
+//    }
 
     @Operation(summary = "Удаление работника заведения по id")
     @ApiResponses(value = {
@@ -147,10 +147,5 @@ public class WorkerController {
                                            @RequestParam(value = "roleName") String roleName) {
         service.addWorkerRole(workerId, roleName);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/isWorker")
-    public ResponseEntity<?> isWorker() {
-        return ResponseEntity.ok(service.isWorker());
     }
 }

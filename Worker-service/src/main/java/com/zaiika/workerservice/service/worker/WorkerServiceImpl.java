@@ -9,6 +9,7 @@ import com.zaiika.workerservice.repository.WorkerRepository;
 import com.zaiika.workerservice.service.user.UserService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +22,16 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
     private final WorkerRepository workerRepository;
     private final UserService userService;
     private final PlaceRoleRepository placeRoleRepository;
+    private final CacheManager cacheManager;
+    private static final String CACHE_NAME = "workersPlace";
 
     @Override
     @Transactional
+
     public Worker createWorker(WorkerCredentials workerDto) {
         var user = userService.getUser();
         var placeRole = placeRoleRepository
-                .findPlaceRoleByPlaceIdAndNameIgnoreCase(user.placeId(), workerDto.placeRole());
+                .findPlaceRoleByPlaceIdAndName(user.placeId(), workerDto.placeRole());
 
         validatePinCode(workerDto.pin());
         var userId = userService.saveWorker(workerDto);
@@ -57,6 +61,22 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
                 .orElseThrow(() -> new IllegalArgumentException("Worker does not exist"));
     }
 
+    private List<Worker> getListWorkerFromCache(long placeId) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return null;
+        }
+        return cache.get(placeId, List.class);
+    }
+
+    private void saveListWorkersToCache(List<Worker> workers, long placeId) {
+        var cache = cacheManager.getCache(CACHE_NAME);
+        if (cache == null) {
+            return;
+        }
+        cache.put(placeId, workers);
+    }
+
     @Override
     @Transactional
     public void deleteWorker(long workerId) {
@@ -76,7 +96,8 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
         if (placeId != worker.getPlaceId()) {
             throw new IllegalArgumentException("Worker does not exist");
         }
-        var placeRole = placeRoleRepository.findPlaceRoleByPlaceIdAndNameIgnoreCase(placeId, roleName);
+        var placeRole = placeRoleRepository
+                .findPlaceRoleByPlaceIdAndName(placeId, roleName);
         if (placeRole == null) {
             throw new IllegalArgumentException("Role does not exist");
         }
@@ -114,6 +135,13 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
 
     private List<Worker> getPlaceWorkers() {
         var placeId = userService.getUser().placeId();
-        return workerRepository.findAllByPlaceId(placeId);
+        var cacheWorkers = getListWorkerFromCache(placeId);
+        if (cacheWorkers != null) {
+            return cacheWorkers;
+        }
+        var workers = workerRepository.findAllByPlaceId(placeId);
+        saveListWorkersToCache(workers, placeId);
+
+        return workers;
     }
 }
