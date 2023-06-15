@@ -43,7 +43,7 @@ public class UserController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")//TODO сделать кастомный преавторайз
+    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(service.getAllUsers());
@@ -55,7 +55,7 @@ public class UserController {
                     responseCode = "200"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
     @PostMapping("/{userId}/role")
     public ResponseEntity<?> addRole(@PathVariable("userId") Long userId,
                                      @RequestParam("role") String role) {
@@ -69,7 +69,7 @@ public class UserController {
                     responseCode = "200"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
     @DeleteMapping("/{userId}/role")
     public ResponseEntity<?> deleteRole(@PathVariable("userId") Long userId,
                                         @RequestParam("role") String role) {
