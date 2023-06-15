@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface UserJpaRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = """
             select id, login, name, patronymic, surname, password
@@ -29,11 +29,8 @@ public interface UserJpaRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
     @Query(value = """
-            delete from user_role
-            where user_id = :#{#id};
             delete from users
-            where id = :#{#id}
-            returning *;
+            where id = :#{#id};
             """, nativeQuery = true)
-    User deleteUserById(Long id);
+    void deleteUserById(long id);
 }

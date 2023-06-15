@@ -43,7 +43,7 @@ public class UserController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+    @PreAuthorize("hasPermission(null, 'DUNGEON_MASTER')")
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(service.getAllUsers());
@@ -55,7 +55,7 @@ public class UserController {
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+    @PreAuthorize("hasPermission(null, 'DUNGEON_MASTER')")
     @PostMapping("/{userId}/role")
     public ResponseEntity<?> addRole(@PathVariable("userId") Long userId,
                                      @RequestParam("role") String role) {
@@ -69,7 +69,7 @@ public class UserController {
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_USER')")
+    @PreAuthorize("hasPermission(null, 'DUNGEON_MASTER')")
     @DeleteMapping("/{userId}/role")
     public ResponseEntity<?> deleteRole(@PathVariable("userId") Long userId,
                                         @RequestParam("role") String role) {
@@ -83,10 +83,10 @@ public class UserController {
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasPermission(#userId ,'MANAGE_USER')")
+    @PreAuthorize("hasPermission(null, 'DUNGEON_MASTER')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
-        service.deleteUser(userId);
+//        service.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
 

@@ -1,7 +1,7 @@
 package com.zaiika.authservice.service.userService;
 
 import com.zaiika.authservice.model.user.UserDetailImpl;
-import com.zaiika.authservice.repository.UserJpaRepository;
+import com.zaiika.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

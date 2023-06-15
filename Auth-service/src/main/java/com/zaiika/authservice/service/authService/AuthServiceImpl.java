@@ -10,7 +10,7 @@ import com.zaiika.authservice.model.user.role.UserRole;
 import com.zaiika.authservice.model.worker.Worker;
 import com.zaiika.authservice.model.worker.WorkerCredential;
 import com.zaiika.authservice.repository.RoleRepository;
-import com.zaiika.authservice.repository.UserJpaRepository;
+import com.zaiika.authservice.repository.UserRepository;
 import com.zaiika.authservice.repository.WorkerRepository;
 import com.zaiika.authservice.service.jwtService.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final WorkerRepository workerRepository;
     private final TokenService tokenService;

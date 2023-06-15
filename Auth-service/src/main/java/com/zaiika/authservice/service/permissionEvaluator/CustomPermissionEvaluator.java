@@ -1,6 +1,8 @@
 package com.zaiika.authservice.service.permissionEvaluator;
 
 import com.zaiika.authservice.repository.RoleRepository;
+import com.zaiika.authservice.service.jwtService.RequestToken;
+import com.zaiika.authservice.service.jwtService.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -13,12 +15,15 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private final RoleRepository roleRepository;
+    private final TokenService tokenService;
+    private final RequestToken requestToken;
 
     @Override
     public boolean hasPermission(Authentication authentication,
                                  Object userId,
                                  Object permission) {
-        return roleRepository.hasRole((long) userId, (String) permission);
+        var user = tokenService.getUserByToken(requestToken.getToken());
+        return roleRepository.hasRole(user.getId(), (String) permission);
     }
 
     @Override
@@ -26,6 +31,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                                  Serializable targetId,
                                  String targetType,
                                  Object permission) {
-        return true;
+        return hasPermission(authentication, targetId, permission);
     }
 }

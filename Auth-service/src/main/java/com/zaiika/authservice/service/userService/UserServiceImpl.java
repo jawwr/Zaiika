@@ -5,7 +5,7 @@ import com.zaiika.authservice.model.user.User;
 import com.zaiika.authservice.model.user.role.Role;
 import com.zaiika.authservice.model.worker.Worker;
 import com.zaiika.authservice.repository.RoleRepository;
-import com.zaiika.authservice.repository.UserJpaRepository;
+import com.zaiika.authservice.repository.UserRepository;
 import com.zaiika.authservice.repository.WorkerRepository;
 import com.zaiika.authservice.service.jwtService.TokenService;
 import com.zaiika.users.UserServiceGrpc;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase implements UserService {
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final TokenService tokenService;
     private final WorkerRepository workerRepository;
@@ -68,6 +68,8 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
 
     @Override
     public void deleteUser(Long userId) {
+        roleRepository.deleteAllRolesFromUser(userId);
+        workerRepository.deleteWorkerByUserId(userId);
         userRepository.deleteUserById(userId);
     }
 
