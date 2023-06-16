@@ -21,10 +21,10 @@ public class Worker {
     private long placeId;
 
     @Column(name = "user_id")
-    @JsonIgnore
     private long userId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "place_role_id")
     private PlaceRole placeRole;
 }

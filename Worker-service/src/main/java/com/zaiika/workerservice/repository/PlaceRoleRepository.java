@@ -11,6 +11,11 @@ public interface PlaceRoleRepository extends JpaRepository<PlaceRole, Long> {
     @Transactional
     void deleteRoleById(long roleId);
 
+    @Query(value = """
+            select *
+            from place_roles
+            where id = :#{#id}
+            """, nativeQuery = true)
     PlaceRole findPlaceRoleById(long id);
 
     @Query(value = """
