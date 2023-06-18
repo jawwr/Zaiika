@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zaiika.workerservice.WorkerServiceApplication;
 import com.zaiika.workerservice.model.PlaceRole;
 import com.zaiika.workerservice.model.UserDto;
+import com.zaiika.workerservice.model.permission.Permission;
 import com.zaiika.workerservice.service.user.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -88,6 +91,36 @@ public class PlaceRoleControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(placeRole.getName()));
+    }
+
+    @Test
+    public void testCreateRoleWithNotExistingPermission() throws Exception {
+        var permissions = List.of(
+                new Permission("MANAGE_PLACE_ROLE"),
+                new Permission("NOT_EXISTING_PERMISSION"));
+        PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, permissions);
+        var body = convertObjectToJson(placeRole);
+        mockMvc.perform(post("/api/role")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateRoleWithNotExistingPermission() throws Exception {
+        var permissions = List.of(
+                new Permission("MANAGE_PLACE_ROLE"),
+                new Permission("NOT_EXISTING_PERMISSION"));
+        PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, permissions);
+        var body = convertObjectToJson(placeRole);
+        mockMvc.perform(put("/api/role/99999")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     private <T> String convertObjectToJson(T obj) throws Exception {
