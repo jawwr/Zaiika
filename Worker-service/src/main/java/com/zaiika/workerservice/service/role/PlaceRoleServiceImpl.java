@@ -32,6 +32,13 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     @Override
     public void deleteRole(long roleId) {
+        var role = roleRepository.findPlaceRoleById(roleId);
+        if (role == null){
+            throw new IllegalArgumentException("Role with id " + roleId + " not exist");
+        }
+        if (role.getPlaceId() != getPlaceId()) {
+            throw new IllegalArgumentException("Not enough permission");
+        }
         var workers = workerRepository.findAllByPlaceRoleId(roleId);
         workers.forEach(x -> x.setPlaceRole(null));
         workerRepository.saveAll(workers);
@@ -41,6 +48,12 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     @Override
     public PlaceRole updateRole(PlaceRole role) {
         var savedRole = roleRepository.findPlaceRoleById(role.getId());
+        if (savedRole == null) {
+            throw new IllegalArgumentException("Role with id " + role.getId() + " not exist");
+        }
+        if (savedRole.getPlaceId() != getPlaceId()) {
+            throw new IllegalArgumentException("Not enough permission");
+        }
         role.setPlaceId(savedRole.getPlaceId());
         validateRolePermissions(role);
         return roleRepository.save(role);

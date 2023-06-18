@@ -24,7 +24,7 @@ where id between 20 and 100000;
 
 delete
 from place_roles
-where place_id = 99999;
+where place_id = 99999 or id = 99998;
 
 delete
 from places

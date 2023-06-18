@@ -11,6 +11,9 @@ values (99999, 'TEST PLACE', 99999);
 insert into place_roles(id, name, place_id)
 values (99999, 'TEST PLACE ROLE', 99999);
 
+insert into place_roles(id, name, place_id)
+VALUES (99998, 'test role for deleting', 17);
+
 insert into workers(id, place_id, place_role_id, user_id)
 values (99999, 99999, 99999, 99999);
 

@@ -81,6 +81,22 @@ public class PlaceRoleControllerTests {
     }
 
     @Test
+    public void testDeleteNotExistsRole() throws Exception {
+        mockMvc.perform(delete("/api/role/9999")
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteOtherPlaceRole() throws Exception {
+        mockMvc.perform(delete("/api/role/99998")
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void testUpdatePlaceRole() throws Exception {
         PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, null);
         var body = convertObjectToJson(placeRole);
@@ -116,6 +132,21 @@ public class PlaceRoleControllerTests {
         PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, permissions);
         var body = convertObjectToJson(placeRole);
         mockMvc.perform(put("/api/role/99999")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateNotExistingRole() throws Exception {
+        var permissions = List.of(
+                new Permission("MANAGE_PLACE_ROLE"),
+                new Permission("NOT_EXISTING_PERMISSION"));
+        PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, permissions);
+        var body = convertObjectToJson(placeRole);
+        mockMvc.perform(put("/api/role/9999")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
