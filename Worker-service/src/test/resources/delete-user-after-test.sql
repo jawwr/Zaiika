@@ -1,4 +1,8 @@
 delete
+from place_role_permission
+where place_role_id = 99999;
+
+delete
 from tokens
 where user_id = (select id
                  from users
@@ -20,7 +24,7 @@ where id between 20 and 100000;
 
 delete
 from place_roles
-where id = 99999;
+where place_id = 99999;
 
 delete
 from places

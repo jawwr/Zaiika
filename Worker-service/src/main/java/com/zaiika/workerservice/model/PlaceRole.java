@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "place_roles")
+@JsonIgnoreProperties("hibernateLazyInitializer")
 public class PlaceRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +27,15 @@ public class PlaceRole {
     @Column(name = "name")
     private String name;
 
-    //    @ManyToOne
     @JoinColumn(name = "place_id", nullable = false)
     @JsonIgnore
-//    private Place place;
     private long placeId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "place_role_permission",
             joinColumns = @JoinColumn(name = "place_role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    @JsonIgnoreProperties("placeRoles")
     private List<Permission> permissions;
 }

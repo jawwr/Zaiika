@@ -3,57 +3,50 @@ package com.zaiika.workerservice.service.role;
 import com.zaiika.workerservice.model.PlaceRole;
 import com.zaiika.workerservice.repository.PlaceRoleRepository;
 import com.zaiika.workerservice.repository.WorkerRepository;
+import com.zaiika.workerservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlaceRoleServiceImpl implements PlaceRoleService {
     private final PlaceRoleRepository roleRepository;
     private final WorkerRepository workerRepository;
+    private final UserService userService;
 
     @Override
-    public void createRole(PlaceRole role) {
-//        var place = ctx.getPlace();
-//        role.setPlace(place);
-        roleRepository.save(role);
+    public PlaceRole createRole(PlaceRole role) {
+        role.setPlaceId(getPlaceId());
+        return roleRepository.save(role);
     }
 
     @Override
     public void deleteRole(long roleId) {
-        checkPermission(roleId);
-
-        roleRepository.deleteRoleById(roleId);
         var workers = workerRepository.findAllByPlaceRoleId(roleId);
         workers.forEach(x -> x.setPlaceRole(null));
         workerRepository.saveAll(workers);
+        roleRepository.deleteRoleById(roleId);
     }
 
     @Override
-    public void updateRole(PlaceRole role) {
-        checkPermission(role.getId());
+    public PlaceRole updateRole(PlaceRole role) {
         var savedRole = roleRepository.findPlaceRoleById(role.getId());
         role.setPlaceId(savedRole.getPlaceId());
 
-        roleRepository.save(role);
+        return roleRepository.save(role);
     }
 
     @Override
     public List<PlaceRole> getAllRoles() {
-//        var place = ctx.getPlace();
-
-        return new ArrayList<>();// roleRepository.findAllByPlaceId(place.getId());
+        return roleRepository.getAllByPlaceId(getPlaceId());
     }
 
-    private void checkPermission(long roleId) {
-        var role = roleRepository.findPlaceRoleById(roleId);
-//        var place = ctx.getPlace();
-
-//        if (role == null || place.getId() != role.getPlace().getId()) {
-//            throw new PermissionDeniedException();
-//        }
+    private long getPlaceId() {
+        var user = userService.getUser();
+        return user.placeId();
     }
 }

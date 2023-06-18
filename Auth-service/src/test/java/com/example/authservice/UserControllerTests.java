@@ -1,18 +1,12 @@
 package com.example.authservice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zaiika.authservice.AuthServiceApplication;
-import com.zaiika.authservice.model.authCredentials.LoginCredential;
-import com.zaiika.authservice.model.token.TokenResponse;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,30 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTests {
     @Autowired
     private MockMvc mockMvc;
-    private TokenResponse token;
-
-    @Before
-    public void getToken() throws Exception {
-        LoginCredential credential = new LoginCredential("TEST login", "pass");
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-
-        var body = writer.writeValueAsString(credential);
-
-        var jwt = mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        this.token = mapper.readValue(jwt, TokenResponse.class);
-    }
+    @Value("${api-token}")
+    private String token;
 
     @Test
     public void testGetAllUsers() throws Exception {
-        mockMvc.perform(get("/api/users").header("Authorization", "Bearer " + token.token()))
+        mockMvc.perform(get("/api/users")
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(9));
@@ -64,7 +41,7 @@ public class UserControllerTests {
     @Test
     public void testAddRole() throws Exception {
         mockMvc.perform(post("/api/users/99999/role")
-                        .header("Authorization", "Bearer " + token.token())
+                        .header("Authorization", "Bearer " + token)
                         .param("role", "ADMIN"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -73,7 +50,7 @@ public class UserControllerTests {
     @Test
     public void testRoleNotExist() throws Exception {
         mockMvc.perform(post("/api/users/99999/role")
-                        .header("Authorization", "Bearer " + token.token())
+                        .header("Authorization", "Bearer " + token)
                         .param("role", "SOME ROLE"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
@@ -83,7 +60,7 @@ public class UserControllerTests {
     @Test
     public void testDeleteRole() throws Exception {
         mockMvc.perform(delete("/api/users/99999/role")
-                        .header("Authorization", "Bearer " + token.token())
+                        .header("Authorization", "Bearer " + token)
                         .param("role", "DUNGEON_MASTER"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -92,7 +69,7 @@ public class UserControllerTests {
     @Test
     public void testDeleteUser() throws Exception {
         mockMvc.perform(delete("/api/users/99999")
-                        .header("Authorization", "Bearer " + token.token()))
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

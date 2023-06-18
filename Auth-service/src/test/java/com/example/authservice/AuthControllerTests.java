@@ -40,13 +40,11 @@ public class AuthControllerTests {
                 "1234",
                 "test name",
                 "test surname");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        var body = convertObjectToJson(credential);
 
-        var body = writer.writeValueAsString(credential);
-
-        mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(body))
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.token").isString());
@@ -59,13 +57,11 @@ public class AuthControllerTests {
                 "1234",
                 "test name",
                 "test surname");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        var body = convertObjectToJson(credential);
 
-        var body = writer.writeValueAsString(credential);
-
-        mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(body))
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("User already exist"));
@@ -74,14 +70,11 @@ public class AuthControllerTests {
     @Test
     public void testUserNotExist() throws Exception {
         LoginCredential credential = new LoginCredential("tl", "pass");
+        var body = convertObjectToJson(credential);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-
-        var body = writer.writeValueAsString(credential);
-
-        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(body))
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -89,14 +82,11 @@ public class AuthControllerTests {
     @Test
     public void testUserLogin() throws Exception {
         LoginCredential credential = new LoginCredential("TEST login", "pass");
+        var body = convertObjectToJson(credential);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-
-        var body = writer.writeValueAsString(credential);
-
-        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(body))
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").isString());
@@ -105,12 +95,10 @@ public class AuthControllerTests {
     @Test
     public void testEmployeeLogin() throws Exception {
         WorkerCredential credential = new WorkerCredential("pass");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-
-        var body = writer.writeValueAsString(credential);
-        mockMvc.perform(post("/api/auth/99999/login").contentType(MediaType.APPLICATION_JSON).content(body))
+        var body = convertObjectToJson(credential);
+        mockMvc.perform(post("/api/auth/99999/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").isString());
@@ -119,14 +107,19 @@ public class AuthControllerTests {
     @Test
     public void testWorkerNotExist() throws Exception {
         WorkerCredential credential = new WorkerCredential("pas");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-
-        var body = writer.writeValueAsString(credential);
-        mockMvc.perform(post("/api/auth/99999/login").contentType(MediaType.APPLICATION_JSON).content(body))
+        var body = convertObjectToJson(credential);
+        mockMvc.perform(post("/api/auth/99999/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Worker with this pin not exist"));
+    }
+
+    private <T> String convertObjectToJson(T obj) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        return writer.writeValueAsString(obj);
     }
 }

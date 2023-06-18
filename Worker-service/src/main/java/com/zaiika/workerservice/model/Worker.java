@@ -1,6 +1,7 @@
 package com.zaiika.workerservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "workers")
+@JsonIgnoreProperties("hibernateLazyInitializer")
 public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

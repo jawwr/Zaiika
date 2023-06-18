@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class PlaceRoleController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE_ROLE')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE_ROLE')")
     @GetMapping
     public ResponseEntity<?> getAllPlaceRoles() {
         return ResponseEntity.ok(service.getAllRoles());
@@ -75,11 +76,10 @@ public class PlaceRoleController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE_ROLE')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE_ROLE')")
     @PostMapping
     public ResponseEntity<?> createNewRoles(@RequestBody PlaceRole role) {
-        service.createRole(role);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createRole(role));
     }
 
     @Operation(summary = "Удаление ролей в заведении")
@@ -92,7 +92,7 @@ public class PlaceRoleController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE_ROLE')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE_ROLE')")
     @DeleteMapping("/{roleId}")
     public ResponseEntity<?> deleteRole(@PathVariable("roleId") Long roleId) {
         service.deleteRole(roleId);
@@ -119,12 +119,11 @@ public class PlaceRoleController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_PLACE_ROLE')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE_ROLE')")
     @PutMapping("/{roleId}")
     public ResponseEntity<?> updateRole(@PathVariable("roleId") Long roleId,
                                         @RequestBody PlaceRole role) {
         role.setId(roleId);
-        service.updateRole(role);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.updateRole(role));
     }
 }

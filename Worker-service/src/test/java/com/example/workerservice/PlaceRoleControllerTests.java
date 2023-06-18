@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zaiika.workerservice.WorkerServiceApplication;
+import com.zaiika.workerservice.model.PlaceRole;
 import com.zaiika.workerservice.model.UserDto;
-import com.zaiika.workerservice.model.WorkerCredentials;
 import com.zaiika.workerservice.service.user.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,73 +33,61 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource("/test-properties.yaml")
 @Sql(value = "/delete-user-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(value = "/add-user-before-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class WorkerControllerTests {
+public class PlaceRoleControllerTests {
     @Autowired
     private MockMvc mockMvc;
+
     @Value("${api-token}")
     private String token;
     @MockBean
     private UserServiceImpl userService;
 
-    @BeforeEach
+    @Before
     public void mock() {
         Mockito.when(userService.getUser()).thenReturn(new UserDto(99999L, 99999));
     }
 
     @Test
-    public void testGetAllWorkers() throws Exception {
-        mockMvc.perform(get("/api/workers").header("Authorization", "Bearer " + token))
+    public void testGetAllPlaceRoles() throws Exception {
+        mockMvc.perform(get("/api/role")
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1));
     }
 
     @Test
-    public void testCreateWorker() throws Exception {
-        WorkerCredentials credentials = new WorkerCredentials(
-                99998,
-                99999,
-                "9876",
-                "name",
-                "sur",
-                "patr",
-                "TESTLOGIN",
-                "TEST PLACE ROLE"
-        );
-        var body = convertObjectToJson(credentials);
-        Mockito.when(userService.saveWorker(credentials)).thenReturn(99999L);
-        mockMvc.perform(post("/api/workers")
+    public void testCreateNewRoles() throws Exception {
+        PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, null);
+        var body = convertObjectToJson(placeRole);
+        mockMvc.perform(post("/api/role")
                         .header("Authorization", "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON).content(body))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(placeRole.getName()));
     }
 
     @Test
-    public void testDeleteWorker() throws Exception {
-        mockMvc.perform(delete("/api/workers/99999")
+    public void testDeletePlaceRole() throws Exception {
+        mockMvc.perform(delete("/api/role/99999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetWorkerById() throws Exception {
-        mockMvc.perform(get("/api/workers/99999")
-                        .header("Authorization", "Bearer " + token))
+    public void testUpdatePlaceRole() throws Exception {
+        PlaceRole placeRole = new PlaceRole(0, "test new place role", 0, null);
+        var body = convertObjectToJson(placeRole);
+        mockMvc.perform(put("/api/role/99999")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(99999));
-    }
-
-    @Test
-    public void testAddWorkerRole() throws Exception {
-        mockMvc.perform(get("/api/workers/99999")
-                        .param("roleName", "TEST PLACE ROLE")
-                        .header("Authorization", "Bearer " + token))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(99999));
+                .andExpect(jsonPath("$.name").value(placeRole.getName()));
     }
 
     private <T> String convertObjectToJson(T obj) throws Exception {

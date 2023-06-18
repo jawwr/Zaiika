@@ -13,3 +13,13 @@ values (99999, 'TEST PLACE ROLE', 99999);
 
 insert into workers(id, place_id, place_role_id, user_id)
 values (99999, 99999, 99999, 99999);
+
+insert into place_role_permission(place_role_id, permission_id)
+values (99999, (select id
+                from permissions
+                where name = 'MANAGE_WORKER'));
+
+insert into place_role_permission(place_role_id, permission_id)
+values (99999, (select id
+                from permissions
+                where name = 'MANAGE_PLACE_ROLE'));
