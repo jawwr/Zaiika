@@ -28,7 +28,6 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
 
     @Override
     @Transactional
-
     public Worker createWorker(WorkerCredentials workerDto) {
         var user = userService.getUser();
         var placeRole = placeRoleRepository

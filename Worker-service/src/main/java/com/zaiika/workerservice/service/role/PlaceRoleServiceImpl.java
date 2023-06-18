@@ -2,9 +2,9 @@ package com.zaiika.workerservice.service.role;
 
 import com.zaiika.workerservice.model.PlaceRole;
 import com.zaiika.workerservice.model.permission.Permission;
-import com.zaiika.workerservice.repository.PermissionRepository;
 import com.zaiika.workerservice.repository.PlaceRoleRepository;
 import com.zaiika.workerservice.repository.WorkerRepository;
+import com.zaiika.workerservice.service.permission.PermissionService;
 import com.zaiika.workerservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     private final PlaceRoleRepository roleRepository;
     private final WorkerRepository workerRepository;
     private final UserService userService;
-    private final PermissionRepository permissionRepository;
+    private final PermissionService permissionService;
 
     @Override
     public PlaceRole createRole(PlaceRole role) {
@@ -56,7 +56,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
         return user.placeId();
     }
 
-    private void validateRolePermissions(PlaceRole role){
+    private void validateRolePermissions(PlaceRole role) {
         if (role.getPermissions() != null) {
             checkPermissionsExisting(role.getPermissions());
             return;
@@ -67,7 +67,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
 
     private void checkPermissionsExisting(List<Permission> permissions) {
         for (Permission permission : permissions) {
-            if (!permissionRepository.isPermissionExists(permission.getName())) {
+            if (!permissionService.isPermissionExists(permission)) {
                 throw new IllegalArgumentException("Permission with name '" + permission.getName() + "' not exists");
             }
         }

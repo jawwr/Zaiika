@@ -7,8 +7,8 @@ import com.zaiika.workerservice.WorkerServiceApplication;
 import com.zaiika.workerservice.model.UserDto;
 import com.zaiika.workerservice.model.WorkerCredentials;
 import com.zaiika.workerservice.service.user.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource("/test-properties.yaml")
 @Sql(value = "/delete-user-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(value = "/add-user-before-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class WorkerControllerTests {
+public class WorkerControllerTests {
     @Autowired
     private MockMvc mockMvc;
     @Value("${api-token}")
@@ -41,7 +41,7 @@ class WorkerControllerTests {
     @MockBean
     private UserServiceImpl userService;
 
-    @BeforeEach
+    @Before
     public void mock() {
         Mockito.when(userService.getUser()).thenReturn(new UserDto(99999L, 99999));
     }
@@ -100,6 +100,48 @@ class WorkerControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(99999));
+    }
+
+    @Test
+    public void testCreateWorkerWithWrongPinDigit() throws Exception {
+        WorkerCredentials credentials = new WorkerCredentials(
+                99998,
+                99999,
+                "98769",
+                "name",
+                "sur",
+                "patr",
+                "TESTLOGIN",
+                "TEST PLACE ROLE"
+        );
+        var body = convertObjectToJson(credentials);
+        Mockito.when(userService.saveWorker(credentials)).thenReturn(99999L);
+        mockMvc.perform(post("/api/workers")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON).content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCreateWorkerWithWrongPinChars() throws Exception {
+        WorkerCredentials credentials = new WorkerCredentials(
+                99998,
+                99999,
+                "987C",
+                "name",
+                "sur",
+                "patr",
+                "TESTLOGIN",
+                "TEST PLACE ROLE"
+        );
+        var body = convertObjectToJson(credentials);
+        Mockito.when(userService.saveWorker(credentials)).thenReturn(99999L);
+        mockMvc.perform(post("/api/workers")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON).content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     private <T> String convertObjectToJson(T obj) throws Exception {

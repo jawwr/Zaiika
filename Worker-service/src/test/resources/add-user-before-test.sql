@@ -23,3 +23,8 @@ insert into place_role_permission(place_role_id, permission_id)
 values (99999, (select id
                 from permissions
                 where name = 'MANAGE_PLACE_ROLE'));
+
+insert into place_role_permission(place_role_id, permission_id)
+values (99999, (select id
+                from permissions
+                where name = 'VIEW_PERMISSIONS'));

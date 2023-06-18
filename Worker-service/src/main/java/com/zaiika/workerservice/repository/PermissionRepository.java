@@ -11,4 +11,6 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             where name = :#{#permissionName}
             """, nativeQuery = true)
     boolean isPermissionExists(String permissionName);
+
+    Permission getPermissionById(long id);
 }
