@@ -94,12 +94,29 @@ public class WorkerControllerTests {
 
     @Test
     public void testAddWorkerRole() throws Exception {
-        mockMvc.perform(get("/api/workers/99999")
+        mockMvc.perform(post("/api/workers/99999")
                         .param("roleName", "TEST PLACE ROLE")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(99999));
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddRoleToNotExistsWorker() throws Exception {
+        mockMvc.perform(post("/api/workers/9999")
+                        .param("roleName", "TEST PLACE ROLE")
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testAddWorkerNotExistsRole() throws Exception {
+        mockMvc.perform(post("/api/workers/99999")
+                        .param("roleName", "NOT_EXIST_ROLE")
+                        .header("Authorization", "Bearer " + token))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test

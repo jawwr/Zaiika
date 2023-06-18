@@ -92,7 +92,7 @@ public class WorkerServiceImpl extends WorkerServiceGrpc.WorkerServiceImplBase i
     public void addWorkerRole(long workerId, String roleName) {
         var placeId = userService.getUser().placeId();
         var worker = workerRepository.findById(workerId);
-        if (placeId != worker.getPlaceId()) {
+        if (worker == null || placeId != worker.getPlaceId()) {
             throw new IllegalArgumentException("Worker does not exist");
         }
         var placeRole = placeRoleRepository
