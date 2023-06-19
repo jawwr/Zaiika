@@ -35,7 +35,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         return hasPermission((String) permission);
     }
 
-    private boolean hasPermission(String permission) {
+    public boolean hasPermission(String permission) {
         var user = userService.getUser();
         ManagedChannel channel = ManagedChannelBuilder
                 .forTarget("localhost:" + grpcWorkerServerPort)

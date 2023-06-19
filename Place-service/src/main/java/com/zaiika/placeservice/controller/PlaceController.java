@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,13 @@ public class PlaceController {//TODO сделать управление для 
         return ResponseEntity.ok(service.getAllPlaces());
     }
 
+    @GetMapping("/{placeId}")
+    public ResponseEntity<?> getPlaceById(@PathVariable("placeId") long placeId) {
+        return ResponseEntity.ok(service.getPlace(placeId));
+    }
+
+    //TODO получение своего места владельцем
+
     @Operation(summary = "Создание заведения",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
@@ -77,7 +85,7 @@ public class PlaceController {//TODO сделать управление для 
     @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
     @PostMapping
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
-        return ResponseEntity.ok(service.createPlace(place));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createPlace(place));
     }
 
     @Operation(summary = "Удаление заведения по id")
@@ -89,7 +97,7 @@ public class PlaceController {//TODO сделать управление для 
     @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
     @DeleteMapping("/{placeId}")
     public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
-        service.deletePlace(placeId);
+//        service.deletePlace(placeId);
         return ResponseEntity.ok().build();
     }
 
@@ -114,7 +122,6 @@ public class PlaceController {//TODO сделать управление для 
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
                                          @RequestBody Place place) {
         place.setId(placeId);
-        service.updatePlace(place);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.updatePlace(place));
     }
 }

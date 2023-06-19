@@ -48,7 +48,8 @@ public class WorkerControllerTests {
 
     @Test
     public void testGetAllWorkers() throws Exception {
-        mockMvc.perform(get("/api/workers").header("Authorization", "Bearer " + token))
+        mockMvc.perform(get("/api/workers")
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1));

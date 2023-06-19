@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private final TokenService tokenService;
     private final CacheManager cacheManager;
     private static final String CACHE_NAME = "userToken";
-    @Value("${grpc.server.port}")
+    @Value("${grpc.server.user-service.port}")
     private int grpcServerPort;
 
     @Override

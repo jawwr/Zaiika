@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/zaiika_tests
+    username: postgres
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+api-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYXd3ciIsImlhdCI6MTY4NjkxMDQ1MiwiZXhwIjoxODQ0NTkwNDUyfQ.xO2wbCY3ozaVBjGtBn59P-RTNlyq2DRku0kln20Lo2E
+
+grpc:
+  server:
+    worker-service:
+      port: 8002
+    user-service:
+      port: 8001

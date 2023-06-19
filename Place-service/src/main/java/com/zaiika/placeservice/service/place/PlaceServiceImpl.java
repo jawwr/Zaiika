@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//TODO caching
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -22,6 +22,7 @@ public class PlaceServiceImpl implements PlaceService {
     private static final String CACHE_NAME = "placeUser";
 
     @Override
+    @Transactional
     public Place createPlace(Place place) {
         var user = userService.getUser();
         place.setOwnerId(user.id());
@@ -35,6 +36,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    @Transactional
     public void deletePlace(long placeId) {
         checkPermission(placeId);
         userService.deleteRole("PLACE_OWNER");
@@ -42,12 +44,13 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public void updatePlace(Place place) {
+    @Transactional
+    public Place updatePlace(Place place) {
         checkPermission(place.getId());
 
         var savedPlace = placeRepository.findPlaceById(place.getId());
         place.setOwnerId(savedPlace.getOwnerId());
-        placeRepository.save(place);
+        return placeRepository.save(place);
     }
 
     @Override
@@ -91,8 +94,11 @@ public class PlaceServiceImpl implements PlaceService {
     private void checkPermission(long placeId) {
         var user = userService.getUser();
         var place = placeRepository.findPlaceById(placeId);
-        if (user.id() != place.getOwnerId()) {
-            throw new IllegalArgumentException("User is not owner for this place");
+        if (place == null) {
+            throw new IllegalArgumentException("Place with id " + placeId + " not exist");
+        }
+        if (user == null || user.id() != place.getOwnerId()) {
+            throw new IllegalArgumentException("Not enough permissions");
         }
     }
 }

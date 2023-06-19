@@ -9,6 +9,7 @@ import com.zaiika.workerservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     }
 
     @Override
+    @Transactional
     public void deleteRole(long roleId) {
         var role = roleRepository.findPlaceRoleById(roleId);
         if (role == null){
@@ -46,6 +48,7 @@ public class PlaceRoleServiceImpl implements PlaceRoleService {
     }
 
     @Override
+    @Transactional
     public PlaceRole updateRole(PlaceRole role) {
         var savedRole = roleRepository.findPlaceRoleById(role.getId());
         if (savedRole == null) {
