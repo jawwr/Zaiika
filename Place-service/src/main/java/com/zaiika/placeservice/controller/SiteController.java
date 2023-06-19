@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,7 +45,7 @@ public class SiteController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('VIEW_SITE')")
+    @PreAuthorize("hasAnyAuthority('VIEW_SITE')")
     @GetMapping
     public ResponseEntity<?> getAllSites() {
         return ResponseEntity.ok(service.getAllSites());
@@ -92,7 +93,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PostMapping
     public ResponseEntity<?> createSite(@RequestBody Site site) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createSite(site));
@@ -121,7 +122,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PutMapping("/{siteId}")
     public ResponseEntity<?> updateSite(@PathVariable("siteId") Long siteId, @RequestBody Site site) {
         site.setId(siteId);
@@ -138,7 +139,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @DeleteMapping("/{siteId}")
     public ResponseEntity<?> deleteSite(@PathVariable("siteId") Long siteId) {
         service.deleteSite(siteId);

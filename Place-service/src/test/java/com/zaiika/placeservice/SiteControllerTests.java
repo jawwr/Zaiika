@@ -62,7 +62,7 @@ public class SiteControllerTests {
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("TEST SITE NAME 1"));
+                .andExpect(jsonPath("$.id").value(99999));
     }
 
     @Test

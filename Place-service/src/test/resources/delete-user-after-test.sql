@@ -28,6 +28,10 @@ where place_id = 99999
    or id = 99998;
 
 delete
+from menus
+where site_id = 99999;
+
+delete
 from sites
 where place_id = 99999;
 

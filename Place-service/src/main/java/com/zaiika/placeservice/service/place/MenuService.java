@@ -13,7 +13,7 @@ public interface MenuService {
 
     Menu createMenu(long siteId, Menu menu);
 
-    void updateMenu(long siteId, Menu menu);
+    Menu updateMenu(long siteId, Menu menu);
 
     void deleteMenu(Long siteId, Long menuId);
 }

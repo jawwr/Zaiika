@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,10 +44,16 @@ public class MenuController {
                     }
             )
     })
-    @PreAuthorize("hasPermission(null, 'VIEW_MENU')")
+//    @PreAuthorize("hasPermission(null, 'VIEW_MENU')")
     @GetMapping
     public ResponseEntity<?> getAllMenus(@PathVariable("siteId") Long placeId) {
         return ResponseEntity.ok(service.getAllMenus(placeId));
+    }
+
+    @GetMapping("/{menuId}")
+    public ResponseEntity<?> getMenuById(@PathVariable("siteId") long siteId,
+                                         @PathVariable("menuId") long menuId) {
+        return ResponseEntity.ok(service.getMenu(siteId, menuId));
     }
 
     @Operation(summary = "Создание меню",
@@ -85,11 +91,11 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @PostMapping
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
-        return ResponseEntity.ok(service.createMenu(siteId, menu));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createMenu(siteId, menu));
     }
 
     @Operation(summary = "Удаление меню")
@@ -102,7 +108,7 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @DeleteMapping("/{menuId}")
     public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId) {
@@ -133,13 +139,12 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @PutMapping("/{menuId}")
     public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId,
                                         @RequestBody Menu menu) {
         menu.setId(menuId);
-        service.updateMenu(siteId, menu);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.updateMenu(siteId, menu));
     }
 }

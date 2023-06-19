@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//TODO
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
@@ -46,9 +45,9 @@ public class MenuServiceImpl implements MenuService {
             var siteId = cache.getSite().getId();
             return getMenu(siteId, cache.getId());
         }
-        var menu = menuRepository.findMenuById(id);
-        saveMenuToCache(menu);
-        return getMenu(menu.getSite().getId(), menu.getId());
+        var savedMenu = menuRepository.findMenuById(id);
+        saveMenuToCache(savedMenu);
+        return getMenu(savedMenu.getSite().getId(), savedMenu.getId());
     }
 
     private Menu getMenuFromCache(long id) {
@@ -78,11 +77,12 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional
-    public void updateMenu(long siteId, Menu menu) {
+    public Menu updateMenu(long siteId, Menu menu) {
         var site = siteService.getSite(siteId);
         menu.setSite(site);
-        menuRepository.save(menu);
-        saveMenuToCache(menu);
+        var savedMenu = menuRepository.save(menu);
+        saveMenuToCache(savedMenu);
+        return savedMenu;
     }
 
     @Override
