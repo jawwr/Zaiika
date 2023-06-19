@@ -9,7 +9,7 @@ public interface SiteService {
 
     List<Site> getAllSites();
 
-    void updateSite(Site site);
+    Site updateSite(Site site);
 
     void deleteSite(long siteId);
 

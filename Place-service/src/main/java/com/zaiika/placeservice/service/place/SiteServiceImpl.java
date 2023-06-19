@@ -34,14 +34,15 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     @Transactional
-    public void updateSite(Site site) {
+    public Site updateSite(Site site) {
         checkPermission(site.getId());
 
         var place = placeService.getPlace();
         site.setPlace(place);
 
-        siteRepository.save(site);
-        saveSiteToCache(site);
+        var savedSite = siteRepository.save(site);
+        saveSiteToCache(savedSite);
+        return savedSite;
     }
 
     @Override

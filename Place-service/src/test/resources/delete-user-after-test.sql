@@ -24,11 +24,17 @@ where id between 20 and 100000;
 
 delete
 from place_roles
-where place_id = 99999 or id = 99998;
+where place_id = 99999
+   or id = 99998;
+
+delete
+from sites
+where place_id = 99999;
 
 delete
 from places
-where id = 99999 or owner_id = 99999;
+where id = 99999
+   or owner_id = 99999;
 
 delete
 from tokens

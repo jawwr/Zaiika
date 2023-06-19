@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,11 @@ public class SiteController {
     @GetMapping
     public ResponseEntity<?> getAllSites() {
         return ResponseEntity.ok(service.getAllSites());
+    }
+
+    @GetMapping("/{siteId}")
+    public ResponseEntity<?> getSiteById(@PathVariable("siteId") long siteId) {
+        return ResponseEntity.ok(service.getSite(siteId));
     }
 
     @Operation(summary = "Создание новой точки продажи",
@@ -89,7 +95,7 @@ public class SiteController {
 //    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PostMapping
     public ResponseEntity<?> createSite(@RequestBody Site site) {
-        return ResponseEntity.ok(service.createSite(site));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createSite(site));
     }
 
     @Operation(summary = "Обновление точки продажи по id",
@@ -119,8 +125,7 @@ public class SiteController {
     @PutMapping("/{siteId}")
     public ResponseEntity<?> updateSite(@PathVariable("siteId") Long siteId, @RequestBody Site site) {
         site.setId(siteId);
-        service.updateSite(site);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.updateSite(site));
     }
 
     @Operation(summary = "Удаление точки продажи")
