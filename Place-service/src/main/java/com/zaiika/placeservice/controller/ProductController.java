@@ -45,13 +45,13 @@ public class ProductController {
                     }
             )
     })
-//    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
     @GetMapping
     public ResponseEntity<?> getMenu(@PathVariable("menuId") long menuId) {
         return ResponseEntity.ok(service.getAllProductFromMenu(menuId));
     }
 
-//    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable("menuId") long menuId,
                                             @PathVariable("productId") long productId) {
@@ -107,7 +107,7 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
     @PostMapping
     public ResponseEntity<?> createProduct(@PathVariable("menuId") long menuId,
                                            @RequestBody Product product) {
@@ -124,7 +124,7 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable("menuId") long menuId,
                                            @PathVariable("productId") long productId) {
@@ -177,7 +177,7 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
     @PutMapping("/{productId}")
     public ResponseEntity<?> updateProduct(@PathVariable("menuId") long menuId,
                                            @PathVariable("productId") long productId,
