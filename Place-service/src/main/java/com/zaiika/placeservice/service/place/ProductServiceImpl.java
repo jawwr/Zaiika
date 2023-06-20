@@ -120,9 +120,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Product updateProduct(long menuId, Product updateProduct) {
-        var menu = menuService.getMenu(menuId);
-        getProduct(menuId, updateProduct.getId());
-        updateProduct.setMenu(menu);
+        var product = getProduct(menuId, updateProduct.getId());
+        updateProduct.setMenu(product.getMenu());
         setDependencies(updateProduct);
         var savedProduct = productRepository.save(updateProduct);
         saveProductToCache(savedProduct);
@@ -131,11 +130,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductById(long menuId, long productId) {
-        var menu = menuService.getMenu(menuId);
-        var product = productRepository.findProductById(productId);
-        if (product == null || menu.getId() != product.getMenu().getId()) {
-            throw new IllegalArgumentException("Product with id " + productId + " does not exist");
-        }
+        var product = getProduct(menuId, productId);
 
         deleteCategories(product.getModifications());
         ingredientRepository.deleteIngredientsByProductId(productId);

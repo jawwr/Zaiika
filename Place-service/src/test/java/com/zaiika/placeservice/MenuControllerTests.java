@@ -61,7 +61,8 @@ public class MenuControllerTests {
         mockMvc.perform(get("/api/site/9999/menu")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
@@ -78,7 +79,8 @@ public class MenuControllerTests {
         mockMvc.perform(get("/api/site/9999/menu/99999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
@@ -86,7 +88,8 @@ public class MenuControllerTests {
         mockMvc.perform(get("/api/site/99999/menu/9999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Menu with id 9999 does not exist"));
     }
 
     @Test
@@ -111,7 +114,8 @@ public class MenuControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
@@ -136,19 +140,21 @@ public class MenuControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
     public void testUpdateMenuWithNotExistMenuId() throws Exception {
         Menu menu = new Menu(0, "update test menu title", null);
         var body = convertObjectToJson(menu);
-        mockMvc.perform(put("/api/site/9999/menu/9999")
+        mockMvc.perform(put("/api/site/99999/menu/9999")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Menu with id 9999 does not exist"));
     }
 
     @Test
@@ -164,15 +170,17 @@ public class MenuControllerTests {
         mockMvc.perform(delete("/api/site/9999/menu/99999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
     public void testDeleteMenuWithNotExistMenuId() throws Exception {
-        mockMvc.perform(delete("/api/site/9999/menu/9999")
+        mockMvc.perform(delete("/api/site/99999/menu/9999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Menu with id 9999 does not exist"));
     }
 
     private <T> String convertObjectToJson(T obj) throws Exception {

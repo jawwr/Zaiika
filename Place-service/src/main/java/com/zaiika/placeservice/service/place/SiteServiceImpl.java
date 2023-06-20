@@ -87,7 +87,7 @@ public class SiteServiceImpl implements SiteService {
     private void checkPermission(long siteId) {
         var place = placeService.getPlace();
         if (!siteRepository.isSiteExistsById(place.getId(), siteId)) {
-            throw new IllegalArgumentException("Site does not exist");
+            throw new IllegalArgumentException("Site with id " + siteId + " does not exist");
         }
     }
 }

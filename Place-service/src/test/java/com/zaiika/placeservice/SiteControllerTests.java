@@ -70,7 +70,8 @@ public class SiteControllerTests {
         mockMvc.perform(get("/api/site/9999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
@@ -108,7 +109,8 @@ public class SiteControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     @Test
@@ -124,7 +126,8 @@ public class SiteControllerTests {
         mockMvc.perform(delete("/api/site/9999")
                         .header("Authorization", "Bearer " + token))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Site with id 9999 does not exist"));
     }
 
     private <T> String convertObjectToJson(T obj) throws Exception {

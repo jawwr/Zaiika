@@ -31,8 +31,8 @@ public class MenuServiceImpl implements MenuService {
             return cache;
         }
         var menu = menuRepository.findMenuById(menuId);
-        if (site.getId() != menu.getSite().getId()) {
-            throw new IllegalArgumentException("Menu does not exist");
+        if (menu == null || site.getId() != menu.getSite().getId()) {
+            throw new IllegalArgumentException("Menu with id " + menuId + " does not exist");
         }
         saveMenuToCache(menu);
         return menu;
@@ -81,20 +81,18 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional
     public Menu updateMenu(long siteId, Menu menu) {
-        var site = siteService.getSite(siteId);
-        menu.setSite(site);
-        var savedMenu = menuRepository.save(menu);
-        saveMenuToCache(savedMenu);
-        return savedMenu;
+        var savedMenu = getMenu(siteId, menu.getId());
+        menu.setSite(savedMenu.getSite());
+        var updateMenu = menuRepository.save(menu);
+        saveMenuToCache(updateMenu);
+        return updateMenu;
     }
 
     @Override
-    public void deleteMenu(Long siteId, Long menuId) {
-        var site = siteService.getSite(siteId);
-        var menu = menuRepository.findMenuById(menuId);
-        if (site.getId() != menu.getSite().getId()) {
-            throw new IllegalArgumentException("Menu does not exist");
-        }
+    @Transactional
+    public void deleteMenu(long siteId, long menuId) {
+        var menu = getMenu(siteId, menuId);
+
         menuRepository.deleteMenuById(menuId);
     }
 }

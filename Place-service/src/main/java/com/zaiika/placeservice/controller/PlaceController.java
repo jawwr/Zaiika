@@ -45,12 +45,13 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasPermission(null, 'VIEW_PLACE')")
+//    @PreAuthorize("hasPermission(null, 'VIEW_PLACE')")
     @GetMapping
     public ResponseEntity<?> getAllPlaces() {
         return ResponseEntity.ok(service.getAllPlaces());
     }
 
+//    @PreAuthorize("hasPermission(null, 'VIEW_PLACE')")
     @GetMapping("/{placeId}")
     public ResponseEntity<?> getPlaceById(@PathVariable("placeId") long placeId) {
         return ResponseEntity.ok(service.getPlace(placeId));
@@ -82,7 +83,7 @@ public class PlaceController {//TODO сделать управление для 
                     }
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
     @PostMapping
     public ResponseEntity<?> createPlace(@RequestBody Place place) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createPlace(place));
@@ -94,7 +95,7 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
     @DeleteMapping("/{placeId}")
     public ResponseEntity<?> deletePlace(@PathVariable("placeId") Long placeId) {
 //        service.deletePlace(placeId);
@@ -117,7 +118,7 @@ public class PlaceController {//TODO сделать управление для 
                     responseCode = "200"
             )
     })
-    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
+//    @PreAuthorize("hasPermission(null, 'MANAGE_PLACE')")
     @PutMapping("/{placeId}")
     public ResponseEntity<?> updatePlace(@PathVariable("placeId") Long placeId,
                                          @RequestBody Place place) {

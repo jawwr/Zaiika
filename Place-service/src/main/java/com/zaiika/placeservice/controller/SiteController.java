@@ -45,12 +45,13 @@ public class SiteController {
                     }
             )
     })
-    @PreAuthorize("hasAnyAuthority('VIEW_SITE')")
+//    @PreAuthorize("hasAnyAuthority('VIEW_SITE')")
     @GetMapping
     public ResponseEntity<?> getAllSites() {
         return ResponseEntity.ok(service.getAllSites());
     }
 
+    //    @PreAuthorize("hasAnyAuthority('VIEW_SITE')")
     @GetMapping("/{siteId}")
     public ResponseEntity<?> getSiteById(@PathVariable("siteId") long siteId) {
         return ResponseEntity.ok(service.getSite(siteId));
@@ -93,7 +94,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PostMapping
     public ResponseEntity<?> createSite(@RequestBody Site site) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createSite(site));
@@ -122,7 +123,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @PutMapping("/{siteId}")
     public ResponseEntity<?> updateSite(@PathVariable("siteId") Long siteId, @RequestBody Site site) {
         site.setId(siteId);
@@ -139,7 +140,7 @@ public class SiteController {
                     ref = "permissionDenied"
             )
     })
-    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
+//    @PreAuthorize("hasAnyAuthority('MANAGE_SITE')")
     @DeleteMapping("/{siteId}")
     public ResponseEntity<?> deleteSite(@PathVariable("siteId") Long siteId) {
         service.deleteSite(siteId);
