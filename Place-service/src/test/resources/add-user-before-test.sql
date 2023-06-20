@@ -11,11 +11,14 @@ values (99999, 'TEST PLACE', 99999);
 insert into sites(id, name, place_id)
 values (99999, 'TEST SITE NAME 1', 99999);
 
+insert into sites(id, name, place_id)
+values (99998, 'TEST SITE NAME 2', 99999);
+
 insert into menus(id, title, site_id)
 values (99999, 'TEST MENU TITLE', 99999);
 
-insert into sites(id, name, place_id)
-values (99998, 'TEST SITE NAME 2', 99999);
+insert into products(id, title, menu_id, price)
+values (99999, 'TEST PRODUCT TITLE', 99999, 200.5);
 
 insert into place_roles(id, name, place_id)
 values (99999, 'TEST PLACE ROLE', 99999);

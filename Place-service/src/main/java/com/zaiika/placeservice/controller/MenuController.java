@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,12 +45,13 @@ public class MenuController {
                     }
             )
     })
-//    @PreAuthorize("hasPermission(null, 'VIEW_MENU')")
+    @PreAuthorize("hasPermission(null, 'VIEW_MENU')")
     @GetMapping
     public ResponseEntity<?> getAllMenus(@PathVariable("siteId") Long placeId) {
         return ResponseEntity.ok(service.getAllMenus(placeId));
     }
 
+    @PreAuthorize("hasPermission(null, 'VIEW_MENU')")
     @GetMapping("/{menuId}")
     public ResponseEntity<?> getMenuById(@PathVariable("siteId") long siteId,
                                          @PathVariable("menuId") long menuId) {
@@ -91,7 +93,7 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @PostMapping
     public ResponseEntity<?> createNewMenu(@PathVariable("siteId") Long siteId,
                                            @RequestBody Menu menu) {
@@ -108,7 +110,7 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @DeleteMapping("/{menuId}")
     public ResponseEntity<?> deleteMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId) {
@@ -139,7 +141,7 @@ public class MenuController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_MENU')")
     @PutMapping("/{menuId}")
     public ResponseEntity<?> updateMenu(@PathVariable("siteId") Long siteId,
                                         @PathVariable("menuId") Long menuId,

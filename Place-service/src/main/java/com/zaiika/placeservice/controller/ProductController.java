@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,10 +45,17 @@ public class ProductController {
                     }
             )
     })
-//    @PreAuthorize("hasAnyAuthority('VIEW_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
     @GetMapping
-    public ResponseEntity<?> getMenu(@PathVariable("menuId") Long menuId) {
+    public ResponseEntity<?> getMenu(@PathVariable("menuId") long menuId) {
         return ResponseEntity.ok(service.getAllProductFromMenu(menuId));
+    }
+
+    @PreAuthorize("hasPermission(null, 'VIEW_PRODUCT')")
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable("menuId") long menuId,
+                                            @PathVariable("productId") long productId) {
+        return ResponseEntity.ok(service.getProduct(menuId, productId));
     }
 
     @Operation(summary = "Создание блюд",
@@ -98,11 +107,11 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
     @PostMapping
-    public ResponseEntity<?> createProduct(@PathVariable("menuId") Long menuId,
+    public ResponseEntity<?> createProduct(@PathVariable("menuId") long menuId,
                                            @RequestBody Product product) {
-        return ResponseEntity.ok(service.addProductToMenu(menuId, product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createProduct(menuId, product));
     }
 
     @Operation(summary = "удаление блюд")
@@ -115,10 +124,10 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PRODUCT')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") Long menuId,
-                                           @PathVariable("productId") Long productId) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("menuId") long menuId,
+                                           @PathVariable("productId") long productId) {
         service.deleteProductById(menuId, productId);
         return ResponseEntity.ok().build();
     }
@@ -168,13 +177,12 @@ public class ProductController {
                     ref = "permissionDenied"
             )
     })
-//    @PreAuthorize("hasAnyAuthority('MANAGE_PRODUCT')")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable("menuId") Long menuId,
-                                           @PathVariable("id") Long id,
+    @PreAuthorize("hasPermission(null, 'MANAGE_PRODUCT')")
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProduct(@PathVariable("menuId") long menuId,
+                                           @PathVariable("productId") long productId,
                                            @RequestBody Product product) {
-        product.setId(id);
-        service.updateProduct(menuId, product);
-        return ResponseEntity.ok().build();
+        product.setId(productId);
+        return ResponseEntity.ok(service.updateProduct(menuId, product));
     }
 }

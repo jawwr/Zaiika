@@ -23,10 +23,10 @@ public class Ingredient {
     private String title;
 
     @Column(name = "net_weight")
-    private int netWeight;
+    private double netWeight;
 
     @Column(name = "gross_weight")
-    private int grossWeight;
+    private double grossWeight;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

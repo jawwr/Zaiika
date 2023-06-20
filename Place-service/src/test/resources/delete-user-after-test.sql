@@ -28,6 +28,23 @@ where place_id = 99999
    or id = 99998;
 
 delete
+from ingredients
+where title = 'TEST INGREDIENT TITLE 1'
+   or title = 'TEST INGREDIENT TITLE 2';
+
+delete
+from product_modification
+where title = 'TEST PRODUCT MODIFICATION';
+
+delete
+from modification_category
+where title = 'TEST MODIFICATION CATEGORY TITLE';
+
+delete
+from products
+where menu_id = 99999;
+
+delete
 from menus
 where site_id = 99999;
 

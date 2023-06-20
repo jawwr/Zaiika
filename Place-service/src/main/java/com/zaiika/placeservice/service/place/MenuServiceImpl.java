@@ -39,13 +39,16 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu getMenu(long id) {
-        var cache = getMenuFromCache(id);
+    public Menu getMenu(long menuId) {
+        var cache = getMenuFromCache(menuId);
         if (cache != null) {
             var siteId = cache.getSite().getId();
             return getMenu(siteId, cache.getId());
         }
-        var savedMenu = menuRepository.findMenuById(id);
+        var savedMenu = menuRepository.findMenuById(menuId);
+        if (savedMenu == null) {
+            throw new IllegalArgumentException("Menu with id " + menuId + " does not exist");
+        }
         saveMenuToCache(savedMenu);
         return getMenu(savedMenu.getSite().getId(), savedMenu.getId());
     }

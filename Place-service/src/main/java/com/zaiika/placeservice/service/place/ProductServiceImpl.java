@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product addProductToMenu(long menuId, Product product) {
+    public Product createProduct(long menuId, Product product) {
         var menu = menuService.getMenu(menuId);
         product.setMenu(menu);
         setDependencies(product);
@@ -68,17 +68,37 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
-    private void setDependencies(Product product) {
+    private void setProductToIngredients(Product product) {
+        if (product.getComposition() == null) {
+            return;
+        }
         for (Ingredient ingredient : product.getComposition()) {
             ingredient.setProduct(product);
         }
+    }
 
+    private void setProductToCategory(Product product) {
+        if (product.getModifications() == null) {
+            return;
+        }
         for (ProductModificationCategory category : product.getModifications()) {
             category.setProduct(product);
-            for (ProductModification productModification : category.getModification()) {
-                productModification.setCategory(category);
-            }
+            setCategoryToModifications(category);
         }
+    }
+
+    private void setCategoryToModifications(ProductModificationCategory category) {
+        if (category.getModification() == null) {
+            return;
+        }
+        for (ProductModification productModification : category.getModification()) {
+            productModification.setCategory(category);
+        }
+    }
+
+    private void setDependencies(Product product) {
+        setProductToIngredients(product);
+        setProductToCategory(product);
     }
 
     private Product getProductFromCache(long id) {
@@ -99,17 +119,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateProduct(long menuId, Product updateProduct) {
+    public Product updateProduct(long menuId, Product updateProduct) {
         var menu = menuService.getMenu(menuId);
+        getProduct(menuId, updateProduct.getId());
         updateProduct.setMenu(menu);
         setDependencies(updateProduct);
-        productRepository.save(updateProduct);
-        saveProductToCache(updateProduct);
+        var savedProduct = productRepository.save(updateProduct);
+        saveProductToCache(savedProduct);
+        return savedProduct;
     }
 
     @Override
     public void deleteProductById(long menuId, long productId) {
+        var menu = menuService.getMenu(menuId);
         var product = productRepository.findProductById(productId);
+        if (product == null || menu.getId() != product.getMenu().getId()) {
+            throw new IllegalArgumentException("Product with id " + productId + " does not exist");
+        }
 
         deleteCategories(product.getModifications());
         ingredientRepository.deleteIngredientsByProductId(productId);
@@ -137,8 +163,8 @@ public class ProductServiceImpl implements ProductService {
             return cacheProduct;
         }
         var product = productRepository.findProductById(productId);
-        if (product.getMenu().getId() != menu.getId()) {
-            throw new IllegalArgumentException("Product does not exist");
+        if (product == null || product.getMenu().getId() != menu.getId()) {
+            throw new IllegalArgumentException("Product with id " + productId + " does not exist");
         }
         saveProductToCache(product);
 
